@@ -1,0 +1,16 @@
+body {
+    font-size: 150%;
+    color: black;
+    text-align: center;
+}
+
+#purpose {
+    background-color: gray;
+    background-size: 50%;
+}
+
+#links {
+    padding: 20px;
+    background-color: gray;
+    background-size: 50%;
+}
