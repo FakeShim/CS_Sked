@@ -45,8 +45,8 @@ pprint.pprint(collection.find_one({"firstName" : "Brandon"}))
 #collection.replace_one() //replaces the doc
 
 #delete operations
-x = collection.delete_many({})
-print(x.deleted_count, " documents deleted.")
+# x = collection.delete_many({})
+# print(x.deleted_count, " documents deleted.")
 
 #delete_one()
 
