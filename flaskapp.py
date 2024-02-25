@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, session, url_for
 import requests
+import pprint
 
 app = Flask(__name__)
 app.secret_key = 'sked-2-20-cs'
@@ -69,7 +70,8 @@ def inbox():
 
         if inbox_response.status_code == 200:
             inbox_messages = inbox_response.json()
-            return str(inbox_messages)
+            pprint.pprint(inbox_messages) 
+            return 'Latest message printed to terminal'
         else:
             return 'Error retrieving inbox messages: ' + str(inbox_response.status_code)
     else:
