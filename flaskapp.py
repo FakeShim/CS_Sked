@@ -54,6 +54,8 @@ def callback():
     else:
         return 'Error: Authorization code not received'
 
+
+# Store the email body in a string
 @app.route('/inbox')
 def inbox():
     if 'access_token' in session:
@@ -65,17 +67,50 @@ def inbox():
 
         inbox_url = 'https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages'
         
-        inbox_response = requests.get(inbox_url + '?$top=1', headers=headers)
+        # Update the request URL to include only the 'bodyPreview' field
+        inbox_response = requests.get(inbox_url + '?$select=bodyPreview&$top=1', headers=headers)
         
-
         if inbox_response.status_code == 200:
-            inbox_messages = inbox_response.json()
-            pprint.pprint(inbox_messages) 
-            return 'Latest message printed to terminal'
+            inbox_message = inbox_response.json()
+            body_preview = inbox_message['value'][0]['bodyPreview']  # Extracting the bodyPreview field
+            
+            # Storing the bodyPreview field into a string variable
+            body_preview_string = str(body_preview)
+            print('Latest message body preview stored in string:', body_preview_string)
+            
+            return 'Latest message body preview stored in string variable'
         else:
             return 'Error retrieving inbox messages: ' + str(inbox_response.status_code)
     else:
         return 'Error: Access token not found in session'
+
+
+
+# # Non JSON format
+# @app.route('/inbox')
+# def inbox():
+#     if 'access_token' in session:
+#         access_token = session['access_token']
+
+#         headers = {
+#             'Authorization': 'Bearer ' + access_token
+#         }
+
+#         inbox_url = 'https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages'
+        
+#         # Update the request URL to include only the 'bodyPreview' field
+#         inbox_response = requests.get(inbox_url + '?$select=bodyPreview&$top=1', headers=headers)
+        
+#         if inbox_response.status_code == 200:
+#             inbox_message = inbox_response.json()
+#             body_preview = inbox_message['value'][0]['bodyPreview']  # Extracting the bodyPreview field
+#             print('Latest message body preview:', body_preview)
+#             return 'Latest message body preview printed to terminal'
+#         else:
+#             return 'Error retrieving inbox messages: ' + str(inbox_response.status_code)
+#     else:
+#         return 'Error: Access token not found in session'
+
 
 if __name__ == '__main__':
     app.run(debug=True)
