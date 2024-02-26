@@ -76,7 +76,12 @@ def inbox():
             
             # Storing the bodyPreview field into a string variable
             body_preview_string = str(body_preview)
-            print('Latest message body preview stored in string:', body_preview_string)
+            print('Latest message body preview stored in string:', body_preview_string) 
+            
+            #write string to a text file
+            file = open("inbox.txt", "w")
+            file.write(body_preview_string)
+            file.close()
             
             return 'Latest message body preview stored in string variable'
         else:

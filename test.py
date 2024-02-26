@@ -21,21 +21,29 @@ print(db.list_collection_names())
 
 collection = db.get_collection('test-collection')
 
-post = {"firstName" : "Brandon",
-        "lastName" : "Nguyen",
-        "email" : "bhnguyen1@crimson.ua.edu",
-        "number": 21}
-collection.insert_one(post)
+# post = {"firstName" : "Brandon",
+#         "lastName" : "Nguyen",
+#         "email" : "bhnguyen1@crimson.ua.edu",
+#         "number": 21}
+# collection.insert_one(post)
 #collection.insert_many(inserts)
 
 for post in collection.find(): #this will be used to query the database
     pprint(post)
 #pprint(collection.find_one({"firstName" : "Brandon"}))
 
-collection.update_one({"firstName" : "Jared"}, {"$set": {"number" : 22}})
+file = open("inbox.txt", "r")
+body = file.read() 
+file.close()
+
+print(body)
+
+collection.update_one({"firstName" : "Jared", "availability.day": "Monday"}, 
+                      {"$set": {"availability.$.times.start" : body}})
+
 #collection.update_many()
 #collection.replace_one() //replaces the doc
 
-# collection.delete_one({"firstName" : "Brandon"})
+collection.delete_one({"firstName" : "Brandon"})
 # x = collection.delete_many({}) // deletes all documents
 # print(x.deleted_count, " documents deleted.")
