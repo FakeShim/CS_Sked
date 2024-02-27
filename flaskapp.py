@@ -89,33 +89,5 @@ def inbox():
     else:
         return 'Error: Access token not found in session'
 
-
-
-# # Non JSON format
-# @app.route('/inbox')
-# def inbox():
-#     if 'access_token' in session:
-#         access_token = session['access_token']
-
-#         headers = {
-#             'Authorization': 'Bearer ' + access_token
-#         }
-
-#         inbox_url = 'https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages'
-        
-#         # Update the request URL to include only the 'bodyPreview' field
-#         inbox_response = requests.get(inbox_url + '?$select=bodyPreview&$top=1', headers=headers)
-        
-#         if inbox_response.status_code == 200:
-#             inbox_message = inbox_response.json()
-#             body_preview = inbox_message['value'][0]['bodyPreview']  # Extracting the bodyPreview field
-#             print('Latest message body preview:', body_preview)
-#             return 'Latest message body preview printed to terminal'
-#         else:
-#             return 'Error retrieving inbox messages: ' + str(inbox_response.status_code)
-#     else:
-#         return 'Error: Access token not found in session'
-
-
 if __name__ == '__main__':
     app.run(debug=True)
