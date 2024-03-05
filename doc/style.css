@@ -1,0 +1,43 @@
+body {
+    font-size: 150%;
+    color: black;
+    text-align: center;
+}
+
+#purpose {
+    width: 50%;
+    margin: auto;
+    padding: 100px;
+    text-align: center;
+}
+
+#links {
+    width: 50%;
+    margin: auto;
+    padding: 250px;
+    text-align: center;
+}
+
+.member {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.member img {
+    margin-right: 20px;
+}
+
+.member-info {
+    flex: 1;
+    text-align: left;
+}
+
+/* Additional styling for h2 and p tags */
+.member-info h2 {
+    margin: 0;
+}
+
+.member-info p {
+    margin-top: 5px;
+}
