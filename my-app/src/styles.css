@@ -1,0 +1,122 @@
+*{
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Times New Roman", Georgia, serif;
+}
+
+.app-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.site {
+    font-size: 2rem;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #900f0f;
+    padding: 0px 0px;
+    color: #fff;
+    gap: 2rem;
+    padding:.1rem;
+    font-size: 1.5rem;
+}
+
+.nav ul {
+    padding: 0.5rem;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    text-align: right;
+}
+
+.nav a {
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: .25rem;
+    
+}
+
+.nav a.site { /* Directly style the "Main" link */
+    padding: 10 0px;
+    margin-right: auto; /* Or any other spacing you desire */
+    /* Other styles for the "Main" link */
+}
+
+.nav li:hover {
+    background-color: #777;
+}
+
+.alabamaLogo {
+    height: 50px;
+    width: 50px;
+    flex-shrink: 0;
+    margin-right: -25px;  
+}
+
+.student-form {
+    flex: 1;
+    min-width: 300px; /* Minimum width of the form */
+    flex-basis: 50%; /* Adjust this as needed */
+    flex-direction: column;
+    padding: 1rem;
+    gap: 2rem;
+    text-decoration: none;
+    list-style: none;
+}
+
+.student-form input,
+.student-form label {
+    width: 100%; /* Full width of the form */
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.student-table {
+    width: 50%; /* Adjust the width as needed */
+    margin-left: auto; /* This will push the container to the right */
+    margin-right: -50px;
+    /* Add additional styling as needed */
+  }
+  
+  .student-table table {
+    width: 100%; /* Make the table use all of the container's width */
+    /* Add other styling for the table here */
+  }
+  
+  .student-table table ul {
+    padding-left: 0; /* Remove default padding */
+    list-style: none; /* Remove default list bullet points */
+  }
+  
+  .student-table table li {
+    list-style: none;
+    /* Style for list items if needed */
+  }
+
+  @media (max-width: 768px) {
+    .app-container {
+      flex-direction: column;
+    }
+  
+    .student-form,
+    .student-table {
+      width: 100%; /* Full width on smaller screens */
+      max-width: 100%; /* Prevents them from exceeding the container's width */
+      min-width: 0; /* Overwrites any minimum width set outside the media query */
+    }
+  }
