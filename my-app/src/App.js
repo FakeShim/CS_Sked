@@ -7,24 +7,6 @@ import React, { useEffect, useState } from 'react';
 // import StudentTable from './table';
 
 function App() {
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header>
-  //   </div>
-  // );
   const handleFormSubmit = (studentData) => {
     // Implement the function to submit the form data to your backend
     console.log(studentData);
@@ -57,6 +39,28 @@ function App() {
           // ... other days
         ]
       },
+      {
+        firstName: "John",
+        lastName: "Doe",
+        email: "jdoe4@ua.edu",
+        availability: [
+          {
+            day: "Monday",
+            times: [
+              { Start: "9:00", End: "10:00", available: true },
+              { Start: "10:00", End: "11:00", available: true }
+            ]
+          },
+          {
+            day: "Wednesday",
+            times: [
+              { Start: "10:00", End: "11:00", available: true },
+              { Start: "11:00", End: "12:00", available: true }
+            ]
+          }
+          // ... other days
+        ]
+      }
       // ... other users
     ];
     

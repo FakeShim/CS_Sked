@@ -81,15 +81,20 @@ body {
 .student-form input,
 .student-form label {
     width: 100%; /* Full width of the form */
-    margin: 0.5rem 0;
+    /* margin: 0.5rem 0;
     padding: 0.5rem;
-    font-size: 1.5rem;
+    font-size: 1.5rem; */
+    font-size: 1rem; /* This will reduce the font size */
+    margin: 5px 0; /* Adds some space around inputs */
+    padding: 8px; /*Adjust padding to make input fields smaller*/
 }
 
 .student-table {
     width: 50%; /* Adjust the width as needed */
     margin-left: auto; /* This will push the container to the right */
     margin-right: -50px;
+    margin-top: 15px;
+    border-collapse: collapse; /* This will remove the space between table cells */
     /* Add additional styling as needed */
   }
   
@@ -106,6 +111,51 @@ body {
   .student-table table li {
     list-style: none;
     /* Style for list items if needed */
+  }
+
+  .student-table th,
+  .student-table tr,
+  .student-table td {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  /* Optionally, if you want vertical lines between cells within student-table */
+  .student-table td {
+    border-right: 1px solid #ccc;
+  }
+  
+  /* Make sure the last cell in each row doesn't have a right border */
+  .student-table td:last-child {
+    border-right: none;
+  }
+  
+  /* If you want to add vertical lines between headers within student-table */
+  .student-table th:not(:last-child) {
+    border-right: 1px solid #ccc;
+  }
+
+  .time-slots-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .time-slot {
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .time-slot-checkbox {
+    margin-right: 5px;
+  }
+  
+  .time-slot-label {
+    display: block;
   }
 
   @media (max-width: 768px) {

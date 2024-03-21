@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
+import TimeTable from './TimeTable';
 
 function StudentForm({ onSubmit }) {
   const [student, setStudent] = useState({
     name: '',
     email: '',
     hometown: '',
-    times: ''
+    times: []
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setStudent({ ...student, [name]: value });
+  };
+
+  const handleTimesChange = (times) => {
+    setStudent({ ...student, times });
   };
 
   const handleSubmit = (e) => {
@@ -40,10 +45,11 @@ function StudentForm({ onSubmit }) {
       </li>
       <li>
         <label>
-          Time:
-          <input type="text" name="times" value={student.times} onChange={handleChange} />
+          Time (8:00 AM - 5:00 PM CST):
+          <TimeTable onTimesChange={handleTimesChange} />
         </label>
       </li>
+      <button type="submit">Submit</button>
     </form>
   );
 }
