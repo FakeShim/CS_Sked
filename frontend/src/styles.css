@@ -144,14 +144,3 @@ h1 {
   background-color: rgba(255, 255, 255, 1.0);
   color: #000
 }
-
-.schedule-dropdowns {
-  position: relative; /* Set the position to relative */
-}
-
-.schedule-dropdowns select {
-  position: absolute; /* Set the position to absolute */
-  top: calc(100% + 5px); /* Align the dropdown below the button */
-  left: 0; /* Align the dropdown with the button */
-  z-index: 1; /* Ensure the dropdown appears above other content */
-}

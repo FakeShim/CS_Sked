@@ -85,7 +85,6 @@ const Faculty = () => {
     setEntries(newEntries);
   };
 
-  // Function to validate email using regular expression
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
@@ -138,15 +137,36 @@ const Faculty = () => {
                   {entry.editable ? (
                       <div className="schedule-dropdowns">
                         <div className="schedule-buttons-container">
-                          {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map(day => (
-                            <button
-                              key={day}
-                              className={`day-button ${isDaySelected(index, day) ? 'selected' : ''}`}
-                              onClick={() => handleToggleDay(index, day)}
-                            >
-                              {day}
-                            </button>
-                          ))}
+                          <button
+                            className={`day-button ${isDaySelected(index, 'Monday') ? 'selected' : ''}`}
+                            onClick={() => handleToggleDay(index, 'Monday')}
+                          >
+                            Monday
+                          </button>
+                          <button
+                            className={`day-button ${isDaySelected(index, 'Tuesday') ? 'selected' : ''}`}
+                            onClick={() => handleToggleDay(index, 'Tuesday')}
+                          >
+                            Tuesday
+                          </button>
+                          <button
+                            className={`day-button ${isDaySelected(index, 'Wednesday') ? 'selected' : ''}`}
+                            onClick={() => handleToggleDay(index, 'Wednesday')}
+                          >
+                            Wednesday
+                          </button>
+                          <button
+                            className={`day-button ${isDaySelected(index, 'Thursday') ? 'selected' : ''}`}
+                            onClick={() => handleToggleDay(index, 'Thursday')}
+                          >
+                            Thursday
+                          </button>
+                          <button
+                            className={`day-button ${isDaySelected(index, 'Friday') ? 'selected' : ''}`}
+                            onClick={() => handleToggleDay(index, 'Friday')}
+                          >
+                            Friday
+                          </button>
                         </div>
                         {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map(day => (
                           isDaySelected(index, day) && (
