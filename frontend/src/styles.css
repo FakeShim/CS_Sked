@@ -88,3 +88,129 @@ body {
 .game-info {
   margin-left: 20px;
 }
+
+/* App.css */
+
+@font-face {
+  font-family: "Open Sans";
+  src: url(../public/opensans.ttf);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  text-align: center;
+}
+
+h1 {
+  font-weight: normal;
+}
+
+.header {
+  position: relative;
+  background-color: #900;
+  color: #fff;
+  padding-top: 45px;
+  padding-bottom: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-family: "Open Sans";
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  position: absolute;
+  left: 20%;
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.ua-logo {
+  font-size: 55px;
+  line-height: 55px;
+  max-width: 350px;
+  padding: 15px;
+  margin-top: 5px;
+  height: 66px;
+}
+
+.header-title {
+  margin: 0;
+}
+
+.nav-buttons {
+  position: absolute;
+  right: 20%;
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.nav-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  padding: 9px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 1.0);
+  color: #000
+}
+
+.content {
+  padding-top: 20px; /* Add padding to the top of the content area */
+}
+
+.user-table {
+  margin: 0 auto;
+  padding: 40px;
+  border-collapse: collapse;
+  width: 80%; /* Set width of the table */
+}
+
+.user-table th,
+.user-table td {
+  border: 1px solid #000; /* Black line borders */
+  padding: 8px; /* Add padding to cells for spacing */
+}
+
+.user-table th {
+  background-color: #f2f2f2; /* Light gray background for table header */
+}
+
+
+/* .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px; /* Adjust as needed 
+} */ 
+
+/* .grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 800px; /* Adjust as needed 
+} 
+*/
+
+/* .grid-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: center;
+}
+ */
