@@ -3,12 +3,16 @@
   src: url(../public/opensans.ttf);
 }
 
+*{
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
 }
 
-.App {
+.Home {
   text-align: center;
 }
 
@@ -143,4 +147,122 @@ h1 {
 .schedule-buttons-container button:hover {
   background-color: rgba(255, 255, 255, 1.0);
   color: #000
+}
+
+/*Adjust the app styling here*/
+.home-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding-top: 60px; 
+}
+
+.site {
+  font-size: 2rem;
+}
+
+/* Adjust the form and table styling here */
+.student-form {
+  flex: 1;
+  min-width: 300px;
+  flex-basis: 50%;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 2rem;
+  text-decoration: none;
+  list-style: none;
+}
+
+.student-form input,
+.student-form label {
+  width: 100%; 
+  font-size: 1rem;
+  margin: 5px 0; 
+  padding: 8px; 
+}
+
+.student-table {
+  width: 50%; 
+  margin-left: auto; 
+  margin-right: -50px;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+.student-table table {
+  width: 100%;
+}
+
+.student-table table ul {
+  padding-left: 0; 
+  list-style: none; 
+}
+
+.student-table table li {
+  list-style: none;
+}
+
+.student-table th,
+.student-table tr,
+.student-table td {
+  border-bottom: 1px solid #ccc;
+}
+
+.student-table td {
+  border-right: 1px solid #ccc;
+}
+
+.student-table td:last-child {
+  border-right: none;
+}
+
+.student-table th:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+/*Adjust the submit button for the table here*/
+.submit-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+/*Adjust the styling for the availability table for the student form here*/
+.time-slots-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.time-slot {
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-slot-checkbox {
+  margin-right: 5px;
+}
+
+.time-slot-label {
+  display: block;
+}
+
+/*Adjust for mobile version*/
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .student-form,
+  .student-table {
+    width: 100%; /* Full width on smaller screens */
+    max-width: 100%; /* Prevents them from exceeding the container's width */
+    min-width: 0; /* Overwrites any minimum width set outside the media query */
+  }
 }
