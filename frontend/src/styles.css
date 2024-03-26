@@ -1,90 +1,292 @@
-* {
+@font-face {
+  font-family: "Open Sans";
+  src: url(../public/opensans.ttf);
+}
+
+*{
   box-sizing: border-box;
 }
 
 body {
-  font-family: sans-serif;
-  margin: 20px;
+  margin: 0;
   padding: 0;
+}
+
+.Home {
+  text-align: center;
 }
 
 h1 {
-  margin-top: 0;
-  font-size: 22px;
+  font-weight: normal;
 }
 
-h2 {
-  margin-top: 0;
-  font-size: 20px;
-}
-
-h3 {
-  margin-top: 0;
-  font-size: 18px;
-}
-
-h4 {
-  margin-top: 0;
-  font-size: 16px;
-}
-
-h5 {
-  margin-top: 0;
-  font-size: 14px;
-}
-
-h6 {
-  margin-top: 0;
-  font-size: 12px;
-}
-
-code {
-  font-size: 1.2em;
-}
-
-ul {
-  padding-inline-start: 20px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
-}
-
-.square {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-}
-
-.board-row:after {
-  clear: both;
-  content: '';
-  display: table;
-}
-
-.status {
-  margin-bottom: 10px;
-}
-.game {
+.header {
+  position: relative;
+  background-color: #900;
+  color: #fff;
+  padding-top: 45px;
+  padding-bottom: 50px;
+  width: 100%;
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  font-family: "Open Sans";
+  align-items: center;
+  justify-content: space-between;
 }
 
-.game-info {
-  margin-left: 20px;
+.header-link {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none; /* Remove underline */
+}
+
+.header-left {
+  position: absolute;
+  left: 20%;
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.ua-logo {
+  font-size: 55px;
+  line-height: 55px;
+  max-width: 350px;
+  padding: 15px;
+  margin-top: 5px;
+  height: 66px;
+}
+
+.header-title {
+  margin: 0;
+}
+
+.nav-buttons {
+  position: absolute;
+  right: 20%;
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.nav-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  padding: 9px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 1.0);
+  color: #000
+}
+
+.content {
+  padding-top: 20px; /* Add padding to the top of the content area */
+}
+
+.user-table {
+  margin: 0 auto;
+  padding: 40px;
+  border-collapse: collapse;
+  width: 80%;
+  position: relative;
+}
+
+.user-table th,
+.user-table td {
+  border: 1px solid #000; /* Black line borders */
+  padding: 8px; /* Add padding to cells for spacing */
+}
+
+.user-table th {
+  background-color: #f2f2f2; /* Light gray background for table header */
+}
+
+.actions-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.actions-button-container button {
+  background-color: #900;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.actions-button-container button:hover {
+  background-color: rgba(255, 255, 255, 1.0);
+  color: #000
+}
+
+.schedule-buttons-container {
+  display: flex;
+  justify-content: center;
+}
+
+.schedule-buttons-container button {
+  background-color: #900;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.schedule-buttons-container button:hover {
+  background-color: rgba(255, 255, 255, 1.0);
+  color: #000
+}
+
+/*Adjust the app styling here*/
+.home-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding-top: 60px; 
+}
+
+.site {
+  font-size: 2rem;
+}
+
+/* Adjust the form and table styling here */
+.student-form {
+  flex: 1;
+  min-width: 300px;
+  flex-basis: 50%;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 2rem;
+  text-decoration: none;
+  list-style: none;
+}
+
+.requests-table {
+  border-collapse: collapse;
+  width: 75%;
+}
+
+.requests-table th, .requests-table td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.requests-table th {
+  background-color: #f2f2f2;
+}
+
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 30vh; /* Adjust as needed */
+}
+
+.student-form input,
+.student-form label {
+  width: 100%; 
+  font-size: 1rem;
+  margin: 5px 0; 
+  padding: 8px; 
+}
+
+.student-table {
+  width: 50%; 
+  margin-left: auto; 
+  margin-right: -50px;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+.student-table table {
+  width: 100%;
+}
+
+.student-table table ul {
+  padding-left: 0; 
+  list-style: none; 
+}
+
+.student-table table li {
+  list-style: none;
+}
+
+.student-table th,
+.student-table tr,
+.student-table td {
+  border-bottom: 1px solid #ccc;
+}
+
+.student-table td {
+  border-right: 1px solid #ccc;
+}
+
+.student-table td:last-child {
+  border-right: none;
+}
+
+.student-table th:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+/*Adjust the submit button for the table here*/
+.submit-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+/*Adjust the styling for the availability table for the student form here*/
+.time-slots-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.time-slot {
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-slot-checkbox {
+  margin-right: 5px;
+}
+
+.time-slot-label {
+  display: block;
+}
+
+/*Adjust for mobile version*/
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .student-form,
+  .student-table {
+    width: 100%; /* Full width on smaller screens */
+    max-width: 100%; /* Prevents them from exceeding the container's width */
+    min-width: 0; /* Overwrites any minimum width set outside the media query */
+  }
 }

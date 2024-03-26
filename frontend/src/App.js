@@ -2,8 +2,10 @@ import './Style.css';
 import Login from './components/Login'
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Main from './components/Main';
-import Navbar from './components/NavBar';
+import Home from './components/Home';
+import Header from './components/Header';
+import Faculty from './components/Faculty';
+import Requests from './components/Requests';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -50,22 +52,23 @@ function App() {
   return (
     
     <>
-    <Navbar />
+    
     
     <div className="App">
       <header className="App-header">
       <Router>
+      <Header loggedIn={loggedIn}/>
             <Routes>
-                <Route path="/" exact element={<Main email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
+                <Route path="/" exact element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
                 <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} loggedIn={loggedIn} />} />
-                {/* Add more routes for additional pages */}
+                <Route exact path="/Faculty" element={<Faculty />} />
+                <Route exact path="/Requests" element={<Requests />} />
             </Routes>
         </Router>
       </header>
     </div>
     </>
   );
-  
-}
 
+  }
 export default App;
