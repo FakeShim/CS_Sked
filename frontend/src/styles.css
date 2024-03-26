@@ -174,6 +174,30 @@ h1 {
   list-style: none;
 }
 
+.requests-table {
+  border-collapse: collapse;
+  width: 75%;
+}
+
+.requests-table th, .requests-table td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.requests-table th {
+  background-color: #f2f2f2;
+}
+
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 30vh; /* Adjust as needed */
+}
+
 .student-form input,
 .student-form label {
   width: 100%; 
