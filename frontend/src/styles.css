@@ -7,18 +7,20 @@ body {
   font-family: "Times New Roman", Georgia, serif;
 }
 
+/*Adjust the app styling here*/
 .app-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  padding-top: 60px; /* Adjust based on the actual height of your navbar */
+  padding-top: 60px; 
 }
 
 .site {
   font-size: 2rem;
 }
 
+/*adjust the nav bar styling here*/
 .nav {
   position: fixed;
   top: 0;
@@ -71,10 +73,11 @@ body {
   margin-right: -25px;  
 }
 
+/* Adjust the form and table styling here */
 .student-form {
   flex: 1;
-  min-width: 300px; /* Minimum width of the form */
-  flex-basis: 50%; /* Adjust this as needed */
+  min-width: 300px;
+  flex-basis: 50%;
   flex-direction: column;
   padding: 1rem;
   gap: 2rem;
@@ -84,37 +87,31 @@ body {
 
 .student-form input,
 .student-form label {
-  width: 100%; /* Full width of the form */
-  /* margin: 0.5rem 0;
-  padding: 0.5rem;
-  font-size: 1.5rem; */
-  font-size: 1rem; /* This will reduce the font size */
-  margin: 5px 0; /* Adds some space around inputs */
-  padding: 8px; /*Adjust padding to make input fields smaller*/
+  width: 100%; 
+  font-size: 1rem;
+  margin: 5px 0; 
+  padding: 8px; 
 }
 
 .student-table {
-  width: 50%; /* Adjust the width as needed */
-  margin-left: auto; /* This will push the container to the right */
+  width: 50%; 
+  margin-left: auto; 
   margin-right: -50px;
   margin-top: 15px;
-  border-collapse: collapse; /* This will remove the space between table cells */
-  /* Add additional styling as needed */
+  border-collapse: collapse;
 }
 
 .student-table table {
-  width: 100%; /* Make the table use all of the container's width */
-  /* Add other styling for the table here */
+  width: 100%;
 }
 
 .student-table table ul {
-  padding-left: 0; /* Remove default padding */
-  list-style: none; /* Remove default list bullet points */
+  padding-left: 0; 
+  list-style: none; 
 }
 
 .student-table table li {
   list-style: none;
-  /* Style for list items if needed */
 }
 
 .student-table th,
@@ -123,29 +120,26 @@ body {
   border-bottom: 1px solid #ccc;
 }
 
-/* Optionally, if you want vertical lines between cells within student-table */
 .student-table td {
   border-right: 1px solid #ccc;
 }
 
-/* Make sure the last cell in each row doesn't have a right border */
 .student-table td:last-child {
   border-right: none;
 }
 
-/* If you want to add vertical lines between headers within student-table */
 .student-table th:not(:last-child) {
   border-right: 1px solid #ccc;
 }
 
+/*Adjust the submit button for the table here*/
 .submit-container {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 10px;
 }
 
-
-
+/*Adjust the styling for the availability table for the student form here*/
 .time-slots-container {
   display: flex;
   justify-content: center;
@@ -170,6 +164,7 @@ body {
   display: block;
 }
 
+/*Adjust for mobile version*/
 @media (max-width: 768px) {
   .app-container {
     flex-direction: column;

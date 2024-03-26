@@ -4,7 +4,6 @@ import Navbar from './navbar';
 import StudentForm from './student';
 import AvailabilityTable from './table';
 import React, { useEffect, useState } from 'react';
-// import StudentTable from './table';
 
 function App() {
   const handleFormSubmit = (studentData) => {
