@@ -14,4 +14,7 @@ services:
         ports:
             - "3000:3000"
         volumes:
-            - ./frontend:/frontend
+            - ./frontend/public:/frontend/public
+            - ./frontend/src:/frontend/src
+            - "/etc/timezone:/etc/timezone:ro"
+            - "/etc/localtime:/etc/localtime:ro"
