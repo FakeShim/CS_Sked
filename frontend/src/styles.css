@@ -12,6 +12,7 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
+  padding-top: 60px; /* Adjust based on the actual height of your navbar */
 }
 
 .site {
@@ -19,6 +20,9 @@ body {
 }
 
 .nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -133,6 +137,14 @@ body {
 .student-table th:not(:last-child) {
   border-right: 1px solid #ccc;
 }
+
+.submit-container {
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+}
+
+
 
 .time-slots-container {
   display: flex;
