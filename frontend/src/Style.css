@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    font-family: "Times New Roman", Georgia, serif;
+}
+
+.app-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.site {
+    font-size: 2rem;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #900f0f;
+    padding: 0px 0px;
+    color: #fff;
+    gap: 2rem;
+    padding:.1rem;
+    font-size: 1.5rem;
+}
+
+.nav ul {
+    padding: 0.5rem;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    text-align: right;
+}
+
+.nav a {
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: .25rem;
+    
+}
+
+.nav a.site { /* Directly style the "Main" link */
+    padding: 10 0px;
+    margin-right: auto; /* Or any other spacing you desire */
+    /* Other styles for the "Main" link */
+}
+
+.nav li:hover {
+    background-color: #777;
+}
+
+.alabamaLogo {
+    height: 50px;
+    width: 50px;
+    flex-shrink: 0;
+    margin-right: -25px;  
+}
+  
