@@ -1,90 +1,179 @@
-* {
+*{
   box-sizing: border-box;
 }
 
 body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
+  margin: 0;
+  font-family: "Times New Roman", Georgia, serif;
 }
 
-h1 {
-  margin-top: 0;
-  font-size: 22px;
-}
-
-h2 {
-  margin-top: 0;
-  font-size: 20px;
-}
-
-h3 {
-  margin-top: 0;
-  font-size: 18px;
-}
-
-h4 {
-  margin-top: 0;
-  font-size: 16px;
-}
-
-h5 {
-  margin-top: 0;
-  font-size: 14px;
-}
-
-h6 {
-  margin-top: 0;
-  font-size: 12px;
-}
-
-code {
-  font-size: 1.2em;
-}
-
-ul {
-  padding-inline-start: 20px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
-}
-
-.square {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-}
-
-.board-row:after {
-  clear: both;
-  content: '';
-  display: table;
-}
-
-.status {
-  margin-bottom: 10px;
-}
-.game {
+/*Adjust the app styling here*/
+.app-container {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding-top: 60px; 
 }
 
-.game-info {
-  margin-left: 20px;
+.site {
+  font-size: 2rem;
+}
+
+/*adjust the nav bar styling here*/
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #900f0f;
+  padding: 0px 0px;
+  color: #fff;
+  gap: 2rem;
+  padding:.1rem;
+  font-size: 1.5rem;
+}
+
+.nav ul {
+  padding: 0.5rem;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  text-align: right;
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: .25rem;
+  
+}
+
+.nav a.site { /* Directly style the "Main" link */
+  padding: 10 0px;
+  margin-right: auto; /* Or any other spacing you desire */
+  /* Other styles for the "Main" link */
+}
+
+.nav li:hover {
+  background-color: #777;
+}
+
+.alabamaLogo {
+  height: 50px;
+  width: 50px;
+  flex-shrink: 0;
+  margin-right: -25px;  
+}
+
+/* Adjust the form and table styling here */
+.student-form {
+  flex: 1;
+  min-width: 300px;
+  flex-basis: 50%;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 2rem;
+  text-decoration: none;
+  list-style: none;
+}
+
+.student-form input,
+.student-form label {
+  width: 100%; 
+  font-size: 1rem;
+  margin: 5px 0; 
+  padding: 8px; 
+}
+
+.student-table {
+  width: 50%; 
+  margin-left: auto; 
+  margin-right: -50px;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+.student-table table {
+  width: 100%;
+}
+
+.student-table table ul {
+  padding-left: 0; 
+  list-style: none; 
+}
+
+.student-table table li {
+  list-style: none;
+}
+
+.student-table th,
+.student-table tr,
+.student-table td {
+  border-bottom: 1px solid #ccc;
+}
+
+.student-table td {
+  border-right: 1px solid #ccc;
+}
+
+.student-table td:last-child {
+  border-right: none;
+}
+
+.student-table th:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+/*Adjust the submit button for the table here*/
+.submit-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+/*Adjust the styling for the availability table for the student form here*/
+.time-slots-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.time-slot {
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-slot-checkbox {
+  margin-right: 5px;
+}
+
+.time-slot-label {
+  display: block;
+}
+
+/*Adjust for mobile version*/
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .student-form,
+  .student-table {
+    width: 100%; /* Full width on smaller screens */
+    max-width: 100%; /* Prevents them from exceeding the container's width */
+    min-width: 0; /* Overwrites any minimum width set outside the media query */
+  }
 }
