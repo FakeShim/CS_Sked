@@ -1,16 +1,16 @@
 import React from 'react';
 
-const RequestsTable = ({ requests }) => {
+const RequestsTable = ({ requests, handleStatusChange }) => {
   return (
-    <table>
+    <table className="requests-table">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Date</th>
-          <th>Professor</th>
-          <th>Status</th>
-          <th>Action</th>
+      <tr>
+          <th style={{ width: '10%' }}>ID</th>
+          <th style={{ width: '25%' }}>Name</th>
+          <th style={{ width: '20%' }}>Date</th>
+          <th style={{ width: '20%' }}>Professor</th>
+          <th style={{ width: '15%' }}>Status</th>
+          <th style={{ width: '10%' }}>Action</th> {/* New column for the action button */}
         </tr>
       </thead>
       <tbody>
@@ -21,9 +21,11 @@ const RequestsTable = ({ requests }) => {
             <td>{request.date}</td>
             <td>{request.professor}</td>
             <td>{request.status}</td>
-            {/* <td>
-              <button onClick={() => handleAction(request.id)}>Action</button>
-            </td> */}
+            <td> {/* New column for the action button */}
+              <button onClick={() => handleStatusChange(request.id)}>
+                {request.status === 'Pending' ? 'Complete' : 'Pending'}
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>

@@ -28,28 +28,26 @@ import React, { useState, useEffect } from 'react';
 import RequestsTable from './RequestsTable';
 import './styles.css';
 
-const requests = [
-  { id: 1, name: 'Devin Booker', date: '2024-03-24', professor: 'Dr. Doe', status: 'Pending' },
-  { id: 2, name: 'Jayson Tatum', date: '2024-03-25', professor: 'Dr. Ray', status: 'Approved' },
-  { id: 3, name: 'Anthony Edwards', date: '2024-03-26', professor: 'Dr. Mi', status: 'Pending' },
-  // Add more request objects as needed
-];
-
 const App = () => {
-  const [data, setData] = useState([]);
+  const [requests, setRequests] = useState([
+    { id: 1, name: 'Devin Booker', date: '2024-03-24', professor: 'Dr. Doe', status: 'Pending' },
+    { id: 2, name: 'Jayson Tatum', date: '2024-03-25', professor: 'Dr. Ray', status: 'Completed' },
+    { id: 3, name: 'Anthony Edwards', date: '2024-03-26', professor: 'Dr. Mi', status: 'Pending' },
+    // Add more request objects as needed
+  ]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/data/');
-      const jsonData = await response.json();
-      setData(jsonData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+  const handleStatusChange = (id) => {
+    setRequests(prevRequests => {
+      return prevRequests.map(request => {
+        if (request.id === id) {
+          return {
+            ...request,
+            status: request.status === 'Pending' ? 'Completed' : 'Pending'
+          };
+        }
+        return request;
+      });
+    });
   };
 
   return (
@@ -64,8 +62,10 @@ const App = () => {
           <button className='nav-button'>Faculty</button>
         </div>
       </header>  
-      <h1>Requests</h1>
-      <RequestsTable requests={requests} />
+      <div className="center-content">
+        <h1>Requests</h1>
+        <RequestsTable requests={requests} handleStatusChange={handleStatusChange} />
+      </div>
     </div>
   );
 };
