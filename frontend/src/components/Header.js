@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({loggedIn}) => {
   return (
     <header className="header">
       <div className="header-left">
@@ -10,10 +10,16 @@ const Header = () => {
           <h1 className="header-title">Scheduler</h1>
         </Link>
       </div>
+      {loggedIn ? (
       <div className="nav-buttons">
         <Link to="/Faculty" className="nav-button">Faculty</Link>
         <Link to="/Requests" className="nav-button">Requests</Link>
       </div>
+      ) : (
+        <div>
+          
+        </div>
+      )}
     </header>
   );
 }
