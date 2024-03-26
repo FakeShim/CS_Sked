@@ -13,8 +13,15 @@ function App() {
   };
   const [users, setUsers] = useState([]);
   useEffect(() => {
+  // use for later  
+  //   fetch('/backend/find_person/')
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log(data);
+  //       setUsers(data);
+  //     })
+  //     .catch(error => console.error('Error:', error));
     // Here you would fetch the user data from MongoDB
-    // For example purposes, I'm using mock data based on the image you uploaded
     const mockUsersData = [
       {
         firstName: "Brandon",
