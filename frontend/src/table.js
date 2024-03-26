@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
 
 const AvailabilityTable = ({ users }) => {
-  // Create a state to store the checked values, initialized to all false
-  const [checkedStates, setCheckedStates] = useState(
-    users.map(user => 
-      user.availability.map(avail => 
-        avail.times.map(() => false)
-      )
-    )
-  );
+  // State to manage checked time slots.
+  // It's an object where each key is a unique ID for a time slot, and its value is a boolean indicating whether it's checked.
+  const [checkedSlots, setCheckedSlots] = useState({});
 
-  const handleCheckboxChange = (userIndex, dayIndex, timeIndex) => {
-    // Create a copy of the current state
-    const newCheckedStates = [...checkedStates];
-    // Toggle the checked state for the current checkbox
-    newCheckedStates[userIndex][dayIndex][timeIndex] = !newCheckedStates[userIndex][dayIndex][timeIndex];
-    // Update the state with the new value
-    setCheckedStates(newCheckedStates);
+  // Function to toggle the checked status of a time slot
+  const toggleChecked = (slotId) => {
+    setCheckedSlots((prevCheckedSlots) => ({
+      ...prevCheckedSlots,
+      [slotId]: !prevCheckedSlots[slotId], // Toggle the boolean value for the given slotId
+    }));
   };
 
   return (
@@ -35,20 +29,25 @@ const AvailabilityTable = ({ users }) => {
             <td>{user.email}</td>
             <td>
                 <ul>
-                    {user.availability.map((avail, dayIndex) => (
-                    <li key={dayIndex}>
+                    {user.availability.map((avail, availIndex) => (
+                    <li key={availIndex}>
                         {`${avail.day}: `}
-                        {avail.times.map((time, timeIndex) => (
-                        <span key={timeIndex}>
-                          {`${time.Start} - ${time.End}`}
-                          <input
-                            type="checkbox"
-                            checked={checkedStates[userIndex][dayIndex][timeIndex]}
-                            onChange={() => handleCheckboxChange(userIndex, dayIndex, timeIndex)}
-                          />
-                          {timeIndex < avail.times.length - 1 ? ', ' : ''}
-                        </span>
-                        ))}
+                        {avail.times.map((time, timeIndex) => {
+                          // Construct a unique ID for each time slot
+                          const slotId = `${user.email}-${avail.day}-${timeIndex}`;
+                          return (
+                            <div key={timeIndex} style={{ display: 'inline-block', marginRight: '10px' }}>
+                              {`${time.Start} - ${time.End}`}
+                              <input
+                                type="checkbox"
+                                style={{ marginLeft: '5px' }}
+                                checked={!!checkedSlots[slotId]}
+                                onChange={() => toggleChecked(slotId)}
+                              />
+                              {timeIndex < avail.times.length - 1 ? ', ' : ''}
+                            </div>
+                          );
+                        })} 
                     </li>
                     ))}
                 </ul>
@@ -56,7 +55,7 @@ const AvailabilityTable = ({ users }) => {
           </tr>
         ))}
       </tbody>
-      <button type="submit">Submit</button>
+      <button onClick={() => console.log(checkedSlots)}>Submit</button>
     </table>
   );
 }
