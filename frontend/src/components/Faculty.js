@@ -134,79 +134,59 @@ const Faculty = () => {
                   )}
                 </td>
                 <td>
-                  {entry.editable ? (
-                      <div className="schedule-dropdowns">
-                        <div className="schedule-buttons-container">
+                {entry.editable ? (
+                  <div className="schedule-dropdowns">
+                    <div className="schedule-buttons-container">
+                      {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map(day => (
+                        <div key={day} className="day-dropdown-container">
                           <button
-                            className={`day-button ${isDaySelected(index, 'Monday') ? 'selected' : ''}`}
-                            onClick={() => handleToggleDay(index, 'Monday')}
+                            className={`day-button ${isDaySelected(index, day) ? 'selected' : ''}`}
+                            onClick={() => handleToggleDay(index, day)}
                           >
-                            Monday
+                            {day}
                           </button>
-                          <button
-                            className={`day-button ${isDaySelected(index, 'Tuesday') ? 'selected' : ''}`}
-                            onClick={() => handleToggleDay(index, 'Tuesday')}
-                          >
-                            Tuesday
-                          </button>
-                          <button
-                            className={`day-button ${isDaySelected(index, 'Wednesday') ? 'selected' : ''}`}
-                            onClick={() => handleToggleDay(index, 'Wednesday')}
-                          >
-                            Wednesday
-                          </button>
-                          <button
-                            className={`day-button ${isDaySelected(index, 'Thursday') ? 'selected' : ''}`}
-                            onClick={() => handleToggleDay(index, 'Thursday')}
-                          >
-                            Thursday
-                          </button>
-                          <button
-                            className={`day-button ${isDaySelected(index, 'Friday') ? 'selected' : ''}`}
-                            onClick={() => handleToggleDay(index, 'Friday')}
-                          >
-                            Friday
-                          </button>
+                          {isDaySelected(index, day) && (
+                            <select
+                              className="time-dropdown"
+                              multiple
+                              value={entry.schedule[day]}
+                              onChange={(e) => {
+                                const selectedTimes = Array.from(e.target.selectedOptions, option => option.value);
+                                handleChange(index, 'schedule', { ...entry.schedule, [day]: selectedTimes });
+                              }}
+                            >
+                              {Array.from({ length: 12 }, (_, i) => i + 7).map(hour => (
+                                <option key={hour} value={hour}>{`${hour}:00`}</option>
+                              ))}
+                            </select>
+                          )}
                         </div>
-                        {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map(day => (
-                          isDaySelected(index, day) && (
-                            <div key={day}>
-                              <label htmlFor={`day-dropdown-${day}`}></label>
-                              <select
-                                id={`day-dropdown-${day}`}
-                                multiple
-                                value={entry.schedule[day]}
-                                onChange={(e) => {
-                                  const selectedTimes = Array.from(e.target.selectedOptions, option => option.value);
-                                  handleChange(index, 'schedule', { ...entry.schedule, [day]: selectedTimes });
-                                }}
-                              >
-                                {Array.from({ length: 12 }, (_, i) => i + 7).map(hour => (
-                                  <option key={hour} value={hour}>{`${hour}:00`}</option>
-                                ))}
-                              </select>
-                            </div>
-                          )
-                        ))}
-                        <div className="error">{entry.scheduleError}</div>
-                      </div>
-                  ) : (
-                    Object.entries(entry.schedule).map(([day, times]) => (
+                      ))}
+                    </div>
+                    <div className="error">{entry.scheduleError}</div>
+                  </div>
+                ) : (
+                  Object.entries(entry.schedule)
+                    .sort(([dayA], [dayB]) => {
+                      const order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                      return order.indexOf(dayA) - order.indexOf(dayB);
+                    })
+                    .map(([day, times]) => (
                       <div key={day}>
                         <strong>{day}:</strong> {times.map(time => `${time}:00`).join(', ')}
                       </div>
                     ))
-                  )}
+                )}
                 </td>
                 <td>
                   <div className="actions-button-container">
                     {entry.editable ? (
-                        <>
-                          <button onClick={() => handleSubmit(index)}>Submit</button>
-                          <button onClick={() => handleRemoveEntry(index)}>Remove</button>
-                        </>
+                      <>
+                        <button onClick={() => handleSubmit(index)}>Submit</button>
+                        <button onClick={() => handleRemoveEntry(index)}>Remove</button>
+                      </>
                     ) : (
-                        <button onClick={() => handleEdit(index)}>Edit</button>
+                      <button onClick={() => handleEdit(index)}>Edit</button>
                     )}
                   </div>
                 </td>

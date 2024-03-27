@@ -113,6 +113,7 @@ h1 {
 
 .actions-button-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
@@ -135,6 +136,10 @@ h1 {
   justify-content: center;
 }
 
+.day-dropdown-container {
+  position: relative;
+}
+
 .schedule-buttons-container button {
   background-color: #900;
   color: #fff;
@@ -149,13 +154,28 @@ h1 {
   color: #000
 }
 
+.time-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100px;
+  height: 150px;
+  padding: 5px;
+  justify-content: center;
+}
+
+.error {
+  color: red;
+}
+
+
 /*Adjust the app styling here*/
 .home-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  padding-top: 60px; 
+  padding-top: 60px;
 }
 
 .site {
@@ -200,15 +220,15 @@ h1 {
 
 .student-form input,
 .student-form label {
-  width: 100%; 
+  width: 100%;
   font-size: 1rem;
-  margin: 5px 0; 
-  padding: 8px; 
+  margin: 5px 0;
+  padding: 8px;
 }
 
 .student-table {
-  width: 50%; 
-  margin-left: auto; 
+  width: 50%;
+  margin-left: auto;
   margin-right: -50px;
   margin-top: 15px;
   border-collapse: collapse;
@@ -219,8 +239,8 @@ h1 {
 }
 
 .student-table table ul {
-  padding-left: 0; 
-  list-style: none; 
+  padding-left: 0;
+  list-style: none;
 }
 
 .student-table table li {
