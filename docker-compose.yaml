@@ -18,3 +18,11 @@ services:
             - ./frontend/src:/frontend/src
             - "/etc/timezone:/etc/timezone:ro"
             - "/etc/localtime:/etc/localtime:ro"
+
+    auth:
+        build: ./auth-server
+        ports:
+            - "3080:3080"
+        volumes:
+            - ./auth-server:/auth-server
+            - /auth-server/node_modules
