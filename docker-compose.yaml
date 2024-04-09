@@ -7,7 +7,9 @@ services:
             - ./api:/api
             - "/etc/timezone:/etc/timezone:ro"
             - "/etc/localtime:/etc/localtime:ro"
-        command: bash -c "python manage.py runserver 0.0.0.0:8000"
+        environment:
+            - DB_USERNAME=${DB_USERNAME}
+            - DB_PASSWORD=${DB_PASSWORD}
 
     web:
         build: ./frontend

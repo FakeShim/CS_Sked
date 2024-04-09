@@ -1,12 +1,11 @@
-FROM  python:3.13.0a4-bullseye
-
-ENV PYTHONUNBUFFERED=1
+FROM node:20.11.0-slim
 
 WORKDIR /api
 
-RUN pip install django django-cors-headers
-
-# copy from the current directory of the Dockerfile to /api in the image
 COPY . .
 
-EXPOSE 8000
+RUN npm install
+
+EXPOSE 3080
+
+CMD ["node", "app.js"]
