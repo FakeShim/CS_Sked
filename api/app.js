@@ -1,26 +1,3 @@
-const process = require('process')
-const { MongoClient } = require('mongodb');
+const database = require('./database.js');
 
-yourConnectionURI = "mongodb+srv://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@skedcluster.rr2li5f.mongodb.net/?retryWrites=true&w=majority"
-
-const client = new MongoClient(yourConnectionURI);
-
-async function connect_to_database()
-{
-    await client.connect();
-    console.log("connected");
-
-    const database = client.db("test-data");
-    const test = database.collection("test-collection");
-
-    const query = { firstName: "Jared" };
-
-    
-    const student = await test.findOne(query);
-
-    console.log(student);
-
-    await client.close();
-}
-
-connect_to_database();
+database.database_get();
