@@ -74,7 +74,7 @@
 
 import React from 'react';
 
-const RequestsTable = ({ requests, handleStatusChange, handleDelete }) => {
+const RequestsTable = ({ requests, handleDelete }) => {
   return (
     <table className="requests-table">
       <thead>
