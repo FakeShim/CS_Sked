@@ -15,7 +15,7 @@ const Login = (props) => {
     console.log('Already Logged In')
     navigate('/')
   }
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setEmailErr('')
     setPasswordErr('')
@@ -33,43 +33,42 @@ const Login = (props) => {
       setPasswordErr('Please enter a password')
       return
     }
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]+\.[a-zA-Z]{2,4}$/;
+    if (!emailPattern.test(email)) {
+      setEmailErr('Please enter a valid email address');
+      return;
+    }
+  
   
     if (password.length < 7) {
       setPasswordErr('The password must be 8 characters or longer')
       return
+    } 
+    try {
+      const response = await fetch('http://localhost:3080/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('user', JSON.stringify({ email, token: data.token }));
+        props.setLoggedIn(true);
+        props.setEmail(email);
+        navigate('/');
+      } else {
+        setEmailErr('Wrong Email or Password');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setEmailErr('Error logging in. Please try again later.');
     }
- // Check if email has an account associated with it
- checkAccountExists((accountExists) => {
-  // If yes, log in
-  if (accountExists) logIn()
-  // Else, ask user if they want to create a new account and if yes, then log in
-  else if (
-   // window.confirm(
-      // 'An account does not exist with this email address: ' + email + '. Do you want to create a new account?',
-      //'Not a Valid Account'
-   // )
-   setEmailErr('Not a Valid Account')
-  ) {
-    //logIn()
-  }
-})
-  
 
   };
-  // Call the server API to check if the given email ID already exists
-const checkAccountExists = (callback) => {
-  fetch('http://localhost:3080/check-account', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email }),
-  })
-    .then((r) => r.json())
-    .then((r) => {
-      callback(r?.userExists)
-    })
-}
+
 
 // Log in a user using email and password
 const logIn = () => {

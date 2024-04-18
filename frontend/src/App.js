@@ -2,6 +2,7 @@ import './Style.css';
 import Login from './components/Login'
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Home from './components/Home';
 import Header from './components/Header';
 import Faculty from './components/Faculty';
@@ -61,8 +62,8 @@ function App() {
             <Routes>
                 <Route path="/" exact element={<Home email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
                 <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} loggedIn={loggedIn} />} />
-                <Route exact path="/Faculty" element={<Faculty />} />
-                <Route exact path="/Requests" element={<Requests />} />
+                <Route exact path="/Faculty" element={loggedIn ?<Faculty /> : <Navigate to="/Login"/>} />
+                <Route exact path="/Requests" element={loggedIn ?<Requests /> : <Navigate to="/Login"/>} />
             </Routes>
         </Router>
       </header>
