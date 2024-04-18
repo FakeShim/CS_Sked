@@ -18,6 +18,15 @@ app.get('/get-all-faculty', (req, res) => {
     });
 });
 
+app.get('/get-all-requests', (req, res) => {
+    const entries = database.database_get("requests");
+
+    entries.then(function(result) {
+        console.log(result);
+        res.json(result);
+    });
+});
+
 app.put('/update-faculty', (req, res) => {
 
     const { query, new_value } = req.body;
@@ -30,6 +39,26 @@ app.put('/update-faculty', (req, res) => {
         database.database_update_entry("faculty", query, new_value);
 
         res.status(200).json({ message: 'Entry updated successfully' });
+    }
+    catch (error)
+    {
+        console.log("ERROR: ", req.body);
+        console.error('Error updating entry:', error);
+    }
+
+
+});
+
+app.put('/delete-requests', (req, res) => {
+
+    const { query } = req.body;
+
+    try
+    {
+
+        database.database_update_entry("requests", query);
+
+        res.status(200).json({ message: 'Entry deleted successfully' });
     }
     catch (error)
     {

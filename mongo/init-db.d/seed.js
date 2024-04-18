@@ -14,14 +14,35 @@ db.faculty.insertOne(
 )
 
 db.requests.drop();
-db.requests.insertOne(
+db.requests.insertMany(
     {
+        "_id":{"$oid":"66215bee946e5fc4dfc95416"},
+        "date":"05/06/2024",
+        "facultyFirst":"Maclane",
+        "facultyLast":"May",
+        "status":"Pending",
+        "studentFirst":"Peter",
+        "studentLast":"Shim",
+        "req":{"3/16":[{"$numberInt":"8"},{"$numberInt":"9"},{"$numberInt":"10"}]}
+      },
+      {
+        "_id":{"$oid":"66215c43946e5fc4dfc95417"},
+        "date":"05/06/2024",
+        "facultyFirst":"Maclane",
+        "facultyLast":"May",
+        "status":"Pending",
+        "studentFirst":"Peter",
+        "studentLast":"Shim",
+        "req":{"4/3":[{"$numberInt":"8"},{"$numberInt":"12"},{"$numberInt":"16"}]}
+      },
+      {
+        "_id":{"$oid":"66215ccf946e5fc4dfc95418"},
         "date":"05/10/2024",
         "facultyFirst":"Monica",
         "facultyLast":"Anderson",
         "status":"Accepted",
         "studentFirst":"David",
         "studentLast":"Dillard",
-        "time":"14:00"
-    }
+        "req":{"3/27":[{"$numberInt":"8"},{"$numberInt":"11"},{"$numberInt":"14"}]}
+      }
 )

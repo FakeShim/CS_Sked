@@ -1,60 +1,65 @@
-// import logo from './logo.svg';
-// import './Requests.css';
-
-// function Requests() {
-//   return (
-//     <div className="Requests">
-//       <header className="Requests-header">
-//         <img src={logo} className="Requests-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/Requests.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="Requests-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default Requests;
-
 import React, { useState, useEffect } from 'react';
 import RequestsTable from './RequestsTable';
+import requestsData from './data.json'; // Import the JSON file
 import './styles.css';
 
 const Requests = () => {
-  const [requests, setRequests] = useState([
-    { id: 1, name: 'Devin Booker', date: '2024-03-24', professor: 'Dr. Doe', status: 'Pending' },
-    { id: 2, name: 'Jayson Tatum', date: '2024-03-25', professor: 'Dr. Ray', status: 'Completed' },
-    { id: 3, name: 'Anthony Edwards', date: '2024-03-26', professor: 'Dr. Mi', status: 'Pending' },
-    // Add more request objects as needed
-  ]);
+  const [requests, setRequests] = useState([]);
 
-  const handleStatusChange = (id) => {
-    setRequests(prevRequests => {
-      return prevRequests.map(request => {
-        if (request.id === id) {
-          return {
-            ...request,
-            status: request.status === 'Pending' ? 'Completed' : 'Pending'
-          };
-        }
-        return request;
+  useEffect(() => {
+    // Fetch data from the backend when the component mounts
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      // Fetch data from the backend API
+      const response = await fetch('http://localhost:443/get-all-requests');
+      if (response.ok) {
+        const jsonData = await response.json();
+        setRequests(jsonData);
+      } else {
+        console.error('Failed to fetch data');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  // const handleDelete = (id) => {
+  //   // Filter out the request with the specified id
+  //   const updatedRequests = requests.filter(request => request._id.$oid !== id); // Adjust this condition based on your data structure
+  //   // Update the state with the filtered requests
+  //   setRequests(updatedRequests);
+  //   // You can also send a request to your backend to delete the entry permanently
+  // };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch('http://localhost:443/delete-requests', {
+        method: 'PUT', // or 'POST' depending on your backend API
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(id)
       });
-    });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete entry');
+      }
+
+      console.log('Entry deleted successfully');
+      // Optionally, you can update the local state or perform any other actions after successful update
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+    }
   };
 
   return (
     <div>  
       <div className="center-content">
         <h1>Requests</h1>
-        <RequestsTable requests={requests} handleStatusChange={handleStatusChange} />
+        <RequestsTable requests={requests} handleDelete={handleDelete} />
       </div>
     </div>
   );
