@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const jwtSecretKey = process.env.JWT_SECRET || 'defaultSecretKey';
 //MONGO PASSWORD NEEDS TO BE CHANGED BEFORE LAUNCH
-const mongoUri = process.env.MONGO_URI; // MongoDB Atlas connection string
+const mongoUri = "mongodb://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@data:27017/?retryWrites=true&w=majority"; // MongoDB Atlas connection string
 
 // MongoDB Atlas connection setup
 async function connectToMongo() {

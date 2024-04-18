@@ -25,3 +25,10 @@ db.requests.insertOne(
         "time":"14:00"
     }
 )
+db.login.drop();
+db.loign.insertOne(
+{
+    "email":"",
+    "password":""
+}
+)
