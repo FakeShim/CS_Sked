@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
 
 const Faculty = () => {
   const [entries, setEntries] = useState([]);
+  const [data, setData] = useState({});
+
 
   const handleChange = (index, field, value) => {
     const newEntries = [...entries];
@@ -30,30 +32,23 @@ const Faculty = () => {
     setEntries(newEntries);
   };
 
-  const handleTimeChange = (index, day, time) => {
-    const newEntries = [...entries];
-    if (!newEntries[index].schedule[day]) {
-      newEntries[index].schedule[day] = [];
-    }
-    const timeIndex = newEntries[index].schedule[day].indexOf(time);
-    if (timeIndex === -1) {
-      newEntries[index].schedule[day].push(time);
-    } else {
-      newEntries[index].schedule[day].splice(timeIndex, 1);
-    }
-    setEntries(newEntries);
-  };
-
   const handleSubmit = (index) => {
-    const { name, email, schedule } = entries[index];
+    const { firstName, lastName, email, schedule } = entries[index];
     const newEntries = [...entries];
     let isValid = true;
 
-    if (!name) {
-      newEntries[index].nameError = "Name is required.";
+    if (!firstName) {
+      newEntries[index].firstError = "First name is required.";
       isValid = false;
     } else {
-      newEntries[index].nameError = "";
+      newEntries[index].firstError = "";
+    }
+
+    if (!lastName) {
+      newEntries[index].lastError = "Last name is required.";
+      isValid = false;
+    } else {
+      newEntries[index].lastError = "";
     }
 
     if (!email || !validateEmail(email)) {
@@ -94,9 +89,85 @@ const Faculty = () => {
     return entries[index].schedule[day] !== undefined;
   };
 
-  const isTimeSelected = (index, day, time) => {
-    return entries[index].schedule[day] && entries[index].schedule[day].includes(time);
-  };
+  useEffect(() => {
+
+    // Function to fetch data from JSON endpoint or use hardcoded JSON object
+    const fetchData = async () => {
+      // Hardcoded JSON object for demonstration
+      // const jsonData = {
+      //   "email": "bhngyen3@crimson.ua.edu",
+      //   "availability": {
+      //     "monday": [true, false, true, false, true, false, true, false, true, false, true, false],
+      //     "tuesday": [true, false, true, false, true, false, true, false, true, false, true, false],
+      //     "wednesday": [true, false, true, false, true, false, true, false, true, false, true, false],
+      //     "thursday": [true, false, true, false, true, false, true, false, true, false, true, false],
+      //     "friday": [true, false, true, false, true, false, true, false, true, false, true, false]
+      //   },
+      //   "facultyFirst": "Brandon",
+      //   "facultyLast": "Nguyen"
+      // };
+
+      try {
+        const response = await fetch('http://localhost:443/home');
+        if (!response.ok)
+        {
+          throw new Error('Failed to fetch data');
+        }
+
+        const jsonData = await response.json();
+
+        const bool_to_time = (schedule) => {
+          var monday_array = [];
+          var tuesday_array = [];
+          var wednesday_array = [];
+          var thursday_array = [];
+          var friday_array = [];
+          for (var idx = 0; idx < 12; idx++)
+          {
+            if(schedule.monday[idx])
+            {
+                monday_array.push(idx + 6);
+            }
+            if(schedule.tuesday[idx])
+            {
+                tuesday_array.push(idx + 6);
+            }
+            if(schedule.wednesday[idx])
+            {
+                wednesday_array.push(idx + 6);
+            }
+            if(schedule.thursday[idx])
+            {
+                thursday_array.push(idx + 6);
+            }
+            if(schedule.friday[idx])
+            {
+                friday_array.push(idx + 6);
+            }
+          }
+          return {"Monday":monday_array, "Tuesday":tuesday_array, "Wednesday":wednesday_array, "Thursday":thursday_array, "Friday":friday_array};
+        };
+
+        const transformed_entries = {
+            // Transform JSON data to match the format expected by entries state
+            firstName: jsonData.facultyFirst,
+            lastName: jsonData.facultyLast,
+            email: jsonData.email,
+            schedule: bool_to_time(jsonData.availability),
+            editable: false // Set to false as it's not being edited initially
+        };
+
+        // Set the state with the transformed data
+        setEntries([transformed_entries]);
+      }
+      catch (error)
+      {
+        console.error('Error fetching data:', error)
+      }
+    };
+    // Call the fetchData function
+    fetchData();
+  }, []); // Empty dependency array to run the effect only once
 
   return (
     <div className="Faculty">
@@ -104,7 +175,8 @@ const Faculty = () => {
         <table className="user-table">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>First Name</th>
+              <th>Last Name</th>
               <th>Email</th>
               <th>Schedule</th>
               <th>Actions</th>
@@ -116,11 +188,21 @@ const Faculty = () => {
                 <td>
                   {entry.editable ? (
                     <div>
-                      <input type="text" value={entry.name} onChange={(e) => handleChange(index, 'name', e.target.value)} required />
-                      <div className="error">{entry.nameError}</div>
+                      <input type="text" value={entry.firstName} onChange={(e) => handleChange(index, 'firstName', e.target.value)} required />
+                      <div className="error">{entry.firstError}</div>
                     </div>
                   ) : (
-                    entry.name
+                    entry.firstName
+                  )}
+                </td>
+                <td>
+                  {entry.editable ? (
+                    <div>
+                      <input type="text" value={entry.lastName} onChange={(e) => handleChange(index, 'lastName', e.target.value)} required />
+                      <div className="error">{entry.lastError}</div>
+                    </div>
+                  ) : (
+                    entry.lastName
                   )}
                 </td>
                 <td>

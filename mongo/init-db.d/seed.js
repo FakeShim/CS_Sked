@@ -1,0 +1,27 @@
+db.faculty.drop();
+db.faculty.insertOne(
+    {
+        "email":"bhngyen3@crimson.ua.edu",
+        "availability":{
+            "monday":[true,false,true,false,true,false,true,false,true,false,true,false],
+            "tuesday":[true,false,true,false,true,false,true,false,true,false,true,false],
+            "wednesday":[true,false,true,false,true,false,true,false,true,false,true,false],
+            "thursday":[true,false,true,false,true,false,true,false,true,false,true,false],
+            "friday":[true,false,true,false,true,false,true,false,true,false,true,false]},
+        "facultyFirst":"Brandon",
+        "facultyLast":"Nguyen"
+    }
+)
+
+db.requests.drop();
+db.requests.insertOne(
+    {
+        "date":"05/10/2024",
+        "facultyFirst":"Monica",
+        "facultyLast":"Anderson",
+        "status":"Accepted",
+        "studentFirst":"David",
+        "studentLast":"Dillard",
+        "time":"14:00"
+    }
+)

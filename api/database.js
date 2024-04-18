@@ -1,9 +1,13 @@
 const process = require('process')
 const { MongoClient } = require('mongodb');
 
-yourConnectionURI = "mongodb+srv://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@skedcluster.rr2li5f.mongodb.net/?retryWrites=true&w=majority"
+//yourConnectionURI = "mongodb+srv://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@skedcluster.rr2li5f.mongodb.net/?retryWrites=true&w=majority"
+
+yourConnectionURI = "mongodb://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@data:27017/?retryWrites=true&w=majority"
 
 const client = new MongoClient(yourConnectionURI);
+
+const db_name = "scheduler"
 
 // Object for storing a request entry
 //
@@ -137,7 +141,7 @@ class Faculty_Entry
 // All entries otherwise
 async function database_get(type, query)
 {
-    const database = client.db("test-data");
+    const database = client.db(db_name);
     const collection = database.collection(type);
 
     var data;
@@ -159,7 +163,7 @@ async function database_add_request(request)
         return;
     }
 
-    const database = client.db("test-data");
+    const database = client.db(db_name);
     const collection = database.collection("requests");
 
     const document =
@@ -189,7 +193,7 @@ async function database_add_faculty(faculty)
         return;
     }
 
-    const database = client.db("test-data");
+    const database = client.db(db_name);
     const collection = database.collection("faculty");
 
     const document =
@@ -223,7 +227,7 @@ async function database_add_faculty(faculty)
 // database_update_entry("faculty", {facultyName: "David"}, {email: "dldillard@crimson.ua.edu"})
 async function database_update_entry(type, query, new_value)
 {
-    const database = client.db("test-data");
+    const database = client.db(db_name);
     const collection = database.collection(type);
 
     const update_doc =
@@ -245,7 +249,7 @@ async function database_delete_entry(type, query)
 {
     await client.connect();
 
-    const database = client.db("test-data");
+    const database = client.db(db_name);
     const collection = database.collection(type);
 
     const result = await collection.deleteOne(query);

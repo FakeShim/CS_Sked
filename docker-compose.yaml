@@ -2,14 +2,35 @@ services:
     api:
         build: ./api
         ports:
-            - "8000:8000"
+            - "443:443"
         volumes:
             - ./api:/api
+            - /api/node_modules
             - "/etc/timezone:/etc/timezone:ro"
             - "/etc/localtime:/etc/localtime:ro"
         environment:
             - DB_USERNAME=${DB_USERNAME}
             - DB_PASSWORD=${DB_PASSWORD}
+
+    auth:
+        build: ./auth-server
+        ports:
+            - "3080:3080"
+        volumes:
+            - ./auth-server:/auth-server
+            - /auth-server/node_modules
+
+    data:
+        build: ./mongo
+        restart: always
+        ports:
+            - "27017:27017"
+        volumes:
+            - dbdata:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+            MONGO_INITDB_DATABASE: "scheduler"
 
     web:
         build: ./frontend
@@ -21,10 +42,5 @@ services:
             - "/etc/timezone:/etc/timezone:ro"
             - "/etc/localtime:/etc/localtime:ro"
 
-    auth:
-        build: ./auth-server
-        ports:
-            - "3080:3080"
-        volumes:
-            - ./auth-server:/auth-server
-            - /auth-server/node_modules
+volumes:
+    dbdata:
