@@ -1,6 +1,6 @@
 FROM node:20.11.0-slim
 
-WORKDIR /api
+WORKDIR /auth-server
 
 COPY . .
 
