@@ -1,29 +1,3 @@
-// import logo from './logo.svg';
-// import './Requests.css';
-
-// function Requests() {
-//   return (
-//     <div className="Requests">
-//       <header className="Requests-header">
-//         <img src={logo} className="Requests-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/Requests.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="Requests-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default Requests;
-
 import React, { useState, useEffect } from 'react';
 import RequestsTable from './RequestsTable';
 import './styles.css';
