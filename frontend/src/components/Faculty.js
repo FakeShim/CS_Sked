@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 
+// Hardcoded JSON object for demonstration
+const jsonTestData = {
+  "email": "bhngyen3@crimson.ua.edu",
+  "availability": {
+    "monday": [true, false, true, false, true, false, true, false, true, false, true, false],
+    "tuesday": [true, false, true, false, true, false, true, false, true, false, true, false],
+    "wednesday": [true, false, true, false, true, false, true, false, true, false, true, false],
+    "thursday": [true, false, true, false, true, false, true, false, true, false, true, false],
+    "friday": [true, false, true, false, true, false, true, false, true, false, true, false]
+  },
+  "facultyFirst": "Brandon",
+  "facultyLast": "Nguyen"
+};
+
 const Faculty = () => {
   const [entries, setEntries] = useState([]);
   const [data, setData] = useState({});
@@ -8,7 +22,16 @@ const Faculty = () => {
 
   const handleChange = (index, field, value) => {
     const newEntries = [...entries];
+
+    const query = {"facultyFirst":newEntries[index].facultyFirst, "facultyLast":newEntries[index].facultyLast};
+    const new_value = {[field]:value};
+
+    console.log(field);
+
     newEntries[index][field] = value;
+
+    updateEntry({"query":query, "new_value":new_value});
+
     setEntries(newEntries);
   };
 
@@ -33,18 +56,18 @@ const Faculty = () => {
   };
 
   const handleSubmit = (index) => {
-    const { firstName, lastName, email, schedule } = entries[index];
+    const { facultyFirst, facultyLast, email, schedule } = entries[index];
     const newEntries = [...entries];
     let isValid = true;
 
-    if (!firstName) {
+    if (!facultyFirst) {
       newEntries[index].firstError = "First name is required.";
       isValid = false;
     } else {
       newEntries[index].firstError = "";
     }
 
-    if (!lastName) {
+    if (!facultyLast) {
       newEntries[index].lastError = "Last name is required.";
       isValid = false;
     } else {
@@ -89,6 +112,27 @@ const Faculty = () => {
     return entries[index].schedule[day] !== undefined;
   };
 
+  const updateEntry = async (updatedEntry) => {
+    try {
+      const response = await fetch('http://localhost:443/update-faculty', {
+        method: 'PUT', // or 'POST' depending on your backend API
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedEntry)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update entry');
+      }
+
+      console.log('Entry updated successfully');
+      // Optionally, you can update the local state or perform any other actions after successful update
+    } catch (error) {
+      console.error('Error updating entry:', error);
+    }
+  };
+
   useEffect(() => {
 
     // Function to fetch data from JSON endpoint or use hardcoded JSON object
@@ -108,13 +152,15 @@ const Faculty = () => {
       // };
 
       try {
-        const response = await fetch('http://localhost:443/home');
+        const response = await fetch('http://localhost:443/get-all-faculty');
         if (!response.ok)
         {
           throw new Error('Failed to fetch data');
         }
 
         const jsonData = await response.json();
+
+        console.log(jsonData);
 
         const bool_to_time = (schedule) => {
           var monday_array = [];
@@ -148,17 +194,16 @@ const Faculty = () => {
           return {"Monday":monday_array, "Tuesday":tuesday_array, "Wednesday":wednesday_array, "Thursday":thursday_array, "Friday":friday_array};
         };
 
-        const transformed_entries = {
-            // Transform JSON data to match the format expected by entries state
-            firstName: jsonData.facultyFirst,
-            lastName: jsonData.facultyLast,
-            email: jsonData.email,
-            schedule: bool_to_time(jsonData.availability),
-            editable: false // Set to false as it's not being edited initially
-        };
+        const transformed_entries = jsonData.map(entry => ({
+          facultyFirst: entry.facultyFirst,
+          facultyLast: entry.facultyLast,
+          email: entry.email,
+          schedule: bool_to_time(entry.availability),
+          editable: false
+        }));
 
         // Set the state with the transformed data
-        setEntries([transformed_entries]);
+        setEntries(transformed_entries);
       }
       catch (error)
       {
@@ -188,21 +233,21 @@ const Faculty = () => {
                 <td>
                   {entry.editable ? (
                     <div>
-                      <input type="text" value={entry.firstName} onChange={(e) => handleChange(index, 'firstName', e.target.value)} required />
+                      <input type="text" value={entry.facultyFirst} onChange={(e) => handleChange(index, 'facultyFirst', e.target.value)} required />
                       <div className="error">{entry.firstError}</div>
                     </div>
                   ) : (
-                    entry.firstName
+                    entry.facultyFirst
                   )}
                 </td>
                 <td>
                   {entry.editable ? (
                     <div>
-                      <input type="text" value={entry.lastName} onChange={(e) => handleChange(index, 'lastName', e.target.value)} required />
+                      <input type="text" value={entry.facultyLast} onChange={(e) => handleChange(index, 'facultyLast', e.target.value)} required />
                       <div className="error">{entry.lastError}</div>
                     </div>
                   ) : (
-                    entry.lastName
+                    entry.facultyLast
                   )}
                 </td>
                 <td>
