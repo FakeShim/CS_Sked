@@ -17,26 +17,21 @@ const jsonTestData = {
 
 const Faculty = () => {
   const [entries, setEntries] = useState([]);
-  const [data, setData] = useState({});
-
 
   const handleChange = (index, field, value) => {
     const newEntries = [...entries];
-
-    const query = {"facultyFirst":newEntries[index].facultyFirst, "facultyLast":newEntries[index].facultyLast};
-    const new_value = {[field]:value};
-
-    console.log(field);
-
     newEntries[index][field] = value;
-
-    updateEntry({"query":query, "new_value":new_value});
-
     setEntries(newEntries);
   };
 
   const handleAddEntry = () => {
-    setEntries([...entries, { name: '', email: '', schedule: {}, editable: true }]);
+    const response = addEntry();
+
+    response.then(function(new_id)
+    {
+      setEntries([...entries, { _id: new_id, name: '', email: '', availability: {}, editable: true }]);
+    });
+
   };
 
   const handleEdit = (index) => {
@@ -47,16 +42,16 @@ const Faculty = () => {
 
   const handleToggleDay = (index, day) => {
     const newEntries = [...entries];
-    if (!newEntries[index].schedule[day]) {
-      newEntries[index].schedule[day] = [];
+    if (!newEntries[index].availability[day]) {
+      newEntries[index].availability[day] = [];
     } else {
-      delete newEntries[index].schedule[day];
+      delete newEntries[index].availability[day];
     }
     setEntries(newEntries);
   };
 
   const handleSubmit = (index) => {
-    const { facultyFirst, facultyLast, email, schedule } = entries[index];
+    const { _id, facultyFirst, facultyLast, email, availability } = entries[index];
     const newEntries = [...entries];
     let isValid = true;
 
@@ -81,7 +76,7 @@ const Faculty = () => {
       newEntries[index].emailError = "";
     }
 
-    if (Object.keys(schedule).length === 0) {
+    if (Object.keys(availability).length === 0) {
       newEntries[index].scheduleError = "At least one day must have a time selected.";
       isValid = false;
     } else {
@@ -93,13 +88,26 @@ const Faculty = () => {
       return;
     }
 
+    const query = {"_id":_id};
+    console.log(entries[index]);
+
+    const new_value = {'facultyFirst':facultyFirst, 'facultyLast':facultyLast, 'email':email, 'availability': availability};
+
+    updateEntry({"query":query, "new_value":new_value});
+
     newEntries[index].editable = false;
     setEntries(newEntries);
   };
 
   const handleRemoveEntry = (index) => {
     const newEntries = [...entries];
+
+    const query = {"_id":newEntries[index]._id};
+
     newEntries.splice(index, 1);
+
+    deleteEntry(query);
+
     setEntries(newEntries);
   };
 
@@ -109,13 +117,31 @@ const Faculty = () => {
   };
 
   const isDaySelected = (index, day) => {
-    return entries[index].schedule[day] !== undefined;
+    return entries[index].availability[day] !== undefined;
+  };
+
+  const addEntry = async () => {
+    try {
+      const response = await fetch('http://localhost:443/add-blank-faculty');
+
+      if (!response.ok) {
+        throw new Error('Failed to add entry');
+      }
+
+      const responseJson = await response.json();
+
+      console.log('Entry added successfully. response = ', responseJson);
+      return responseJson;
+
+    } catch (error) {
+      console.error('Error adding entry:', error);
+    }
   };
 
   const updateEntry = async (updatedEntry) => {
     try {
       const response = await fetch('http://localhost:443/update-faculty', {
-        method: 'PUT', // or 'POST' depending on your backend API
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -126,10 +152,36 @@ const Faculty = () => {
         throw new Error('Failed to update entry');
       }
 
-      console.log('Entry updated successfully');
+
+
+      console.log(`Entry ${JSON.stringify(updatedEntry)} updated successfully`);
       // Optionally, you can update the local state or perform any other actions after successful update
     } catch (error) {
       console.error('Error updating entry:', error);
+    }
+  };
+
+  const deleteEntry = async (deletedEntry) => {
+    console.log('deletedEntry: ', deletedEntry)
+    try {
+      const response = await fetch('http://localhost:443/delete-faculty', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(deletedEntry)
+      });
+
+      if (!response.ok)
+      {
+        throw new Error('Failed to delete entry');
+      }
+
+      console.log(`Entry ${JSON.stringify(deletedEntry)} deleted successfully`);
+    }
+    catch (error)
+    {
+      console.error('Error deleting entry:', error);
     }
   };
 
@@ -162,7 +214,7 @@ const Faculty = () => {
 
         console.log(jsonData);
 
-        const bool_to_time = (schedule) => {
+        const bool_to_time = (availability) => {
           var monday_array = [];
           var tuesday_array = [];
           var wednesday_array = [];
@@ -170,23 +222,23 @@ const Faculty = () => {
           var friday_array = [];
           for (var idx = 0; idx < 12; idx++)
           {
-            if(schedule.monday[idx])
+            if(availability.Monday[idx])
             {
                 monday_array.push(idx + 6);
             }
-            if(schedule.tuesday[idx])
+            if(availability.Tuesday[idx])
             {
                 tuesday_array.push(idx + 6);
             }
-            if(schedule.wednesday[idx])
+            if(availability.Wednesday[idx])
             {
                 wednesday_array.push(idx + 6);
             }
-            if(schedule.thursday[idx])
+            if(availability.Thursday[idx])
             {
                 thursday_array.push(idx + 6);
             }
-            if(schedule.friday[idx])
+            if(availability.Friday[idx])
             {
                 friday_array.push(idx + 6);
             }
@@ -195,10 +247,11 @@ const Faculty = () => {
         };
 
         const transformed_entries = jsonData.map(entry => ({
+          _id:entry._id,
           facultyFirst: entry.facultyFirst,
           facultyLast: entry.facultyLast,
           email: entry.email,
-          schedule: bool_to_time(entry.availability),
+          availability: bool_to_time(entry.availability),
           editable: false
         }));
 
@@ -262,8 +315,8 @@ const Faculty = () => {
                 </td>
                 <td>
                 {entry.editable ? (
-                  <div className="schedule-dropdowns">
-                    <div className="schedule-buttons-container">
+                  <div className="availability-dropdowns">
+                    <div className="availability-buttons-container">
                       {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map(day => (
                         <div key={day} className="day-dropdown-container">
                           <button
@@ -276,10 +329,10 @@ const Faculty = () => {
                             <select
                               className="time-dropdown"
                               multiple
-                              value={entry.schedule[day]}
+                              value={entry.availability[day]}
                               onChange={(e) => {
                                 const selectedTimes = Array.from(e.target.selectedOptions, option => option.value);
-                                handleChange(index, 'schedule', { ...entry.schedule, [day]: selectedTimes });
+                                handleChange(index, 'availability', { ...entry.availability, [day]: selectedTimes });
                               }}
                             >
                               {Array.from({ length: 12 }, (_, i) => i + 7).map(hour => (
@@ -293,7 +346,7 @@ const Faculty = () => {
                     <div className="error">{entry.scheduleError}</div>
                   </div>
                 ) : (
-                  Object.entries(entry.schedule)
+                  Object.entries(entry.availability)
                     .sort(([dayA], [dayB]) => {
                       const order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
                       return order.indexOf(dayA) - order.indexOf(dayB);
