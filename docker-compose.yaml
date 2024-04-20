@@ -6,8 +6,6 @@ services:
         volumes:
             - ./api:/api
             - /api/node_modules
-            - "/etc/timezone:/etc/timezone:ro"
-            - "/etc/localtime:/etc/localtime:ro"
         environment:
             - DB_USERNAME=${DB_USERNAME}
             - DB_PASSWORD=${DB_PASSWORD}
