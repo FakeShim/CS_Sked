@@ -1,19 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 
-// Hardcoded JSON object for demonstration
-const jsonTestData = {
-  "email": "bhngyen3@crimson.ua.edu",
-  "availability": {
-    "monday": [true, false, true, false, true, false, true, false, true, false, true, false],
-    "tuesday": [true, false, true, false, true, false, true, false, true, false, true, false],
-    "wednesday": [true, false, true, false, true, false, true, false, true, false, true, false],
-    "thursday": [true, false, true, false, true, false, true, false, true, false, true, false],
-    "friday": [true, false, true, false, true, false, true, false, true, false, true, false]
-  },
-  "facultyFirst": "Brandon",
-  "facultyLast": "Nguyen"
-};
+const backend_host = 'cs495-spring2024-11.ua.edu'
 
 const Faculty = () => {
   const [entries, setEntries] = useState([]);
@@ -122,7 +110,7 @@ const Faculty = () => {
 
   const addEntry = async () => {
     try {
-      const response = await fetch('http://localhost:443/add-blank-faculty');
+      const response = await fetch(`http://${backend_host}:443/add-blank-faculty`);
 
       if (!response.ok) {
         throw new Error('Failed to add entry');
@@ -140,7 +128,7 @@ const Faculty = () => {
 
   const updateEntry = async (updatedEntry) => {
     try {
-      const response = await fetch('http://localhost:443/update-faculty', {
+      const response = await fetch(`http://${backend_host}:443/update-faculty`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -164,7 +152,7 @@ const Faculty = () => {
   const deleteEntry = async (deletedEntry) => {
     console.log('deletedEntry: ', deletedEntry)
     try {
-      const response = await fetch('http://localhost:443/delete-faculty', {
+      const response = await fetch(`http://${backend_host}:443/delete-faculty`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -204,7 +192,7 @@ const Faculty = () => {
       // };
 
       try {
-        const response = await fetch('http://localhost:443/get-all-faculty');
+        const response = await fetch(`http://${backend_host}:443/get-all-faculty`);
         if (!response.ok)
         {
           throw new Error('Failed to fetch data');
