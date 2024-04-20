@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import RequestsTable from './RequestsTable';
-import requestsData from './data.json'; // Import the JSON file
+// import requestsData from './data.json'; // Import the JSON file
 import './styles.css';
 
 const Requests = () => {
@@ -17,6 +17,7 @@ const Requests = () => {
       const response = await fetch('http://localhost:443/get-all-requests');
       if (response.ok) {
         const jsonData = await response.json();
+        console.log(jsonData);
         setRequests(jsonData);
       } else {
         console.error('Failed to fetch data');
