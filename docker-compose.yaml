@@ -35,12 +35,10 @@ services:
     web:
         build: ./frontend
         ports:
-            - "3000:3000"
+            - "80:80"
         volumes:
             - ./frontend/public:/frontend/public
             - ./frontend/src:/frontend/src
-            - "/etc/timezone:/etc/timezone:ro"
-            - "/etc/localtime:/etc/localtime:ro"
 
 volumes:
     dbdata:
