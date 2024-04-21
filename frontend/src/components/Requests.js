@@ -27,12 +27,26 @@ const Requests = () => {
     }
   };
 
-  // const handleDelete = (id) => {
-  //   // Filter out the request with the specified id
-  //   const updatedRequests = requests.filter(request => request._id.$oid !== id); // Adjust this condition based on your data structure
-  //   // Update the state with the filtered requests
-  //   setRequests(updatedRequests);
-  //   // You can also send a request to your backend to delete the entry permanently
+
+  // const handleDelete = async (id) => {
+  //   try {
+  //     const response = await fetch('http://localhost:443/delete-requests', {
+  //       method: 'PUT', // or 'POST' depending on your backend API
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify(id)
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Failed to delete entry');
+  //     }
+
+  //     console.log('Entry deleted successfully');
+  //     // Optionally, you can update the local state or perform any other actions after successful update
+  //   } catch (error) {
+  //     console.error('Error deleting entry:', error);
+  //   }
   // };
 
   const handleDelete = async (id) => {
@@ -42,19 +56,29 @@ const Requests = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(id)
+        body: JSON.stringify({ id }) // Make sure to send id as an object
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to delete entry');
       }
-
+  
       console.log('Entry deleted successfully');
-      // Optionally, you can update the local state or perform any other actions after successful update
+      
+      // Find the index of the deleted entry in the requests array
+      const index = requests.findIndex(request => request._id.$oid === id);
+      if (index !== -1) {
+        // If the entry exists, splice it from the array
+        const updatedRequests = [...requests]; // Create a copy of the requests array
+        updatedRequests.splice(index, 1); // Remove the element at the found index
+        setRequests(updatedRequests); // Update the state with the modified array
+      }
+      
     } catch (error) {
       console.error('Error deleting entry:', error);
     }
   };
+  
 
   return (
     <div>  

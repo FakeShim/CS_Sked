@@ -56,7 +56,7 @@ app.put('/delete-requests', (req, res) => {
     try
     {
 
-        database.database_update_entry("requests", query);
+        database.database_delete_entry("requests", query);
 
         res.status(200).json({ message: 'Entry deleted successfully' });
     }
