@@ -13,6 +13,7 @@
 # dependencies
 /frontend/node_modules
 /auth-server/node_modules
+/api/backend/node_modules
 
 # testing
 /frontend/coverage
