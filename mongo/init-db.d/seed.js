@@ -18,6 +18,7 @@ db.requests.insertMany(
     {
         "_id":{"$oid":"66215bee946e5fc4dfc95416"},
         "date":"05/06/2024",
+        "email":"mmay@crimson.ua.edu",
         "facultyFirst":"Maclane",
         "facultyLast":"May",
         "status":"Pending",
@@ -28,6 +29,7 @@ db.requests.insertMany(
       {
         "_id":{"$oid":"66215c43946e5fc4dfc95417"},
         "date":"05/06/2024",
+        "email":"mmay@crimson.ua.edu",
         "facultyFirst":"Maclane",
         "facultyLast":"May",
         "status":"Pending",
@@ -38,6 +40,7 @@ db.requests.insertMany(
       {
         "_id":{"$oid":"66215ccf946e5fc4dfc95418"},
         "date":"05/10/2024",
+        "email":"manderson@crimson.ua.edu",
         "facultyFirst":"Monica",
         "facultyLast":"Anderson",
         "status":"Accepted",

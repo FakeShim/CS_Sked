@@ -79,12 +79,12 @@ const RequestsTable = ({ requests, handleDelete }) => {
     <table className="requests-table">
       <thead>
         <tr>
-          <th style={{ width: '5%' }}>Delete</th> {/* New column for delete buttons */}
-          {/* <th style={{ width: '10%' }}>ID</th> */}
-          <th style={{ width: '25%' }}>Date</th>
-          <th style={{ width: '25%' }}>Faculty</th>
-          <th style={{ width: '25%' }}>Student</th>
-          <th style={{ width: '20%' }}>Status</th>
+          <th style={{ width: '10%' }}>Delete</th> {/* New column for delete buttons */}
+          <th style={{ width: '20%' }}>Email</th>
+          <th style={{ width: '15%' }}>Date</th>
+          <th style={{ width: '20%' }}>Faculty</th>
+          <th style={{ width: '20%' }}>Student</th>
+          <th style={{ width: '15%' }}>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -95,7 +95,7 @@ const RequestsTable = ({ requests, handleDelete }) => {
               <button onClick={() => handleDelete(request._id.$oid)}>Delete</button>
             </td>
             {/* Rest of the table data */}
-            {/* <td>{request._id.$oid}</td> */}
+            <td>{request.email}</td>
             <td>{request.date}</td>
             <td>{`${request.facultyFirst} ${request.facultyLast}`}</td>
             <td>{`${request.studentFirst} ${request.studentLast}`}</td>
