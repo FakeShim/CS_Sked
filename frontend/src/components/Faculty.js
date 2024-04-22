@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 
-const backend_host = 'cs495-spring2024-11.ua.edu'
+const backend_host = 'localhost'
 
 const Faculty = () => {
   const [entries, setEntries] = useState([]);

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-const backend_host = 'cs495-spring2024-11.ua.edu'
+const backend_host = 'localhost'
 
 const Login = (props) => {
   const [email, setEmail] = useState('');

@@ -7,7 +7,7 @@ import Header from './components/Header';
 import Faculty from './components/Faculty';
 import Requests from './components/Requests';
 
-const backend_host = 'cs495-spring2024-11.ua.edu'
+const backend_host = 'localhost'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
