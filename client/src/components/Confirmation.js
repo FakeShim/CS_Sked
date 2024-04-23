@@ -41,7 +41,7 @@ const handleConfirmRequest = async (id) => {
     // Construct the payload for updating the backend entry
     const payload = {
       status: 'Accepted',
-      req: {
+      times: {
         [selectedDateTime.date]: [ selectedDateTime.time ]
       }
     };
@@ -65,7 +65,7 @@ const handleConfirmRequest = async (id) => {
     // Update the status locally if needed
     const updated = updatedResults.map(result => {
       if (result._id === id) {
-        return { ...result, date: selectedDateTime.date, req: { [selectedDateTime.date]: [ selectedDateTime.time ] }, status: 'Accepted' };
+        return { ...result, date: selectedDateTime.date, times: { [selectedDateTime.date]: [ selectedDateTime.time ] }, status: 'Accepted' };
       }
       return result;
     });
