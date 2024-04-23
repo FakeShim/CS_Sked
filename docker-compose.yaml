@@ -1,28 +1,19 @@
 services:
-    api:
-        build: ./api
-        ports:
-            - "8000:8000"
-        volumes:
-            - ./api:/api
-            - "/etc/timezone:/etc/timezone:ro"
-            - "/etc/localtime:/etc/localtime:ro"
-        command: bash -c "python manage.py runserver 0.0.0.0:8000"
-
-    web:
-        build: ./frontend
-        ports:
-            - "3000:3000"
-        volumes:
-            - ./frontend/public:/frontend/public
-            - ./frontend/src:/frontend/src
-            - "/etc/timezone:/etc/timezone:ro"
-            - "/etc/localtime:/etc/localtime:ro"
-
-    auth:
-        build: ./auth-server
+    server:
+        build: ./server
         ports:
             - "3080:3080"
         volumes:
-            - ./auth-server:/auth-server
-            - /auth-server/node_modules
+            - ./server:/server
+            - /server/node_modules
+        environment:
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+
+    client:
+        build: ./client
+        ports:
+            - "80:80"
+        volumes:
+            - ./frontend/public:/frontend/public
+            - ./frontend/src:/frontend/src

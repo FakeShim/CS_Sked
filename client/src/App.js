@@ -6,6 +6,9 @@ import Home from './components/Home';
 import Header from './components/Header';
 import Faculty from './components/Faculty';
 import Requests from './components/Requests';
+import Confirmation from './components/Confirmation';
+
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -25,9 +28,9 @@ function App() {
     // else{
     //     set
     // }
- 
+
     // If the token exists, verify it with the auth server to see if it is valid
-    fetch("http://localhost:3080/verify", {
+    fetch(`${backend_host}/verify`, {
             method: "POST",
             headers: {
                 'jwt-token': user.token
@@ -50,10 +53,10 @@ function App() {
 
 
   return (
-    
+
     <>
-    
-    
+
+
     <div className="App">
       <header className="App-header">
       <Router>
@@ -63,6 +66,7 @@ function App() {
                 <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} loggedIn={loggedIn} />} />
                 <Route exact path="/Faculty" element={<Faculty />} />
                 <Route exact path="/Requests" element={<Requests />} />
+                <Route exact path="/Confirmation" element={<Confirmation />} />
             </Routes>
         </Router>
       </header>
