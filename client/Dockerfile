@@ -1,6 +1,6 @@
 FROM node:20.11.0-slim
 
-WORKDIR /frontend
+WORKDIR /client
 
 COPY . .
 

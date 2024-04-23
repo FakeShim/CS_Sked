@@ -3,6 +3,8 @@ import AvailabilityTable from './table';
 import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
+
 const Home = ({ loggedIn, email, setLoggedIn }) => {
 
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const Home = ({ loggedIn, email, setLoggedIn }) => {
     
     // Make an API call to the backend to save the data
     //fetch the data to the backend server
-    fetch('http://localhost:3001/faculty-availability', {
+    fetch(`${backend_host}/faculty-availability`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

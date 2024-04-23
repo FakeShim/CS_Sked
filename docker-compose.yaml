@@ -1,42 +1,20 @@
 services:
-    api:
-        build: ./api
-        ports:
-            - "443:443"
-        volumes:
-            - ./api:/api
-            - /api/node_modules
-        environment:
-            - DB_USERNAME=${DB_USERNAME}
-            - DB_PASSWORD=${DB_PASSWORD}
-
-    auth:
-        build: ./auth-server
+    
+    server:
+        build: ./server
         ports:
             - "3080:3080"
         volumes:
-            - ./auth-server:/auth-server
-            - /auth-server/node_modules
-
-    data:
-        build: ./mongo
-        restart: always
-        ports:
-            - "27017:27017"
-        volumes:
-            - dbdata:/data/db
+            - ./server:/server
+            - /server/node_modules
         environment:
-            MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
-            MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
-            MONGO_INITDB_DATABASE: "scheduler"
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
 
-    web:
-        build: ./frontend
+    client:
+        build: ./client
         ports:
             - "80:80"
         volumes:
             - ./frontend/public:/frontend/public
             - ./frontend/src:/frontend/src
-
-volumes:
-    dbdata:
