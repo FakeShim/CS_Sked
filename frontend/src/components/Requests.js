@@ -3,7 +3,7 @@ import RequestsTable from './RequestsTable';
 // import requestsData from './data.json'; // Import the JSON file
 import './styles.css';
 
-const backend_host = 'localhost'
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com/'
 
 const Requests = () => {
   const [requests, setRequests] = useState([]);

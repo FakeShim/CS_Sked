@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-const backend_host = 'localhost'
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com/'
 
 const Login = (props) => {
   const [email, setEmail] = useState('');

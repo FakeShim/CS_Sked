@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 
-const backend_host = 'localhost'
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com/'
 
 const Faculty = () => {
   const [entries, setEntries] = useState([]);

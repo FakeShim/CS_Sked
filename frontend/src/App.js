@@ -8,7 +8,7 @@ import Faculty from './components/Faculty';
 import Requests from './components/Requests';
 import Confirmation from './components/Confirmation';
 
-const backend_host = 'localhost'
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com/'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './styles.css';
 
-const backend_host = 'localhost'
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com/'
 
 const Confirmation = () => {
   // State variables for storing search results and updated results
