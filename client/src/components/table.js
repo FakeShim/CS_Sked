@@ -6,7 +6,7 @@ const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 const AvailabilityTable = ({ users }) => {
 
   const handleSendEmail = async () => {
-    const recip = 'jcburns6@crimson.ua.edu'; // Replace with the recipient's email address
+    const recip = 'dldillard@crimson.ua.edu'; // Replace with the recipient's email address
     const subject = 'From student req'; // Replace with the subject of the email
     const body = 'This is the body'; // Replace with the desired email body
     try {
