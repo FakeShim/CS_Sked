@@ -14,7 +14,7 @@ const Confirmation = () => {
   const fetchSearchResults = async (query) => {
     try {
       const response = await fetch(`${backend_host}/get-request-by-email?email=${query}`, {
-        mode: no-cors
+        mode: 'no-cors'
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -57,7 +57,7 @@ const handleConfirmRequest = async (id) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      mode: no-cors,
+      mode: 'no-cors',
       body: JSON.stringify(update),
     });
 
