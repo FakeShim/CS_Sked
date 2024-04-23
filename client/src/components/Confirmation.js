@@ -96,7 +96,7 @@ const handleConfirmRequest = async (id) => {
         />
         <button type="submit">Search</button>
       </form>
-      <div>
+      <div className="center-content">
         <h2>Search Results</h2>
         <table>
           <thead>
