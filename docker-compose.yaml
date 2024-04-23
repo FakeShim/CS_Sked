@@ -7,8 +7,8 @@ services:
             - ./server:/server
             - /server/node_modules
         environment:
-            - DB_USERNAME: ${DB_USERNAME}
-            - DB_PASSWORD: ${DB_PASSWORD}
+            DB_USERNAME=${DB_USERNAME}
+            DB_PASSWORD=${DB_PASSWORD}
 
     web:
         build: ./client
