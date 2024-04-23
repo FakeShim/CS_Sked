@@ -17,7 +17,7 @@ const Requests = () => {
     try {
       // Fetch data from the backend API
       const response = await fetch(`${backend_host}/get-all-requests`, {
-        mode: 'no-cors'
+        mode: no-cors
       });
       if (response.ok) {
         const jsonData = await response.json();
@@ -39,7 +39,7 @@ const Requests = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        mode: 'no-cors',
+        mode: no-cors,
         body: JSON.stringify({ id }) // Make sure to send id as an object
       });
   

@@ -111,7 +111,7 @@ const Faculty = () => {
   const addEntry = async () => {
     try {
       const response = await fetch(`${backend_host}/add-blank-faculty`, {
-        mode: 'no-cors'
+        mode: no-cors
       });
 
       if (!response.ok) {
@@ -135,7 +135,7 @@ const Faculty = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        mode: 'no-cors',
+        mode: no-cors,
         body: JSON.stringify(updatedEntry)
       });
 
@@ -160,7 +160,7 @@ const Faculty = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        mode: 'no-cors',
+        mode: no-cors,
         body: JSON.stringify(deletedEntry)
       });
 
@@ -197,7 +197,7 @@ const Faculty = () => {
 
       try {
         const response = await fetch(`${backend_host}/get-all-faculty`, {
-          mode: 'no-cors'
+          mode: no-cors
         });
         if (!response.ok)
         {

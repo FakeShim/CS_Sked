@@ -36,7 +36,7 @@ function App() {
             headers: {
                 'jwt-token': user.token
             },
-            mode: 'no-cors'
+            mode: no-cors
         })
         .then(r => r.json())
         .then(r => {
