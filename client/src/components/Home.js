@@ -9,6 +9,8 @@ const Home = ({ loggedIn, email, setLoggedIn }) => {
 
   const [users, setUsers] = useState([]);
 
+  setUsers({"firstName":"", "lastName":"", "email":"");
+
   const navigate = useNavigate();
   if (!loggedIn) {
     console.log('blocking access to home')

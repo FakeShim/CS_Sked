@@ -9,6 +9,8 @@ const AvailabilityTable = ({ user_prop }) => {
 
   setUsers(user_prop);
 
+  console.log(users);
+
   const handleSendEmail = async () => {
     const recip = 'dldillard@crimson.ua.edu'; // Replace with the recipient's email address
     const subject = 'From student req'; // Replace with the subject of the email
