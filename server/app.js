@@ -330,6 +330,7 @@ function compareAvailability(studentAvailability, userData) {
 
 app.post('/faculty-availability', (req, res) => {
     const studentAvailability = req.body;
+    console.log("studentAvailability: ", studentAvailability)
     let facultyData;
     //compare the student availability with the mockUsersData
     try {
