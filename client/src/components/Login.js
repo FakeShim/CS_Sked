@@ -65,40 +65,37 @@ const Login = (props) => {
       console.error('Error logging in:', error);
       setEmailErr('Error logging in. Please try again later.');
     }
-
   };
 
- // Check if email has an account associated with it
- checkAccountExists((accountExists) => {
-  // If yes, log in
-  if (accountExists) logIn()
-  // Else, ask user if they want to create a new account and if yes, then log in
-  else if (
-   // window.confirm(
-      // 'An account does not exist with this email address: ' + email + '. Do you want to create a new account?',
-      //'Not a Valid Account'
-   // )
-   setEmailErr('Not a Valid Account')
-  ) {
+  // Check if email has an account associated with it
+  checkAccountExists((accountExists) => {
+    // If yes, log in
+    if (accountExists) logIn()
+    // Else, ask user if they want to create a new account and if yes, then log in
+    else if (
+      setEmailErr('Not a Valid Account')
+    ) {
     //logIn()
-  }
-})
+    }
+  })
 
 
   // Call the server API to check if the given email ID already exists
-const checkAccountExists = (callback) => {
-  fetch(`${backend_host}/check-account`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email }),
-  })
-    .then((r) => r.json())
-    .then((r) => {
-      callback(r?.userExists)
+  const checkAccountExists = (callback) => {
+    fetch(`${backend_host}/check-account`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
     })
+      .then((r) => r.json())
+      .then((r) => {
+        callback(r?.userExists)
+      })
+  }
 }
+
 
 // Log in a user using email and password
 const logIn = () => {
@@ -123,13 +120,11 @@ const logIn = () => {
         setEmailErr('Wrong Email or Password')
       }
     })
-}
 
   const handleLogout = () => {
     props.setLoggedIn(false);
     localStorage.removeItem("user")
   };
-
 
   return (
 
