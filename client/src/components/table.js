@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
-const AvailabilityTable = ({ users, student }) => {
+const AvailabilityTable = ({ requests }) => {
 
   const handleSendEmail = async (recip) => {
     const subject = 'From student requests'; // Replace with the subject of the email
@@ -52,31 +52,21 @@ const AvailabilityTable = ({ users, student }) => {
   }
 
   const handleSubmit = () => {
-    if (Array.isArray(users))
+    if (Array.isArray(requests))
     {
-      for (var idx = 0; idx < users.length; idx++)
+      for (var idx = 0; idx < requests.length; idx++)
       {
-        handleSendEmail(users[idx].email);
-        setMessage('Request sent to: ', users[idx].email);
+        handleSendEmail(requests[idx].email);
+        setMessage('Request sent to: ', requests[idx].email);
 
-        var user = users[idx];
+        var request = requests[idx];
 
-        const new_value = {
-          'facultyFirst': user.firstName, 
-          'facultyLast': user.lastName, 
-          'studentFirst': student.name.split()[0],
-          'studentLast': student.name.split()[1],
-          'email':email,
-          'status':"Pending" ,
-          'times': user.Times
-        };
-
-        addEntry({"new_value":new_value});
+        addEntry({"new_value": request});
       }
     }
     else
     {
-      console.log("users not initialized")
+      console.log("requests not initialized")
     }
   };
 
@@ -90,10 +80,10 @@ const AvailabilityTable = ({ users, student }) => {
           </tr>
         </thead>
         <tbody>
-        {Array.isArray(users) ? (
-          users.map((user, userIndex) => (
+        {Array.isArray(requests) ? (
+          requests.map((user, userIndex) => (
             <tr key={userIndex}>
-              <td>{user.firstName} {user.lastName}</td>
+              <td>{user.facultyFirst} {user.facultyLast}</td>
               <td>{user.email}</td>
             </tr>
           ))

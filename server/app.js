@@ -278,7 +278,7 @@ function compareAvailability(studentAvailability, userData) {
         if (isAvailable)
         {
             console.log("isAvailable");
-            var availableFacultyMember = {"firstName": facultyMember.facultyFirst, "lastName": facultyMember.facultyLast, "email": facultyMember.email, "Times": timesObject};
+            var availableFacultyMember = {"firstName": facultyMember.facultyFirst, "lastName": facultyMember.facultyLast, "email": facultyMember.email, "times": timesObject};
             availableFaculty.push(availableFacultyMember);
         }
       }
@@ -337,8 +337,27 @@ app.post('/faculty-availability', (req, res) => {
         facultyData = database.database_get('faculty');
         facultyData.then(function(result) {
           console.log(result);
-          const comparisonResults = compareAvailability(studentAvailability, result);
-          res.status(200).json(comparisonResults);
+          const availableFaculty = compareAvailability(studentAvailability, result);
+
+          var requests = []
+
+          for (var idx = 0; idx < availableFaculty.length; idx++)
+          {
+            var faculty = availableFaculty[idx];
+
+            var request = {
+              'facultyFirst': faculty.facultyFirst,
+              'facultyLast': faculty.facultyLast,
+              'studentFirst': studentAvailability.name.split()[0],
+              'studentLast': studentAvailability.name.split()[1],
+              'email': faculty.email,
+              'status': "Pending",
+              'times': faculty.times
+            } 
+            requests.push(request);
+          }
+
+          res.status(200).json(requests);
         });
     } catch (error) {
         res.status(500).json({ error: 'An error occurred while fetching faculty availability' });

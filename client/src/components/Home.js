@@ -7,7 +7,7 @@ const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
 const Home = ({ loggedIn, email, setLoggedIn }) => {
 
-  const [users, setUsers] = useState([{"firstName":"", "lastName":"", "email":""}]);
+  const [users, setUsers] = useState([]);
 
 
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ const Home = ({ loggedIn, email, setLoggedIn }) => {
         <StudentForm onSubmit={handleFormSubmit} />
       </div>
       <div className="student-table">
-        <AvailabilityTable users={users} student={{'firstName':"test", "lastName":"test", "email":"test", "Times": []}}/>
+        <AvailabilityTable users={users}/>
       </div>
     </div>
     </>
