@@ -30,27 +30,6 @@ const Requests = () => {
   };
 
 
-  // const handleDelete = async (id) => {
-  //   try {
-  //     const response = await fetch('localhost:443/delete-requests', {
-  //       method: 'PUT', // or 'POST' depending on your backend API
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify(id)
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to delete entry');
-  //     }
-
-  //     console.log('Entry deleted successfully');
-  //     // Optionally, you can update the local state or perform any other actions after successful update
-  //   } catch (error) {
-  //     console.error('Error deleting entry:', error);
-  //   }
-  // };
-
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`${backend_host}:443/delete-requests`, {
