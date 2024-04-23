@@ -67,8 +67,6 @@ const AvailabilityTable = ({ user_prop }) => {
           ))
         ) : (
           <tr>
-            <td>{users.firstName} {users.lastName}</td>
-            <td>{users.email}</td>
           </tr>
         )}
         </tbody>
