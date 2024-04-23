@@ -1,73 +1,100 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const timesByDay = {
-  Monday: ["8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-1:00", "1:00-2:00", "2:00-3:00", "3:00-4:00", "4:00-5:00"],
-  Tuesday: ["8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-1:00", "1:00-2:00", "2:00-3:00", "3:00-4:00", "4:00-5:00"],
-  Wednesday: ["8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-1:00", "1:00-2:00", "2:00-3:00", "3:00-4:00", "4:00-5:00"],
-  Thursday: ["8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-1:00", "1:00-2:00", "2:00-3:00", "3:00-4:00", "4:00-5:00"],
-  Friday: ["8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-1:00", "1:00-2:00", "2:00-3:00", "3:00-4:00", "4:00-5:00"],
-};
+function getNextDays(startDate, numberOfWeeks = 1) {
+  let currentDate = new Date(startDate);
+  currentDate.setHours(0, 0, 0, 0); // Normalize the time to midnight
+  // Start from the next day, skipping weekends
+  do {
+    currentDate.setDate(currentDate.getDate() + 1);
+  } while (currentDate.getDay() === 0 || currentDate.getDay() === 6);
+
+  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  let nextDays = [];
+
+  for (let i = 0; i < daysOfWeek.length * numberOfWeeks; ) {
+    const dayIndex = currentDate.getDay();
+    if (dayIndex !== 0 && dayIndex !== 6) { // If it's not Sunday (0) or Saturday (6)
+      const dayName = daysOfWeek[dayIndex - 1];
+      nextDays.push({ dayName, date: new Date(currentDate) });
+      i++;
+    }
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return nextDays;
+}
+
+// Define the time slots once
+const timeSlots = [
+  "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM",
+  "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM",
+  "4:00 PM", "5:00 PM"
+];
 
 function TimeTable({ onTimesChange }) {
-    //slectedTimes hold the state of which time slots are selected across all days
-    const [selectedTimes, setSelectedTimes] = useState([]);
-    const prevSelectedTimesRef = useRef({});
+  // The number of weeks you want to project into the future
+  const numberOfWeeks = 2;
+  // Get today's date to start from
+  const startDate = new Date();
 
-    //toggleTime function to toggle the selected state of a time slot
-    //it add or remove the time slot from the selectedTimes state
-    // Adjust the function to take both 'day' and 'time' as arguments.
-    const toggleTime = (day, timeRange) => {
-      setSelectedTimes(prev => ({
-        ...prev,
-        [day]: {
-          ...(prev[day] || {}),
-          [timeRange]: !(prev[day] && prev[day][timeRange])
-        }
-      }));
-    };
+  // Generate the next occurrences of each day
+  const nextDays = getNextDays(startDate, numberOfWeeks);
 
-    // useEffect is triggered when selectedTimes changes.
-    // It calls onTimesChange to pass the selected times up to the parent component.
-    useEffect(() => {
-      const prevSelectedTimes = prevSelectedTimesRef.current;
-      if (JSON.stringify(prevSelectedTimes) !== JSON.stringify(selectedTimes)) {
-        const availability = Object.entries(selectedTimes).map(([day, times]) => ({
-          day,
-          times: Object.entries(times)
-            .filter(([, available]) => available)
-            .map(([timeRange]) => {
-              const [Start, End] = timeRange.split("-");
-              return { Start, End, available: true };
-            })
-        }));
-        
-        onTimesChange(availability);
-        prevSelectedTimesRef.current = selectedTimes; // Update the ref to the new value
-      }
-    }, [selectedTimes, onTimesChange]); // onTimesChange can be omitted if it doesn't change or it's not dependent on the component render
+  const [availability, setAvailability] = useState({
+  });
+
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const toggleDay = (dateString) => {
+    setSelectedDate(selectedDate === dateString ? null : dateString);
+  };
+
+  const handleTimeChange = (day, times) => {
+    setAvailability(prev => ({
+      ...prev,
+      [day]: times
+    }));
+  };
+
+  // When the component's state updates, pass the new availability up to the parent component
+  useEffect(() => {
+    onTimesChange(availability);
+  }, [availability, onTimesChange]);
+
+  return (
+    <div className="dates-container">
+      {nextDays.map(({ dayName, date }, index) => {
+        const dateString = date.toLocaleDateString();
+        const dayIdentifier = `${dayName}-${dateString}`;
+        const isSelected = selectedDate === dayIdentifier;
   
-    return (
-        <div className="time-slots-container">
-          {Object.entries(timesByDay).map(([day, times]) => (
-          <div key={day} className="day-section">
-            <h3>{day}</h3>
-            {times.map(time => (
-              <div key={time} className="time-slot">
-                <label>
+        return (
+          <div key={dayIdentifier} className={`date-entry ${isSelected ? 'selected' : ''}`}>
+            <button className="date-toggle" onClick={() => toggleDay(dayIdentifier)}>
+              {dayName} - {dateString}
+            </button>
+            <div className="time-slots-container">
+              {isSelected && timeSlots.map((time, timeIndex) => (
+                <label key={timeIndex} className="time-slot">
                   <input
                     type="checkbox"
-                    // Check if the current timeIdentifier is included in the selectedTimes array
-                    checked={selectedTimes.includes(`${day}-${time}`)}
-                    // When the checkbox changes, call toggleTime with the day and time.
-                    onChange={() => toggleTime(day, time)}
+                    checked={availability[dayIdentifier]?.includes(time) || false}
+                    onChange={(e) => {
+                      const newTimes = e.target.checked
+                        ? [...(availability[dayIdentifier] || []), time]
+                        : availability[dayIdentifier].filter(t => t !== time);
+                      handleTimeChange(dayIdentifier, newTimes);
+                    }}
                   />
                   {time}
                 </label>
-              </div>
               ))}
+              </div>
             </div>
-          ))}
-        </div>
-    );
-  }
-  export default TimeTable;
+        );
+      })}
+    </div>
+  );
+}
+
+export default TimeTable;

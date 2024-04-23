@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import TimeTable from './TimeTable';
 
-//Start of the form where it takes the onSubmit function
-function StudentForm({ onSubmit }) { 
-  //manage the state of the student object
+function StudentForm({ onSubmit }) {
+  // Manage the state of the student object
   const [student, setStudent] = useState({
     name: '',
     email: '',
@@ -11,24 +10,24 @@ function StudentForm({ onSubmit }) {
     times: []
   });
 
-  //handles the change of the input fields
+  // Handle the change of the input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setStudent({ ...student, [name]: value });
   };
 
-  //handle the change of the times
-  const handleTimesChange = (times) => {
-    setStudent({ ...student, times });
-  };
+  // Memoize the handleTimesChange function so it doesn't cause unnecessary re-renders
+  const handleTimesChange = useCallback((times) => {
+    setStudent((prevStudent) => ({ ...prevStudent, times }));
+  }, []);
 
-  //handles the submit of the form
+  // Handles the submit of the form
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(student);
   };
 
-  //returns a form with the input fields and the TimeTable component
+  // Returns a form with the input fields and the TimeTable component
   return (
     <form onSubmit={handleSubmit}>
       <li>
@@ -51,7 +50,7 @@ function StudentForm({ onSubmit }) {
       </li>
       <li>
         <label>
-          Time (8:00 AM - 5:00 PM CST):
+          Available Times:
           <TimeTable onTimesChange={handleTimesChange} />
         </label>
       </li>

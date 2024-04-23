@@ -17,7 +17,7 @@ const Home = ({ loggedIn, email, setLoggedIn }) => {
     
     // Make an API call to the backend to save the data
     //fetch the data to the backend server
-    fetch('/http://localhost:3001/api/students', {
+    fetch('http://localhost:3001/faculty-availability', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,23 +27,14 @@ const Home = ({ loggedIn, email, setLoggedIn }) => {
       .then(response => response.json())
       .then(data => {
         console.log('Success:', data);
+        setUsers(data);
       })
       .catch((error) => {
         console.error('Error:', error);
     })
   };
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-  // use for later  
-    fetch('http://localhost:3001/professor-availability')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        setUsers(data);
-      })
-      .catch(error => console.error('Error:', error)); 
-  }, []);
 
+  const [users, setUsers] = useState([]);
 
   const handleLogout = () => {
     if (loggedIn) {
