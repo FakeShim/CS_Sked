@@ -27,6 +27,32 @@ app.get('/get-all-requests', (req, res) => {
     });
 });
 
+app.get('/get-request-by-email', (req, res) => {
+    const { email } = req.query;
+
+    const entry = database.database_get_entry_by_field("requests", "email", email);
+
+    entry.then(function(result) {
+        console.log(result);
+        res.json(result);
+    });
+});
+
+app.put('/update-requests', (req, res) => {
+    const requestID = req.body.id;
+    const { status, req: selectedTime } = req.body;
+
+    try {
+        database.database_update_entry("requests", { _id: requestID }, { status, req: selectedTime });
+
+        res.status(200).json({ message: 'Request updated successfully' });
+    }
+    catch (error) {
+        console.error('Error updating request:', error);
+    }
+});
+
+
 app.put('/update-faculty', (req, res) => {
 
     const { query, new_value } = req.body;
@@ -75,6 +101,7 @@ app.post('/add-faculty', (req, res) => {
 
 
 })
+
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

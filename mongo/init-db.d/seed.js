@@ -24,7 +24,10 @@ db.requests.insertMany(
         "status":"Pending",
         "studentFirst":"Peter",
         "studentLast":"Shim",
-        "req":{"3/16":[{"$numberInt":"8"},{"$numberInt":"9"},{"$numberInt":"10"}]}
+        "req":{"3/16":[{"$numberInt":"8"},{"$numberInt":"9"},{"$numberInt":"10"}],
+               "3/17":[{"$numberInt":"8"},{"$numberInt":"9"},{"$numberInt":"10"}],
+               "3/18":[{"$numberInt":"9"},{"$numberInt":"13"},{"$numberInt":"14"}],
+              }
       },
       {
         "_id":{"$oid":"66215c43946e5fc4dfc95417"},
