@@ -7,6 +7,7 @@ var FileSync = require('lowdb/adapters/FileSync')
 var adapter = new FileSync('./database.json')
 var db = low(adapter)
 const database = require('./database.js');
+const { exec } = require('child_process');
 
 // Initialize Express app
 const app = express()
@@ -14,7 +15,7 @@ const app = express()
 const port = process.env.PORT || 443;
 
 // Define a JWT secret key. This should be isolated by using env variables for security
-const jwtSecretKey = 'dsfdsfsdfdsvcsvdfgefg'
+const jwtSecretKey = process.env.JWT_SECRET || 'defaultSecretKey';
 
 // Set up CORS and JSON middlewares
 app.use(cors())
@@ -26,47 +27,32 @@ app.get('/', (_req, res) => {
     res.send('Auth API.\nPlease use POST /auth & POST /verify for authentication')
   })
 
-// The auth endpoint that creates a new user record or logs a user based on an existing record
-app.post('/auth', (req, res) => {
-  const { email, password } = req.body
+// Authentication endpoint using MongoDB Atlas
+app.post('/auth', async (req, res) => {
+  const { email, password } = req.body;
 
-  // Look up the user entry in the database
-  const user = db
-    .get('users')
-    .value()
-    .filter((user) => email === user.email)
+  const user = await database.database_login({ email });
 
-  // If found, compare the hashed passwords and generate the JWT token for the user
-  if (user.length === 1) {
-    bcrypt.compare(password, user[0].password, function (_err, result) {
-      if (!result) {
-        return res.status(401).json({ message: 'Invalid password' })
-      } else {
-        let loginData = {
-          email,
-          signInTime: Date.now(),
-        }
-
-        const token = jwt.sign(loginData, jwtSecretKey)
-        res.status(200).json({ message: 'success', token })
+  if (!user) {
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error hashing password' });
       }
-    })
-    // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
-  } else if (user.length === 0) {
-    bcrypt.hash(password, 10, function (_err, hash) {
-      console.log({ email, password: hash })
-      db.get('users').push({ email, password: hash }).write()
-
-      let loginData = {
-        email,
-        signInTime: Date.now(),
+      const newUser = { email, password: hash };
+      await usersCollection.insertOne(newUser);
+      const token = jwt.sign({ email }, jwtSecretKey);
+      res.status(200).json({ message: 'success', token });
+    });
+  } else {
+    bcrypt.compare(password, user.password, (err, result) => {
+      if (err || !result) {
+        return res.status(401).json({ message: 'Invalid password' });
       }
-
-      const token = jwt.sign(loginData, jwtSecretKey)
-      res.status(200).json({ message: 'success', token })
-    })
+      const token = jwt.sign({ email }, jwtSecretKey);
+      res.status(200).json({ message: 'success', token });
+    });
   }
-})
+});
 
   // The verify endpoint that checks if a given JWT token is valid
 app.post('/verify', (req, res) => {
@@ -104,6 +90,31 @@ app.post('/check-account', (req, res) => {
     userExists: user.length === 1,
   })
 })
+
+const sendEmail = (recip, subject, body) => {
+  //const command = `echo "${body}" | mail -s "${subject}" ${recip}`;
+  const command = `echo -e "To:${recip} \n From:devschedulercs495@outlook.com \n Subject:${subject} \n\n ${body}" | ssmtp -f"devschedulercs495@outlook.com" -F"devschedulercs495@outlook.com" -v ${recip}`;
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error sending email: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Email command encountered an error: ${stderr}`);
+      return;
+    }
+    console.log('Email sent successfully');
+  });
+};
+
+app.get('/send-email', (req, res) => {
+  const { recip, subject, body } = req.query;
+  if (!recip || !subject || !body) {
+    return res.status(400).send('Missing recipient, subject, or body');
+  }
+  sendEmail(recip, subject, body);
+  res.send('Email sent');
+});
 
 app.get('/get-all-faculty', (req, res) => {
   const entries = database.database_get("faculty");
