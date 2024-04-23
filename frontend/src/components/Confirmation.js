@@ -42,7 +42,7 @@ const handleConfirmRequest = async (id) => {
     const payload = {
       status: 'Accepted',
       req: {
-        [selectedDateTime.date]: [{ $numberInt: selectedDateTime.time }]
+        [selectedDateTime.date]: [ selectedDateTime.time ]
       }
     };
     const query = {"_id":id}
@@ -64,8 +64,8 @@ const handleConfirmRequest = async (id) => {
 
     // Update the status locally if needed
     const updated = updatedResults.map(result => {
-      if (result._id.$oid === id) {
-        return { ...result, date: selectedDateTime.date, req: { [selectedDateTime.date]: [{ $numberInt: selectedDateTime.time }] }, status: 'Accepted' };
+      if (result._id === id) {
+        return { ...result, date: selectedDateTime.date, req: { [selectedDateTime.date]: [ selectedDateTime.time ] }, status: 'Accepted' };
       }
       return result;
     });
@@ -110,7 +110,9 @@ const handleConfirmRequest = async (id) => {
             </tr>
           </thead>
           <tbody>
-            {searchResults.map((result) => (
+            {searchResults
+              .filter(result => result.status !== "Accepted")
+              .map((result) => (
               <tr key={result._id.$oid}>
                 <td>{result.email}</td>
                 <td>{`${result.studentFirst} ${result.studentLast}`}</td>
@@ -126,9 +128,11 @@ const handleConfirmRequest = async (id) => {
                   <select onChange={handleTimeChange} value={selectedDateTime.time}>
                     <option value="">Select Time</option>
                     {selectedDateTime.date && result.req[selectedDateTime.date] ? (
-                      result.req[selectedDateTime.date].map((time, index) => (
-                      <option key={index} value={time}>{time}</option>
-                      ))
+                      (Array.isArray(result.req[selectedDateTime.date]) ? 
+                        result.req[selectedDateTime.date].map((time, index) => (
+                          <option key={index} value={time}>{time}</option>
+                        )) : 
+                        <option value={result.req[selectedDateTime.date]}>{result.req[selectedDateTime.date]}</option>)
                     ) : (
                       <option value="">No Times Available</option>
                     )}
