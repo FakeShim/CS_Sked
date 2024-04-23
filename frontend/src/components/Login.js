@@ -59,7 +59,7 @@ const Login = (props) => {
   };
   // Call the server API to check if the given email ID already exists
 const checkAccountExists = (callback) => {
-  fetch(`http://${backend_host}/check-account`, {
+  fetch(`${backend_host}/check-account`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const checkAccountExists = (callback) => {
 
 // Log in a user using email and password
 const logIn = () => {
-  fetch(`http://${backend_host}/auth`, {
+  fetch(`${backend_host}/auth`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

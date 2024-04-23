@@ -110,7 +110,7 @@ const Faculty = () => {
 
   const addEntry = async () => {
     try {
-      const response = await fetch(`http://${backend_host}:443/add-blank-faculty`);
+      const response = await fetch(`${backend_host}:443/add-blank-faculty`);
 
       if (!response.ok) {
         throw new Error('Failed to add entry');
@@ -128,7 +128,7 @@ const Faculty = () => {
 
   const updateEntry = async (updatedEntry) => {
     try {
-      const response = await fetch(`http://${backend_host}:443/update-faculty`, {
+      const response = await fetch(`${backend_host}:443/update-faculty`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -152,7 +152,7 @@ const Faculty = () => {
   const deleteEntry = async (deletedEntry) => {
     console.log('deletedEntry: ', deletedEntry)
     try {
-      const response = await fetch(`http://${backend_host}:443/delete-faculty`, {
+      const response = await fetch(`${backend_host}:443/delete-faculty`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -192,7 +192,7 @@ const Faculty = () => {
       // };
 
       try {
-        const response = await fetch(`http://${backend_host}:443/get-all-faculty`);
+        const response = await fetch(`${backend_host}:443/get-all-faculty`);
         if (!response.ok)
         {
           throw new Error('Failed to fetch data');

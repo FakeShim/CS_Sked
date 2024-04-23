@@ -16,7 +16,7 @@ const Requests = () => {
   const fetchData = async () => {
     try {
       // Fetch data from the backend API
-      const response = await fetch(`http://${backend_host}:443/get-all-requests`);
+      const response = await fetch(`${backend_host}:443/get-all-requests`);
       if (response.ok) {
         const jsonData = await response.json();
         console.log(jsonData);
@@ -32,7 +32,7 @@ const Requests = () => {
 
   // const handleDelete = async (id) => {
   //   try {
-  //     const response = await fetch('http://localhost:443/delete-requests', {
+  //     const response = await fetch('localhost:443/delete-requests', {
   //       method: 'PUT', // or 'POST' depending on your backend API
   //       headers: {
   //         'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ const Requests = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://${backend_host}:443/delete-requests`, {
+      const response = await fetch(`${backend_host}:443/delete-requests`, {
         method: 'PUT', // or 'POST' depending on your backend API
         headers: {
           'Content-Type': 'application/json'

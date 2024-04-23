@@ -30,7 +30,7 @@ function App() {
     // }
 
     // If the token exists, verify it with the auth server to see if it is valid
-    fetch(`http://${backend_host}/verify`, {
+    fetch(`${backend_host}/verify`, {
             method: "POST",
             headers: {
                 'jwt-token': user.token
