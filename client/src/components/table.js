@@ -7,7 +7,7 @@ const AvailabilityTable = ({ user_prop }) => {
 
   const [users, setUsers] = useState(user_prop);
 
-  console.log(users);
+  console.log(user_prop);
 
   const handleSendEmail = async () => {
     const recip = 'dldillard@crimson.ua.edu'; // Replace with the recipient's email address
