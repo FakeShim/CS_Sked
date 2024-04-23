@@ -49,7 +49,6 @@ const Login = (props) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        mode: no-cors,
         body: JSON.stringify({ email, password }),
       });
 
@@ -76,7 +75,6 @@ const logIn = () => {
     headers: {
       'Content-Type': 'application/json',
     },
-    mode: no-cors,
     body: JSON.stringify({ email, password }),
   })
     .then((r) => r.json())

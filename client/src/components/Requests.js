@@ -16,9 +16,7 @@ const Requests = () => {
   const fetchData = async () => {
     try {
       // Fetch data from the backend API
-      const response = await fetch(`${backend_host}/get-all-requests`, {
-        mode: no-cors
-      });
+      const response = await fetch(`${backend_host}:443/get-all-requests`);
       if (response.ok) {
         const jsonData = await response.json();
         console.log(jsonData);
@@ -34,12 +32,11 @@ const Requests = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${backend_host}/delete-requests`, {
+      const response = await fetch(`${backend_host}:443/delete-requests`, {
         method: 'PUT', // or 'POST' depending on your backend API
         headers: {
           'Content-Type': 'application/json'
         },
-        mode: no-cors,
         body: JSON.stringify({ id }) // Make sure to send id as an object
       });
   

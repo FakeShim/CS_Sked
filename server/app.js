@@ -14,10 +14,7 @@ const port = process.env.PORT || 443;
 const jwtSecretKey = process.env.JWT_SECRET || 'defaultSecretKey';
 
 // Set up CORS and JSON middlewares
-app.use(cors({
-  origin: ["cs495-spring2024-11.ua.edu", "http://cs495-spring2024-11.ua.edu", "cs495-spring2024-11.ua.edu/", "http://cs495-spring2024-11.ua.edu/"], 
-  credentials: true,
-}))
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -274,11 +271,8 @@ app.post('/faculty-availability', (req, res) => {
     //compare the student availability with the mockUsersData
     try {
         facultyData = database.database_get('faculty');
-        facultyData.then(function(result) {
-          console.log(result);
-          const comparisonResults = compareAvailability(studentAvailability, facultyData);
-          res.status(200).json(comparisonResults);
-        });
+        const comparisonResults = compareAvailability(studentAvailability, facultyData);
+        res.status(200).json(comparisonResults);
     } catch (error) {
         res.status(500).json({ error: 'An error occurred while fetching faculty availability' });
     }
