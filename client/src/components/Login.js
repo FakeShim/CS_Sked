@@ -44,7 +44,7 @@ const Login = (props) => {
       return
     } 
     try {
-      const response = await fetch('http://localhost:3080/auth', {
+      const response = await fetch(`${backend_host}/auth`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,35 +67,6 @@ const Login = (props) => {
     }
   };
 
-  // Check if email has an account associated with it
-  checkAccountExists((accountExists) => {
-    // If yes, log in
-    if (accountExists) logIn()
-    // Else, ask user if they want to create a new account and if yes, then log in
-    else if (
-      setEmailErr('Not a Valid Account')
-    ) {
-    //logIn()
-    }
-  })
-
-
-  // Call the server API to check if the given email ID already exists
-  const checkAccountExists = (callback) => {
-    fetch(`${backend_host}/check-account`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    })
-      .then((r) => r.json())
-      .then((r) => {
-        callback(r?.userExists)
-      })
-  }
-}
-
 
 // Log in a user using email and password
 const logIn = () => {
@@ -108,7 +79,7 @@ const logIn = () => {
   })
     .then((r) => r.json())
     .then((r) => {
-      console.log('Login Response:', r);
+      console.log('Login Response:', r); 
       if ('success' === r.message) {
         localStorage.setItem('user', JSON.stringify({ email, token: r.token }))
         props.setLoggedIn(true)
@@ -120,6 +91,7 @@ const logIn = () => {
         setEmailErr('Wrong Email or Password')
       }
     })
+}
 
   const handleLogout = () => {
     props.setLoggedIn(false);
@@ -127,7 +99,6 @@ const logIn = () => {
   };
 
   return (
-
     <div>
       {props.loggedIn ? (
         <div>
