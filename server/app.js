@@ -2,10 +2,6 @@ const express = require('express')
 const bcrypt = require('bcrypt')
 var cors = require('cors')
 const jwt = require('jsonwebtoken')
-var low = require('lowdb')
-var FileSync = require('lowdb/adapters/FileSync')
-var adapter = new FileSync('./database.json')
-var db = low(adapter)
 const database = require('./database.js');
 const { exec } = require('child_process');
 
@@ -21,6 +17,14 @@ const jwtSecretKey = process.env.JWT_SECRET || 'defaultSecretKey';
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 // Basic home route for the API
 app.get('/', (_req, res) => {
@@ -70,25 +74,6 @@ app.post('/verify', (req, res) => {
     // Access Denied
     return res.status(401).json({ status: 'invalid auth', message: 'error' })
   }
-})
-
-// An endpoint to see if there's an existing account for a given email address
-app.post('/check-account', (req, res) => {
-  const { email } = req.body
-
-  console.log(req.body)
-
-  const user = db
-    .get('users')
-    .value()
-    .filter((user) => email === user.email)
-
-  console.log(user)
-
-  res.status(200).json({
-    status: user.length === 1 ? 'User exists' : 'User does not exist',
-    userExists: user.length === 1,
-  })
 })
 
 const sendEmail = (recip, subject, body) => {
@@ -248,6 +233,166 @@ app.get('/add-blank-faculty', (req, res) => {
     });
 })
 
+//function to compare the student's availability with the professor's availability
+function compareAvailability(studentAvailability, userData) {
+
+  try {
+      var availableFaculty = [];
+
+      console.log("userData", userData);
+
+      for (var idx = 0; idx < userData.length; idx++)
+      {
+        facultyMember = userData[idx];
+
+        var date = Object.keys(studentAvailability.times)[0];
+        var day = date.split('-')[0];
+
+        console.log("facultyMember: ", facultyMember);
+        console.log("day: ", day)
+
+        var availability = facultyMember.availability[day];
+        var timeArray = studentAvailability.times[date];
+
+        timesObject = {[date]: []};
+
+        var isAvailable = false;
+
+        for (jdx = 0; jdx < timeArray.length; jdx++)
+        {
+            var suffix = timeArray[jdx].split(' ')[1];
+            var timeNum = parseInt(timeArray[jdx].split(':')[0]);
+            if (suffix === "PM" && timeNum != 12)
+            {
+                timeNum += 12;
+            }
+            console.log("timeNum:", timeNum);
+            console.log("availability:", availability);
+            timeNum -= 6;
+            if (availability[timeNum])
+            {
+                isAvailable = true;
+                timesObject[date].push(timeArray[jdx])
+            }
+        }
+        if (isAvailable)
+        {
+            console.log("isAvailable");
+            var availableFacultyMember = {
+              'facultyFirst': facultyMember.facultyFirst,
+              'facultyLast': facultyMember.facultyLast,
+              "email": facultyMember.email, 
+              "times": timesObject};
+            availableFaculty.push(availableFacultyMember);
+        }
+      }
+      return availableFaculty;
+  }
+  catch (error)
+  {
+      console.log("error")
+  }
+    // Loop through the userData
+    // for (var idx = 0; idx < userData.length; idx++) {
+    //     var user = userData[idx];
+
+    //     let matches = {
+    //         firstName: user.firstName,
+    //         lastName: user.lastName,
+    //         email: user.email,
+    //         availability: []
+    //     };
+
+    //     // Check each day in the user's availability
+    //     for (var jdx = 0; jdx < user.availability.length; jdx++) {
+    //         console.log(studentAvailability);
+    //         // Check if the user is available on the same day as the student
+    //         if (studentAvailability[availableDay.day]) {
+    //             let studentTimes = studentAvailability[availableDay.day];
+    //             let matchingTimes = availableDay.times.reduce((acc, userTime, index) => {
+    //                 if (userTime && studentTimes.includes(index + 6 + ':00')) { // Adjust index based on time slots starting at 6:00 AM
+    //                     acc.push(index + 6 + ':00');
+    //                 }
+    //                 return acc;
+    //             }, []);
+
+    //             // If there are matching times, add it to the matches object
+    //             if (matchingTimes.length > 0) {
+    //                 matches.availability.push({ day: availableDay.day, times: matchingTimes });
+    //             }
+    //         }
+    //     }
+
+    //     // If there are matches, add it to the comparisonResults
+    //     if (matches.availability.length > 0) {
+    //         comparisonResults.push(matches);
+    //     }
+    // }
+
+
+}
+
+app.post('/faculty-availability', (req, res) => {
+    const studentAvailability = req.body;
+    console.log("studentAvailability: ", studentAvailability)
+    let facultyData;
+    //compare the student availability with the mockUsersData
+    try {
+        facultyData = database.database_get('faculty');
+        facultyData.then(function(result) {
+          console.log(result);
+          const availableFaculty = compareAvailability(studentAvailability, result);
+
+          var requests = []
+          if (Array.isArray(availableFaculty))
+          {
+            for (var idx = 0; idx < availableFaculty.length; idx++)
+            {
+              var faculty = availableFaculty[idx];
+
+              console.log('faculty', faculty);
+
+              var request = {
+                'facultyFirst': faculty.facultyFirst,
+                'facultyLast': faculty.facultyLast,
+                'studentFirst': studentAvailability.name.split(' ')[0],
+                'studentLast': studentAvailability.name.split(' ')[1],
+                'email': faculty.email,
+                'status': "Pending",
+                'times': faculty.times
+              } 
+
+              console.log('request', request);
+
+              requests.push(request);
+            }
+          }
+          
+
+          res.status(200).json(requests);
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred while fetching faculty availability' });
+    }
+});
+
+app.post('/add-request', (req, res) => {
+  var new_value = req.body;
+
+    try
+    {
+        console.log("new_value: ", new_value);
+
+        database.database_add_request(new_value);
+
+        res.status(200).json({ message: 'Entry updated successfully' });
+    }
+    catch (error)
+    {
+        console.log("ERROR: ", req.body);
+        console.error('Error updating entry:', error);
+    }
+})
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

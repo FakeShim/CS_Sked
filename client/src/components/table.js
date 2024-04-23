@@ -3,12 +3,13 @@ import axios from 'axios';
 
 const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
-const AvailabilityTable = ({ users }) => {
+const AvailabilityTable = ({ requests }) => {
 
-  const handleSendEmail = async () => {
-    const recip = 'dldillard@crimson.ua.edu'; // Replace with the recipient's email address
-    const subject = 'From student req'; // Replace with the subject of the email
-    const body = 'This is the body'; // Replace with the desired email body
+  console.log("requests = ", requests);
+
+  const handleSendEmail = async (recip) => {
+    const subject = 'From student requests'; // Replace with the subject of the email
+    const body = 'A request to meet with you has been sent. Please see the following link on the University domain to confirm: http://cs495-spring2024-11.ua.edu/Confirmation';
     try {
       await axios.get(`${backend_host}/send-email?recip=${encodeURIComponent(recip)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
       console.log('Email sent successfully');
@@ -30,17 +31,44 @@ const AvailabilityTable = ({ users }) => {
     }));
   };
 
-  const handleSubmit = () => {
-    //check if any time slot is selected
-    //submit button for email
-    const isAnyTimeSelected = Object.values(checkedSlots).some((isChecked) => isChecked);
-    
-    if (!isAnyTimeSelected) {
-      setMessage('Please select at least one time slot.');
+  const addEntry = async (new_entry) =>
+  {
+    try {
+      const response = await fetch(`${backend_host}/add-request`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(new_entry)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update entry');
+      }
+
+      console.log(`Entry ${JSON.stringify(new_entry)} updated successfully`);
+      // Optionally, you can update the local state or perform any other actions after successful update
+    } catch (error) {
+      console.error('Error updating entry:', error);
     }
-    else {
-      handleSendEmail();
-      setMessage('Request Sent');
+  }
+
+  const handleSubmit = () => {
+    if (Array.isArray(requests))
+    {
+      for (var idx = 0; idx < requests.length; idx++)
+      {
+        handleSendEmail(requests[idx].email);
+        setMessage('Request sent to: ', requests[idx].email);
+
+        var request = requests[idx];
+
+        addEntry(request);
+      }
+    }
+    else
+    {
+      console.log("requests not initialized")
     }
   };
 
@@ -51,41 +79,20 @@ const AvailabilityTable = ({ users }) => {
           <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Availability</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user, userIndex) => (
+        {Array.isArray(requests) ? (
+          requests.map((user, userIndex) => (
             <tr key={userIndex}>
-              <td>{user.firstName} {user.lastName}</td>
+              <td>{user.facultyFirst} {user.facultyLast}</td>
               <td>{user.email}</td>
-              <td>
-                  <ul>
-                      {user.availability.map((avail, availIndex) => (
-                      <li key={availIndex}>
-                          {`${avail.day}: `}
-                          {avail.times.map((time, timeIndex) => {
-                            // Construct a unique ID for each time slot
-                            const slotId = `${user.email}-${avail.day}-${timeIndex}`;
-                            return (
-                              <div key={timeIndex} style={{ display: 'inline-block', marginRight: '10px' }}>
-                                {`${time.Start} - ${time.End}`}
-                                <input
-                                  type="checkbox"
-                                  style={{ marginLeft: '5px' }}
-                                  checked={!!checkedSlots[slotId]}
-                                  onChange={() => toggleChecked(slotId)}
-                                />
-                                {timeIndex < avail.times.length - 1 ? ', ' : ''}
-                              </div>
-                            );
-                          })} 
-                      </li>
-                      ))}
-                  </ul>
-              </td>
             </tr>
-          ))}
+          ))
+        ) : (
+          <tr>
+          </tr>
+        )}
         </tbody>
       </table>
       <div className="submit-container">

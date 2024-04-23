@@ -203,27 +203,10 @@ async function database_get_multiple(type, query)
 // request: a Request_Entry object with appropriate fields
 async function database_add_request(request)
 {
-    if ((request instanceof Request_Entry) == false)
-    {
-        console.log(`Request improperly formatted, ${request}`);
-        return;
-    }
-
     const database = client.db(db_name);
     const collection = database.collection("requests");
 
-    const document =
-    {
-        date: request.date,
-        facultyFirst: request.faculty_first,
-        facultyLast: request.faculty_last,
-        status: request.status,
-        studentFirst: request.student_first,
-        studentLast: request.student_last,
-        time: request.time
-    };
-
-    const result = await collection.insertOne(document);
+    const result = await collection.insertOne(request);
 
     console.log(`A document was inserted with the _id: ${result.insertedId}`);
 }
