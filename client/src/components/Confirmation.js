@@ -13,7 +13,9 @@ const Confirmation = () => {
   // Function to fetch search results from the backend
   const fetchSearchResults = async (query) => {
     try {
-      const response = await fetch(`${backend_host}:443/get-request-by-email?email=${query}`);
+      const response = await fetch(`${backend_host}/get-request-by-email?email=${query}`, {
+        mode: no-cors
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -50,11 +52,12 @@ const handleConfirmRequest = async (id) => {
     const update = {"query":query, "new_value":payload};
 
     // Send a PUT request to confirm the request with the backend and update the entry
-    const response = await fetch(`${backend_host}:443/update-requests`, {
+    const response = await fetch(`${backend_host}/update-requests`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
+      mode: no-cors,
       body: JSON.stringify(update),
     });
 

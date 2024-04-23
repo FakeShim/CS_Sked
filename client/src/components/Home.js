@@ -24,6 +24,7 @@ const Home = ({ loggedIn, email, setLoggedIn }) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      mode: no-cors,
       body: JSON.stringify(studentData),
     })
       .then(response => response.json())

@@ -35,7 +35,8 @@ function App() {
             method: "POST",
             headers: {
                 'jwt-token': user.token
-              }
+            },
+            mode: no-cors
         })
         .then(r => r.json())
         .then(r => {
