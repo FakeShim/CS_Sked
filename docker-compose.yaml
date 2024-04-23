@@ -18,6 +18,9 @@ services:
         volumes:
             - ./auth-server:/auth-server
             - /auth-server/node_modules
+        environment:
+            - DB_USERNAME=${DB_USERNAME}
+            - DB_PASSWORD=${DB_PASSWORD}
 
     data:
         build: ./mongo

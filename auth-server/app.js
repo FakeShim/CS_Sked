@@ -75,7 +75,8 @@ app.post('/verify', (req, res) => {
   }
 });
 const sendEmail = (recip, subject, body) => {
-  const command = `echo "${body}" | mail -s "${subject}" ${recip}`;
+  //const command = `echo "${body}" | mail -s "${subject}" ${recip}`;
+  const command = `echo -e "${subject} ${body}" | ssmtp -f"devschedulercs495@outlook.com" -F"devschedulercs495@outlook.com" -v dldillard@crimson.ua.edu`;
   exec(command, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error sending email: ${error.message}`);
