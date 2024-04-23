@@ -4,6 +4,11 @@ WORKDIR /server
 
 COPY . .
 
+COPY ./my.conf /etc/ssmtp/ssmtp.conf
+
+RUN apt-get update
+RUN apt-get install -y ssmtp
+
 RUN npm install
 
 CMD ["node", "app.js"]
