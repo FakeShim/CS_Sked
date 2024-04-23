@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Header from './components/Header';
 import Faculty from './components/Faculty';
 import Requests from './components/Requests';
+import Confirmation from './components/Confirmation';
 
 const backend_host = 'localhost'
 
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/Login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} loggedIn={loggedIn} />} />
                 <Route exact path="/Faculty" element={<Faculty />} />
                 <Route exact path="/Requests" element={<Requests />} />
+                <Route exact path="/Confirmation" element={<Confirmation />} />
             </Routes>
         </Router>
       </header>

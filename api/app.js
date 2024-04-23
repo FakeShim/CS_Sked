@@ -30,7 +30,7 @@ app.get('/get-all-requests', (req, res) => {
 app.get('/get-request-by-email', (req, res) => {
     const { email } = req.query;
 
-    const entry = database.database_get_entry_by_field("requests", "email", email);
+    const entry = database.database_get_multiple("requests", {"email": email});
 
     entry.then(function(result) {
         console.log(result);
@@ -39,16 +39,16 @@ app.get('/get-request-by-email', (req, res) => {
 });
 
 app.put('/update-requests', (req, res) => {
-    var { query, update } = req.body;
+    var { query, new_value } = req.body;
 
     try
     {
-        console.log(query);
-        console.log(update);
+        console.log("query: ", query);
+        console.log("new_value: ",new_value);
 
         query = {'_id': database.database_to_id_object(query._id)};
 
-        database.database_update_entry("requests", query, update);
+        database.database_update_entry("requests", query, new_value);
 
         res.status(200).json({ message: 'Confirmation Entry updated successfully' });
     }

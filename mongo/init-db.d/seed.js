@@ -1,22 +1,7 @@
-db.faculty.drop();
-db.faculty.insertOne(
-    {
-        "email":"bhngyen3@crimson.ua.edu",
-        "availability":{
-            "Monday":[true,false,true,false,true,false,true,false,true,false,true,false],
-            "Tuesday":[true,false,true,false,true,false,true,false,true,false,true,false],
-            "Wednesday":[true,false,true,false,true,false,true,false,true,false,true,false],
-            "Thursday":[true,false,true,false,true,false,true,false,true,false,true,false],
-            "Friday":[true,false,true,false,true,false,true,false,true,false,true,false]},
-        "facultyFirst":"Brandon",
-        "facultyLast":"Nguyen"
-    }
-)
-
 db.requests.drop();
 db.requests.insertMany(
-    {
-        "_id":{"$oid":"66215bee946e5fc4dfc95416"},
+    [
+      {
         "date":"05/06/2024",
         "email":"mmay@crimson.ua.edu",
         "facultyFirst":"Maclane",
@@ -24,13 +9,12 @@ db.requests.insertMany(
         "status":"Pending",
         "studentFirst":"Peter",
         "studentLast":"Shim",
-        "req":{"3/16":[{"$numberInt":"8"},{"$numberInt":"9"},{"$numberInt":"10"}],
-               "3/17":[{"$numberInt":"8"},{"$numberInt":"9"},{"$numberInt":"10"}],
-               "3/18":[{"$numberInt":"9"},{"$numberInt":"13"},{"$numberInt":"14"}],
+        "req":{"3/16":[8, 9, 10],
+               "3/17":[8, 9, 11],
+               "3/18":[9, 13, 14],
               }
       },
       {
-        "_id":{"$oid":"66215c43946e5fc4dfc95417"},
         "date":"05/06/2024",
         "email":"mmay@crimson.ua.edu",
         "facultyFirst":"Maclane",
@@ -38,10 +22,9 @@ db.requests.insertMany(
         "status":"Pending",
         "studentFirst":"Peter",
         "studentLast":"Shim",
-        "req":{"4/3":[{"$numberInt":"8"},{"$numberInt":"12"},{"$numberInt":"16"}]}
+        "req":{"4/3":[8, 12, 16]}
       },
       {
-        "_id":{"$oid":"66215ccf946e5fc4dfc95418"},
         "date":"05/10/2024",
         "email":"manderson@crimson.ua.edu",
         "facultyFirst":"Monica",
@@ -49,6 +32,7 @@ db.requests.insertMany(
         "status":"Accepted",
         "studentFirst":"David",
         "studentLast":"Dillard",
-        "req":{"3/27":[{"$numberInt":"8"},{"$numberInt":"11"},{"$numberInt":"14"}]}
+        "req":{"3/27":[8, 11, 14]}
       }
+    ]
 )

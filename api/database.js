@@ -156,6 +156,28 @@ async function database_get(type, query)
     return data;
 }
 
+// Function for getting a database entry
+//
+// Parameters:
+// type: either faculty or requests
+// query: object in the form of {<entry_key 1>:<entry value 1>, ...}
+//
+// Returns:
+// A single database entry if given a query
+// All entries otherwise
+async function database_get_multiple(type, query)
+{
+    const database = client.db(db_name);
+    const collection = database.collection(type);
+
+    var data;
+
+    data = (query === undefined) ?
+        await collection.find().toArray() : await collection.find(query).toArray();
+
+    return data;
+}
+
 // Function for adding a request entry
 //
 // request: a Request_Entry object with appropriate fields
@@ -281,6 +303,7 @@ module.exports =
     num_to_bool,
     database_to_id_object,
     database_get,
+    database_get_multiple,
     database_add_request,
     database_add_faculty,
     database_update_entry,

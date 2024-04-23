@@ -13,11 +13,12 @@ const Confirmation = () => {
   // Function to fetch search results from the backend
   const fetchSearchResults = async (query) => {
     try {
-      const response = await fetch(`/get-request-by-email?email=${query}`);
+      const response = await fetch(`http://${backend_host}:443/get-request-by-email?email=${query}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
+      console.log(data)
       setSearchResults(data);
       setUpdatedResults(data);
     } catch (error) {
@@ -44,11 +45,12 @@ const handleConfirmRequest = async (id) => {
         [selectedDateTime.date]: [{ $numberInt: selectedDateTime.time }]
       }
     };
-    query = {"_id":id}
-    update = {"query":query, "new_value":payload};
+    const query = {"_id":id}
+    console.log(query);
+    const update = {"query":query, "new_value":payload};
 
     // Send a PUT request to confirm the request with the backend and update the entry
-    const response = await fetch(`http://${backend_host}:443/update-faculty`, {
+    const response = await fetch(`http://${backend_host}:443/update-requests`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -123,14 +125,18 @@ const handleConfirmRequest = async (id) => {
                 <td>
                   <select onChange={handleTimeChange} value={selectedDateTime.time}>
                     <option value="">Select Time</option>
-                    {selectedDateTime.date && result.req[selectedDateTime.date].map((time, index) => (
+                    {selectedDateTime.date && result.req[selectedDateTime.date] ? (
+                      result.req[selectedDateTime.date].map((time, index) => (
                       <option key={index} value={time}>{time}</option>
-                    ))}
+                      ))
+                    ) : (
+                      <option value="">No Times Available</option>
+                    )}
                   </select>
                 </td>
                 <td>{result.status}</td>
                 <td>
-                  <button onClick={() => handleConfirmRequest(result._id.$oid)}>Confirm</button>
+                  <button onClick={() => handleConfirmRequest(result._id)}>Confirm</button>
                 </td>
               </tr>
             ))}
