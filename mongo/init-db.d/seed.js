@@ -3,11 +3,11 @@ db.faculty.insertOne(
     {
         "email":"bhngyen3@crimson.ua.edu",
         "availability":{
-            "monday":[true,false,true,false,true,false,true,false,true,false,true,false],
-            "tuesday":[true,false,true,false,true,false,true,false,true,false,true,false],
-            "wednesday":[true,false,true,false,true,false,true,false,true,false,true,false],
-            "thursday":[true,false,true,false,true,false,true,false,true,false,true,false],
-            "friday":[true,false,true,false,true,false,true,false,true,false,true,false]},
+            "Monday":[true,false,true,false,true,false,true,false,true,false,true,false],
+            "Tuesday":[true,false,true,false,true,false,true,false,true,false,true,false],
+            "Wednesday":[true,false,true,false,true,false,true,false,true,false,true,false],
+            "Thursday":[true,false,true,false,true,false,true,false,true,false,true,false],
+            "Friday":[true,false,true,false,true,false,true,false,true,false,true,false]},
         "facultyFirst":"Brandon",
         "facultyLast":"Nguyen"
     }

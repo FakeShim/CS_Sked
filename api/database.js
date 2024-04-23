@@ -1,7 +1,6 @@
 const process = require('process')
 const { MongoClient } = require('mongodb');
-
-//yourConnectionURI = "mongodb+srv://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@skedcluster.rr2li5f.mongodb.net/?retryWrites=true&w=majority"
+const { ObjectId } = require ('bson');
 
 yourConnectionURI = "mongodb://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@data:27017/?retryWrites=true&w=majority"
 
@@ -31,73 +30,73 @@ class Request_Entry
 // Object for storing an Availability entry
 //
 // Parameters:
-// object should be in form: {"monday": [12 booleans], "tuesday": [12 booleans], "wednesday": [12 booleans], "thursday": [12 booleans], "friday": [12 booleans]}
+// object should be in form: {"Monday": [12 booleans], "Tuesday": [12 booleans], "Wednesday": [12 booleans], "Thursday": [12 booleans], "Friday": [12 booleans]}
 // The boolean arrays correspond to [6:00, 7:00, 8:00, ... 15:00, 16:00, 17:00],
 // but should just be 12 booleans [true, false, true...]
 class Availability
 {
     constructor(object)
     {
-        this.monday = object.monday;
-        this.tuesday = object.tuesday;
-        this.wednesday = object.wednesday;
-        this.thursday = object.thursday;
-        this.friday = object.friday;
+        this.Monday = object.Monday;
+        this.Tuesday = object.Tuesday;
+        this.Wednesday = object.Wednesday;
+        this.Thursday = object.Thursday;
+        this.Friday = object.Friday;
     }
 }
 
-// Converts 0-11 index to 5:00-17:00 format
-function index_to_time(index)
+function num_to_bool(availability)
 {
-    return`${index + 6}:00`;
-}
+    var monday_array = [false, false, false, false, false, false, false, false, false, false, false, false];
+    var tuesday_array = [false, false, false, false, false, false, false, false, false, false, false, false];
+    var wednesday_array = [false, false, false, false, false, false, false, false, false, false, false, false];
+    var thursday_array = [false, false, false, false, false, false, false, false, false, false, false, false];
+    var friday_array = [false, false, false, false, false, false, false, false, false, false, false, false];
 
-// Forms strings for monday through friday in order to display availabilities
-function form_avail_string(availability)
-{
-    if (availability instanceof Availability)
+    if (availability.Monday !== undefined )
     {
-        monday_string = "";
-        tuesday_string = "";
-        wednesday_string = "";
-        thursday_string = "";
-        friday_string = "";
-        for (idx = 0; idx < 12; idx++)
+        for (var idx of availability.Monday)
         {
-            if(availability.monday[idx])
-            {
-                monday_string += `${index_to_time(idx)} `;
-            }
-            if(availability.tuesday[idx])
-            {
-                tuesday_string += `${index_to_time(idx)} `;
-            }
-            if(availability.wednesday[idx])
-            {
-                wednesday_string += `${index_to_time(idx)} `;
-            }
-            if(availability.thursday[idx])
-            {
-                thursday_string += `${index_to_time(idx)} `;
-            }
-            if(availability.friday[idx])
-            {
-                friday_string += `${index_to_time(idx)} `;
-            }
+            console.log('idx: ', idx);
+            monday_array[parseInt(idx) - 6] = true;
         }
-        return {
-            monday: monday_string,
-            tuesday: tuesday_string,
-            wednesday: wednesday_string,
-            thursday: thursday_string,
-            friday: friday_string
-        };
     }
-    else
+    if (availability.Tuesday !== undefined )
     {
-        console.log("Improperly formatted availability.");
-        return "Improperly formatted availability.";
+        for (var idx of availability.Tuesday)
+        {
+            console.log('idx: ', idx);
+            tuesday_array[parseInt(idx) - 6] = true;
+        }
     }
+    if (availability.Wednesday !== undefined )
+    {
+        for (var idx of availability.Wednesday)
+        {
+            console.log('idx: ', idx);
+            wednesday_array[parseInt(idx) - 6] = true;
+        }
+    }
+    if (availability.Thursday !== undefined )
+    {
+        for (var idx of availability.Thursday)
+        {
+            console.log('idx: ', idx);
+            thursday_array[parseInt(idx) - 6] = true;
+        }
+    }
+    if (availability.Friday !== undefined )
+    {
+        for (var idx of availability.Friday)
+        {
+            console.log('idx: ', idx);
+            friday_array[parseInt(idx) - 6] = true;
+        }
+    }
+
+    console.log("monday_array:", monday_array);
+
+    return {"Monday":monday_array, "Tuesday":tuesday_array, "Wednesday":wednesday_array, "Thursday":thursday_array, "Friday":friday_array};
 }
 
 // Object for storing a faculty entry
@@ -115,19 +114,24 @@ class Faculty_Entry
         }
         else
         {
-            this.availability =
+            this.availability = new Availability(
                 {
                                // 06:00, 07:00, 08:00, 09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00, 16:00, 17:00
-                    "monday":    [false, false, false, false, false, false, false, false, false, false, false, false],
-                    "tuesday":   [false, false, false, false, false, false, false, false, false, false, false, false],
-                    "wednesday": [false, false, false, false, false, false, false, false, false, false, false, false],
-                    "thursday":  [false, false, false, false, false, false, false, false, false, false, false, false],
-                    "friday":    [false, false, false, false, false, false, false, false, false, false, false, false]
-                }
+                    "Monday":    [false, false, false, false, false, false, false, false, false, false, false, false],
+                    "Tuesday":   [false, false, false, false, false, false, false, false, false, false, false, false],
+                    "Wednesday": [false, false, false, false, false, false, false, false, false, false, false, false],
+                    "Thursday":  [false, false, false, false, false, false, false, false, false, false, false, false],
+                    "Friday":    [false, false, false, false, false, false, false, false, false, false, false, false]
+                });
         }
         this.first = first;
         this.last = last;
     }
+}
+
+function database_to_id_object(id)
+{
+    return new ObjectId(id);
 }
 
 // Function for getting a database entry
@@ -201,11 +205,11 @@ async function database_add_faculty(faculty)
         email: faculty.email,
         availability:
         {
-            "monday": faculty.availability.monday,
-            "tuesday":faculty.availability.tuesday,
-            "wednesday": faculty.availability.wednesday,
-            "thursday": faculty.availability.thursday,
-            "friday": faculty.availability.friday
+            "Monday": faculty.availability.monday,
+            "Tuesday":faculty.availability.tuesday,
+            "Wednesday": faculty.availability.wednesday,
+            "Thursday": faculty.availability.thursday,
+            "Friday": faculty.availability.friday
         },
         facultyFirst: faculty.first,
         facultyLast: faculty.last,
@@ -214,6 +218,8 @@ async function database_add_faculty(faculty)
     const result = await collection.insertOne(document);
 
     console.log(`A document was inserted with the _id: ${result.insertedId}`);
+
+    return result.insertedId;
 }
 
 // Function for updating a single entry
@@ -229,6 +235,8 @@ async function database_update_entry(type, query, new_value)
 {
     const database = client.db(db_name);
     const collection = database.collection(type);
+
+    console.log("new_value:", new_value);
 
     const update_doc =
     {
@@ -269,8 +277,9 @@ module.exports =
 {
     Request_Entry,
     Availability,
-    form_avail_string,
     Faculty_Entry,
+    num_to_bool,
+    database_to_id_object,
     database_get,
     database_add_request,
     database_add_faculty,

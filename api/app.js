@@ -55,12 +55,19 @@ app.put('/update-requests', (req, res) => {
 
 app.put('/update-faculty', (req, res) => {
 
-    const { query, new_value } = req.body;
+    var { query, new_value } = req.body;
 
     try
     {
         console.log(query);
         console.log(new_value);
+
+        query = {'_id': database.database_to_id_object(query._id)};
+
+        if ('availability' in new_value)
+        {
+            new_value.availability = database.num_to_bool(new_value.availability);
+        }
 
         database.database_update_entry("faculty", query, new_value);
 
@@ -95,11 +102,35 @@ app.put('/delete-requests', (req, res) => {
 
 });
 
-app.post('/add-faculty', (req, res) => {
+app.put('/delete-faculty', (req, res) => {
 
+    var query = req.body;
 
+    try
+    {
+        query = {'_id': database.database_to_id_object(query._id)};
 
+        database.database_delete_entry("faculty", query);
 
+        res.status(200).json({ message: 'Entry deleted successfully' });
+    }
+    catch (error)
+    {
+        console.log("ERROR: ", req.body);
+        console.error('Error deleting entry:', error);
+    }
+})
+
+app.get('/add-blank-faculty', (req, res) => {
+
+    new_entry = new database.Faculty_Entry("", "", "", "");
+
+    const returned_id = database.database_add_faculty(new_entry);
+
+    returned_id.then(function(result) {
+        console.log(result);
+        res.json(result);
+    });
 })
 
 
