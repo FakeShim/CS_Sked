@@ -3,7 +3,11 @@ import axios from 'axios';
 
 const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
-const AvailabilityTable = ({ users }) => {
+const AvailabilityTable = ({ user_prop }) => {
+
+  const [users, setUsers] = useState([]);
+
+  setUsers(user_prop);
 
   const handleSendEmail = async () => {
     const recip = 'dldillard@crimson.ua.edu'; // Replace with the recipient's email address
