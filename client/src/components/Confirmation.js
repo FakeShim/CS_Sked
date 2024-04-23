@@ -119,7 +119,7 @@ const handleConfirmRequest = async (id) => {
                 <td>
                   <select onChange={handleDateChange} value={selectedDateTime.date}>
                     <option value="">Select Date</option>
-                    {Object.keys(result.req).map(date => (
+                    {Object.keys(result.times).map(date => (
                       <option key={date} value={date}>{date}</option>
                     ))}
                   </select>
@@ -127,12 +127,12 @@ const handleConfirmRequest = async (id) => {
                 <td>
                   <select onChange={handleTimeChange} value={selectedDateTime.time}>
                     <option value="">Select Time</option>
-                    {selectedDateTime.date && result.req[selectedDateTime.date] ? (
-                      (Array.isArray(result.req[selectedDateTime.date]) ? 
-                        result.req[selectedDateTime.date].map((time, index) => (
+                    {selectedDateTime.date && result.times[selectedDateTime.date] ? (
+                      (Array.isArray(result.times[selectedDateTime.date]) ? 
+                        result.times[selectedDateTime.date].map((time, index) => (
                           <option key={index} value={time}>{time}</option>
                         )) : 
-                        <option value={result.req[selectedDateTime.date]}>{result.req[selectedDateTime.date]}</option>)
+                        <option value={result.times[selectedDateTime.date]}>{result.times[selectedDateTime.date]}</option>)
                     ) : (
                       <option value="">No Times Available</option>
                     )}
