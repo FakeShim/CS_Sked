@@ -93,7 +93,7 @@ app.post('/check-account', (req, res) => {
 
 const sendEmail = (recip, subject, body) => {
   //const command = `echo "${body}" | mail -s "${subject}" ${recip}`;
-  const command = `echo -e "Subject: ${subject}\n${body}" | ssmtp -f"devschedulercs495@outlook.com" -F"devschedulercs495@outlook.com" -v ${recip}`;
+  const command = `echo -e "To: ${recip}\nFrom: devschedulercs495@outlook.com\n\nSubject: ${subject}\n${body}" | ssmtp -f"devschedulercs495@outlook.com" -F"devschedulercs495@outlook.com" -v ${recip}`;
   exec(command, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error sending email: ${error.message}`);
