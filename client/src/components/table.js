@@ -46,7 +46,7 @@ const AvailabilityTable = ({ requests }) => {
         throw new Error('Failed to update entry');
       }
 
-      console.log(`Entry ${JSON.stringify(updatedEntry)} updated successfully`);
+      console.log(`Entry ${JSON.stringify(new_entry)} updated successfully`);
       // Optionally, you can update the local state or perform any other actions after successful update
     } catch (error) {
       console.error('Error updating entry:', error);
@@ -63,7 +63,7 @@ const AvailabilityTable = ({ requests }) => {
 
         var request = requests[idx];
 
-        addEntry({"new_value": request});
+        addEntry(request);
       }
     }
     else

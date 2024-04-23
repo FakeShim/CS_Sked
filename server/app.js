@@ -344,27 +344,30 @@ app.post('/faculty-availability', (req, res) => {
           const availableFaculty = compareAvailability(studentAvailability, result);
 
           var requests = []
-
-          for (var idx = 0; idx < availableFaculty.length; idx++)
+          if (Array.isArray(availableFaculty))
           {
-            var faculty = availableFaculty[idx];
+            for (var idx = 0; idx < availableFaculty.length; idx++)
+            {
+              var faculty = availableFaculty[idx];
 
-            console.log('faculty', faculty);
+              console.log('faculty', faculty);
 
-            var request = {
-              'facultyFirst': faculty.facultyFirst,
-              'facultyLast': faculty.facultyLast,
-              'studentFirst': studentAvailability.name.split(' ')[0],
-              'studentLast': studentAvailability.name.split(' ')[1],
-              'email': faculty.email,
-              'status': "Pending",
-              'times': faculty.times
-            } 
+              var request = {
+                'facultyFirst': faculty.facultyFirst,
+                'facultyLast': faculty.facultyLast,
+                'studentFirst': studentAvailability.name.split(' ')[0],
+                'studentLast': studentAvailability.name.split(' ')[1],
+                'email': faculty.email,
+                'status': "Pending",
+                'times': faculty.times
+              } 
 
-            console.log('request', request);
+              console.log('request', request);
 
-            requests.push(request);
+              requests.push(request);
+            }
           }
+          
 
           res.status(200).json(requests);
         });
