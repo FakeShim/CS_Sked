@@ -7,6 +7,8 @@ const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
 const Home = ({ loggedIn, email, setLoggedIn }) => {
 
+  const [users, setUsers] = useState([]);
+
   const navigate = useNavigate();
   if (!loggedIn) {
     console.log('blocking access to home')
@@ -35,8 +37,6 @@ const Home = ({ loggedIn, email, setLoggedIn }) => {
         console.error('Error:', error);
     })
   };
-
-  const [users, setUsers] = useState([]);
 
   const handleLogout = () => {
     if (loggedIn) {

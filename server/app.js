@@ -20,7 +20,9 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header('Access-Control-Allow-Credentials', true);
   next();
 });
 
@@ -233,42 +235,90 @@ app.get('/add-blank-faculty', (req, res) => {
 
 //function to compare the student's availability with the professor's availability
 function compareAvailability(studentAvailability, userData) {
-    let comparisonResults = [];
+    var availableFaculty = [];
 
-    // Loop through the userData
-    for (let user of userData) {
-        let matches = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            availability: []
-        };
+    console.log("userData", userData);
 
-        // Check each day in the user's availability
-        for (let availableDay of user.availability) {
-            // Check if the user is available on the same day as the student
-            if (studentAvailability[availableDay.day]) {
-                let studentTimes = studentAvailability[availableDay.day];
-                let matchingTimes = availableDay.times.reduce((acc, userTime, index) => {
-                    if (userTime && studentTimes.includes(index + 6 + ':00')) { // Adjust index based on time slots starting at 6:00 AM
-                        acc.push(index + 6 + ':00');
-                    }
-                    return acc;
-                }, []);
+    for (var idx = 0; idx < userData.length; idx++)
+    {
+      facultyMember = userData[idx];
 
-                // If there are matching times, add it to the matches object
-                if (matchingTimes.length > 0) {
-                    matches.availability.push({ day: availableDay.day, times: matchingTimes });
-                }
-            }
-        }
+      var date = Object.keys(studentAvailability.times)[0];
+      var day = date.split('-')[0];
 
-        // If there are matches, add it to the comparisonResults
-        if (matches.availability.length > 0) {
-            comparisonResults.push(matches);
-        }
+      console.log("facultyMember: ", facultyMember);
+      console.log("day: ", day)
+
+      var availability = facultyMember.availability[day];
+      var timeArray = studentAvailability.times[date];
+
+      timesObject = {[date]: []};
+
+      var isAvailable = false;
+
+      for (jdx = 0; jdx < timeArray.length; jdx++)
+      {
+          var suffix = timeArray[jdx].split(' ')[1];
+          var timeNum = parseInt(timeArray[jdx].split(':')[0]);
+          if (suffix === "PM" && timeNum != 12)
+          {
+              timeNum += 12;
+          }
+          console.log("timeNum:", timeNum);
+          console.log("availability:", availability);
+          timeNum -= 6;
+          if (availability[timeNum])
+          {
+              isAvailable = true;
+              timesObject[date].push(timeArray[jdx])
+          }
+      }
+      if (isAvailable)
+      {
+          console.log("isAvailable");
+          var availableFacultyMember = {"firstName": facultyMember.facultyFirst, "lastName": facultyMember.facultyLast, "email": facultyMember.email, "Times": timesObject};
+          availableFaculty.push(availableFacultyMember);
+      }
     }
-    return comparisonResults;
+  
+    // Loop through the userData
+    // for (var idx = 0; idx < userData.length; idx++) {
+    //     var user = userData[idx];
+
+    //     let matches = {
+    //         firstName: user.firstName,
+    //         lastName: user.lastName,
+    //         email: user.email,
+    //         availability: []
+    //     };
+
+    //     // Check each day in the user's availability
+    //     for (var jdx = 0; jdx < user.availability.length; jdx++) {
+    //         console.log(studentAvailability);
+    //         // Check if the user is available on the same day as the student
+    //         if (studentAvailability[availableDay.day]) {
+    //             let studentTimes = studentAvailability[availableDay.day];
+    //             let matchingTimes = availableDay.times.reduce((acc, userTime, index) => {
+    //                 if (userTime && studentTimes.includes(index + 6 + ':00')) { // Adjust index based on time slots starting at 6:00 AM
+    //                     acc.push(index + 6 + ':00');
+    //                 }
+    //                 return acc;
+    //             }, []);
+
+    //             // If there are matching times, add it to the matches object
+    //             if (matchingTimes.length > 0) {
+    //                 matches.availability.push({ day: availableDay.day, times: matchingTimes });
+    //             }
+    //         }
+    //     }
+
+    //     // If there are matches, add it to the comparisonResults
+    //     if (matches.availability.length > 0) {
+    //         comparisonResults.push(matches);
+    //     }
+    // }
+
+    return availableFaculty;
 }
 
 app.post('/faculty-availability', (req, res) => {
@@ -277,8 +327,11 @@ app.post('/faculty-availability', (req, res) => {
     //compare the student availability with the mockUsersData
     try {
         facultyData = database.database_get('faculty');
-        const comparisonResults = compareAvailability(studentAvailability, facultyData);
-        res.status(200).json(comparisonResults);
+        facultyData.then(function(result) {
+          console.log(result);
+          const comparisonResults = compareAvailability(studentAvailability, result);
+          res.status(200).json(comparisonResults);
+        });
     } catch (error) {
         res.status(500).json({ error: 'An error occurred while fetching faculty availability' });
     }
