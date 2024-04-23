@@ -1,9 +1,11 @@
 FROM node:20.11.0-slim
 
-WORKDIR /auth-server
+WORKDIR /client
 
 COPY . .
 
 RUN npm install
 
-CMD ["node", "app.js"]
+EXPOSE 80
+
+CMD ["npm", "start"]

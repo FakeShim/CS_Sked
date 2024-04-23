@@ -2,7 +2,7 @@ const process = require('process')
 const { MongoClient } = require('mongodb');
 const { ObjectId } = require ('bson');
 
-yourConnectionURI = "mongodb://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@data:27017/?retryWrites=true&w=majority"
+yourConnectionURI = "mongodb+srv://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@skedcluster.rr2li5f.mongodb.net/?retryWrites=true&w=majority"
 
 const client = new MongoClient(yourConnectionURI);
 
