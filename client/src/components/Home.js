@@ -60,7 +60,7 @@ const Home = ({ loggedIn, email, setLoggedIn }) => {
         <StudentForm onSubmit={handleFormSubmit} />
       </div>
       <div className="student-table">
-        { users ? (<AvailabilityTable users={users} />) : (<></>)}
+        { users !== undefined ? (<AvailabilityTable users={users} />) : (<></>)}
       </div>
     </div>
     </>
