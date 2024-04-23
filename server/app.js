@@ -30,7 +30,7 @@ app.get('/', (_req, res) => {
 app.post('/auth', async (req, res) => {
   const { email, password } = req.body;
 
-  const user = database.database_login({ email });
+  const user = await database.database_login({ email });
 
   if (!user) {
     bcrypt.hash(password, 10, async (err, hash) => {

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
+
 const AvailabilityTable = ({ users }) => {
 
   const handleSendEmail = async () => {
@@ -8,7 +10,7 @@ const AvailabilityTable = ({ users }) => {
     const subject = 'From student req'; // Replace with the subject of the email
     const body = 'This is the body'; // Replace with the desired email body
     try {
-      await axios.get(`http://localhost:3080/send-email?recip=${encodeURIComponent(recip)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+      await axios.get(`${backend_host}/send-email?recip=${encodeURIComponent(recip)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
       console.log('Email sent successfully');
     } catch (error) {
       console.error('Error sending email:', error);

@@ -171,6 +171,7 @@ async function database_login(email)
     const collection = database.collection('login');
 
     login = await collection.findOne(email); 
+    console.log('login:', login);
 
     return login;
 }
