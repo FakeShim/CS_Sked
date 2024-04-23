@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
-const AvailabilityTable = ({ users }) => {
+const AvailabilityTable = ({ users, student }) => {
 
   const handleSendEmail = async (recip) => {
     const subject = 'From student requests'; // Replace with the subject of the email
@@ -29,13 +29,49 @@ const AvailabilityTable = ({ users }) => {
     }));
   };
 
+  const addEntry = async (new_entry) =>
+  {
+    try {
+      const response = await fetch(`${backend_host}/add-request`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(new_entry)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update entry');
+      }
+
+      console.log(`Entry ${JSON.stringify(updatedEntry)} updated successfully`);
+      // Optionally, you can update the local state or perform any other actions after successful update
+    } catch (error) {
+      console.error('Error updating entry:', error);
+    }
+  }
+
   const handleSubmit = () => {
     if (Array.isArray(users))
     {
-      for (idx = 0; idx < users.length; idx++)
+      for (var idx = 0; idx < users.length; idx++)
       {
         handleSendEmail(users[idx].email);
         setMessage('Request sent to: ', users[idx].email);
+
+        var user = users[idx];
+
+        const new_value = {
+          'facultyFirst': user.firstName, 
+          'facultyLast': user.lastName, 
+          'studentFirst': student.name.split()[0],
+          'studentLast': student.name.split()[1],
+          'email':email,
+          'status':"Pending" ,
+          'times': user.Times
+        };
+
+        addEntry({"new_value":new_value});
       }
     }
     else

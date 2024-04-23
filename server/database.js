@@ -214,10 +214,10 @@ async function database_add_request(request)
 
     const document =
     {
-        date: request.date,
         facultyFirst: request.faculty_first,
         facultyLast: request.faculty_last,
         status: request.status,
+        email: request.email,
         studentFirst: request.student_first,
         studentLast: request.student_last,
         time: request.time

@@ -344,6 +344,24 @@ app.post('/faculty-availability', (req, res) => {
     }
 });
 
+app.post('/add-request', (req, res) => {
+  var new_value = req.body;
+
+    try
+    {
+        console.log("new_value: ", new_value);
+
+        database.database_add_request(new_value);
+
+        res.status(200).json({ message: 'Entry updated successfully' });
+    }
+    catch (error)
+    {
+        console.log("ERROR: ", req.body);
+        console.error('Error updating entry:', error);
+    }
+})
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 })

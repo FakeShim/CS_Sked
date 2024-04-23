@@ -60,7 +60,7 @@ const Home = ({ loggedIn, email, setLoggedIn }) => {
         <StudentForm onSubmit={handleFormSubmit} />
       </div>
       <div className="student-table">
-        <AvailabilityTable users={users} />
+        <AvailabilityTable users={users} student={studentData}/>
       </div>
     </div>
     </>
