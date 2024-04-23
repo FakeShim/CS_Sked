@@ -55,37 +55,69 @@ const AvailabilityTable = ({ users }) => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, userIndex) => (
+        {Array.isArray(users) ? (
+          users.map((user, userIndex) => (
             <tr key={userIndex}>
               <td>{user.firstName} {user.lastName}</td>
               <td>{user.email}</td>
               <td>
-                  <ul>
-                      {user.availability.map((avail, availIndex) => (
-                      <li key={availIndex}>
-                          {`${avail.day}: `}
-                          {avail.times.map((time, timeIndex) => {
-                            // Construct a unique ID for each time slot
-                            const slotId = `${user.email}-${avail.day}-${timeIndex}`;
-                            return (
-                              <div key={timeIndex} style={{ display: 'inline-block', marginRight: '10px' }}>
-                                {`${time.Start} - ${time.End}`}
-                                <input
-                                  type="checkbox"
-                                  style={{ marginLeft: '5px' }}
-                                  checked={!!checkedSlots[slotId]}
-                                  onChange={() => toggleChecked(slotId)}
-                                />
-                                {timeIndex < avail.times.length - 1 ? ', ' : ''}
-                              </div>
-                            );
-                          })} 
-                      </li>
-                      ))}
-                  </ul>
+                <ul>
+                  {user.availability.map((avail, availIndex) => (
+                    <li key={availIndex}>
+                      {`${avail.day}: `}
+                      {avail.times.map((time, timeIndex) => {
+                        // Construct a unique ID for each time slot
+                        const slotId = `${user.email}-${avail.day}-${timeIndex}`;
+                        return (
+                          <div key={timeIndex} style={{ display: 'inline-block', marginRight: '10px' }}>
+                            {`${time.Start} - ${time.End}`}
+                            <input
+                              type="checkbox"
+                              style={{ marginLeft: '5px' }}
+                              checked={!!checkedSlots[slotId]}
+                              onChange={() => toggleChecked(slotId)}
+                            />
+                            {timeIndex < avail.times.length - 1 ? ', ' : ''}
+                          </div>
+                        );
+                      })}
+                    </li>
+                  ))}
+                </ul>
               </td>
             </tr>
-          ))}
+          ))
+        ) : (
+          <tr>
+            <td>{users.firstName} {users.lastName}</td>
+            <td>{users.email}</td>
+            <td>
+              <ul>
+                {users.availability.map((avail, availIndex) => (
+                  <li key={availIndex}>
+                    {`${avail.day}: `}
+                    {avail.times.map((time, timeIndex) => {
+                      // Construct a unique ID for each time slot
+                      const slotId = `${users.email}-${avail.day}-${timeIndex}`;
+                      return (
+                        <div key={timeIndex} style={{ display: 'inline-block', marginRight: '10px' }}>
+                          {`${time.Start} - ${time.End}`}
+                          <input
+                            type="checkbox"
+                            style={{ marginLeft: '5px' }}
+                            checked={!!checkedSlots[slotId]}
+                            onChange={() => toggleChecked(slotId)}
+                          />
+                          {timeIndex < avail.times.length - 1 ? ', ' : ''}
+                        </div>
+                      );
+                    })}
+                  </li>
+                ))}
+              </ul>
+            </td>
+          </tr>
+        )}
         </tbody>
       </table>
       <div className="submit-container">
