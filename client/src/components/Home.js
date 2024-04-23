@@ -7,9 +7,8 @@ const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
 const Home = ({ loggedIn, email, setLoggedIn }) => {
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([{"firstName":"", "lastName":"", "email":""}]);
 
-  setUsers({"firstName":"", "lastName":"", "email":"");
 
   const navigate = useNavigate();
   if (!loggedIn) {
