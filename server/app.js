@@ -278,7 +278,11 @@ function compareAvailability(studentAvailability, userData) {
         if (isAvailable)
         {
             console.log("isAvailable");
-            var availableFacultyMember = {"firstName": facultyMember.facultyFirst, "lastName": facultyMember.facultyLast, "email": facultyMember.email, "times": timesObject};
+            var availableFacultyMember = {
+              'facultyFirst': facultyMember.facultyFirst,
+              'facultyLast': facultyMember.facultyLast,
+              "email": facultyMember.email, 
+              "times": timesObject};
             availableFaculty.push(availableFacultyMember);
         }
       }
@@ -345,15 +349,20 @@ app.post('/faculty-availability', (req, res) => {
           {
             var faculty = availableFaculty[idx];
 
+            console.log('faculty', faculty);
+
             var request = {
               'facultyFirst': faculty.facultyFirst,
               'facultyLast': faculty.facultyLast,
-              'studentFirst': studentAvailability.name.split()[0],
-              'studentLast': studentAvailability.name.split()[1],
+              'studentFirst': studentAvailability.name.split(' ')[0],
+              'studentLast': studentAvailability.name.split(' ')[1],
               'email': faculty.email,
               'status': "Pending",
               'times': faculty.times
             } 
+
+            console.log('request', request);
+
             requests.push(request);
           }
 

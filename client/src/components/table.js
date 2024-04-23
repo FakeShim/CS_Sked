@@ -5,6 +5,8 @@ const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
 const AvailabilityTable = ({ requests }) => {
 
+  console.log("requests = ", requests);
+
   const handleSendEmail = async (recip) => {
     const subject = 'From student requests'; // Replace with the subject of the email
     const body = 'A request to meet with you has been sent. Please see the following link on the University domain to confirm: http://cs495-spring2024-11.ua.edu/Confirmation';
