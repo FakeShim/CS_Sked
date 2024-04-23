@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com/'
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -59,7 +59,7 @@ const Login = (props) => {
   };
   // Call the server API to check if the given email ID already exists
 const checkAccountExists = (callback) => {
-  fetch(`http://${backend_host}:3080/check-account`, {
+  fetch(`http://${backend_host}/check-account`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const checkAccountExists = (callback) => {
 
 // Log in a user using email and password
 const logIn = () => {
-  fetch(`http://${backend_host}:3080/auth`, {
+  fetch(`http://${backend_host}/auth`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

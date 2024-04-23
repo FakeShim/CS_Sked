@@ -8,7 +8,7 @@ import Faculty from './components/Faculty';
 import Requests from './components/Requests';
 import Confirmation from './components/Confirmation';
 
-const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com/'
+const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -30,7 +30,7 @@ function App() {
     // }
 
     // If the token exists, verify it with the auth server to see if it is valid
-    fetch(`http://${backend_host}:3080/verify`, {
+    fetch(`http://${backend_host}/verify`, {
             method: "POST",
             headers: {
                 'jwt-token': user.token
