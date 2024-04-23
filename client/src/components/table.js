@@ -5,10 +5,9 @@ const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
 const AvailabilityTable = ({ users }) => {
 
-  const handleSendEmail = async () => {
-    const recip = 'dldillard@crimson.ua.edu'; // Replace with the recipient's email address
-    const subject = 'From student req'; // Replace with the subject of the email
-    const body = 'This is the body'; // Replace with the desired email body
+  const handleSendEmail = async (recip) => {
+    const subject = 'From student requests'; // Replace with the subject of the email
+    const body = 'A request to meet with you has been sent. Please see the following link on the University domain to confirm: http://cs495-spring2024-11.ua.edu/Confirmation';
     try {
       await axios.get(`${backend_host}/send-email?recip=${encodeURIComponent(recip)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
       console.log('Email sent successfully');
@@ -31,16 +30,17 @@ const AvailabilityTable = ({ users }) => {
   };
 
   const handleSubmit = () => {
-    //check if any time slot is selected
-    //submit button for email
-    const isAnyTimeSelected = Object.values(checkedSlots).some((isChecked) => isChecked);
-    
-    if (!isAnyTimeSelected) {
-      setMessage('Please select at least one time slot.');
+    if (Array.isArray(users))
+    {
+      for (idx = 0; idx < users.length; idx++)
+      {
+        handleSendEmail(users[idx].email);
+        setMessage('Request sent to: ', users[idx].email);
+      }
     }
-    else {
-      handleSendEmail();
-      setMessage('Request Sent');
+    else
+    {
+      console.log("users not initialized")
     }
   };
 

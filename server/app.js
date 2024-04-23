@@ -235,52 +235,59 @@ app.get('/add-blank-faculty', (req, res) => {
 
 //function to compare the student's availability with the professor's availability
 function compareAvailability(studentAvailability, userData) {
-    var availableFaculty = [];
 
-    console.log("userData", userData);
+  try {
+      var availableFaculty = [];
 
-    for (var idx = 0; idx < userData.length; idx++)
-    {
-      facultyMember = userData[idx];
+      console.log("userData", userData);
 
-      var date = Object.keys(studentAvailability.times)[0];
-      var day = date.split('-')[0];
-
-      console.log("facultyMember: ", facultyMember);
-      console.log("day: ", day)
-
-      var availability = facultyMember.availability[day];
-      var timeArray = studentAvailability.times[date];
-
-      timesObject = {[date]: []};
-
-      var isAvailable = false;
-
-      for (jdx = 0; jdx < timeArray.length; jdx++)
+      for (var idx = 0; idx < userData.length; idx++)
       {
-          var suffix = timeArray[jdx].split(' ')[1];
-          var timeNum = parseInt(timeArray[jdx].split(':')[0]);
-          if (suffix === "PM" && timeNum != 12)
-          {
-              timeNum += 12;
-          }
-          console.log("timeNum:", timeNum);
-          console.log("availability:", availability);
-          timeNum -= 6;
-          if (availability[timeNum])
-          {
-              isAvailable = true;
-              timesObject[date].push(timeArray[jdx])
-          }
+        facultyMember = userData[idx];
+
+        var date = Object.keys(studentAvailability.times)[0];
+        var day = date.split('-')[0];
+
+        console.log("facultyMember: ", facultyMember);
+        console.log("day: ", day)
+
+        var availability = facultyMember.availability[day];
+        var timeArray = studentAvailability.times[date];
+
+        timesObject = {[date]: []};
+
+        var isAvailable = false;
+
+        for (jdx = 0; jdx < timeArray.length; jdx++)
+        {
+            var suffix = timeArray[jdx].split(' ')[1];
+            var timeNum = parseInt(timeArray[jdx].split(':')[0]);
+            if (suffix === "PM" && timeNum != 12)
+            {
+                timeNum += 12;
+            }
+            console.log("timeNum:", timeNum);
+            console.log("availability:", availability);
+            timeNum -= 6;
+            if (availability[timeNum])
+            {
+                isAvailable = true;
+                timesObject[date].push(timeArray[jdx])
+            }
+        }
+        if (isAvailable)
+        {
+            console.log("isAvailable");
+            var availableFacultyMember = {"firstName": facultyMember.facultyFirst, "lastName": facultyMember.facultyLast, "email": facultyMember.email, "Times": timesObject};
+            availableFaculty.push(availableFacultyMember);
+        }
       }
-      if (isAvailable)
-      {
-          console.log("isAvailable");
-          var availableFacultyMember = {"firstName": facultyMember.facultyFirst, "lastName": facultyMember.facultyLast, "email": facultyMember.email, "Times": timesObject};
-          availableFaculty.push(availableFacultyMember);
-      }
-    }
-  
+      return availableFaculty;
+  }
+  catch (error)
+  {
+      console.log("error")
+  }
     // Loop through the userData
     // for (var idx = 0; idx < userData.length; idx++) {
     //     var user = userData[idx];
@@ -318,7 +325,7 @@ function compareAvailability(studentAvailability, userData) {
     //     }
     // }
 
-    return availableFaculty;
+
 }
 
 app.post('/faculty-availability', (req, res) => {
