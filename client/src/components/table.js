@@ -5,9 +5,7 @@ const backend_host = 'https://cs495-scheduler-3d74a13dd60d.herokuapp.com'
 
 const AvailabilityTable = ({ user_prop }) => {
 
-  const [users, setUsers] = useState([]);
-
-  setUsers(user_prop);
+  const [users, setUsers] = useState(user_prop);
 
   console.log(users);
 
