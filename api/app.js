@@ -39,17 +39,25 @@ app.get('/get-request-by-email', (req, res) => {
 });
 
 app.put('/update-requests', (req, res) => {
-    const requestID = req.body.id;
-    const { status, req: selectedTime } = req.body;
+    var { query, update } = req.body;
 
-    try {
-        database.database_update_entry("requests", { _id: requestID }, { status, req: selectedTime });
+    try
+    {
+        console.log(query);
+        console.log(update);
 
-        res.status(200).json({ message: 'Request updated successfully' });
+        query = {'_id': database.database_to_id_object(query._id)};
+
+        database.database_update_entry("requests", query, update);
+
+        res.status(200).json({ message: 'Confirmation Entry updated successfully' });
     }
-    catch (error) {
-        console.error('Error updating request:', error);
+    catch (error)
+    {
+        console.log("ERROR: ", req.body);
+        console.error('Error confirming entry:', error);
     }
+
 });
 
 

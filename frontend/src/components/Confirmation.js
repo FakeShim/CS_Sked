@@ -1,5 +1,8 @@
 // Confirmation.js
 import React, { useState } from 'react';
+import './styles.css';
+
+const backend_host = 'localhost'
 
 const Confirmation = () => {
   // State variables for storing search results and updated results
@@ -45,7 +48,7 @@ const handleConfirmRequest = async (id) => {
     update = {"query":query, "new_value":payload};
 
     // Send a PUT request to confirm the request with the backend and update the entry
-    const response = await fetch(`/api/update/${id}`, {
+    const response = await fetch(`http://${backend_host}:443/update-faculty`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
