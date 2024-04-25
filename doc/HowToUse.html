@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>How To Use</title>
+  </head>
+  <body>
+    <h1>How to use each feature - Jared Burns:</h1>
+    <ul>    
+        <li>Login</li>
+        <li>Add/Edit/Delete Faculty</li>
+        <li>Create Request</li>
+        <li>Delete Request</li>
+        <li>Send Confirmation Emails</li>
+        <li>Search comfirmations</li>
+        <li>Accept Confirmations</li>
+
+    </ul>
+    <p>
+ The first feature is Logging in. Fill out the form on the page with an email and password and hit submit. If the email and password meet the requirements they will be passed a JSON string to the backend through /auth. This then checks if the database base for the login information is empty. If it is, it inserts the new email and a hash of the password into the database. If it is not empty it searches for the given email and compares the hashed passwords. Note only one user can be created without externally editing the database. On a success a Jwt token is generated for the session that is used when verifying the login on other pages. This verification is done in the Client App.js and checks if the user is logged in before accessing each page. 
+    </p>
+    <p>Once logged the user is greeted with the request creation page. From here the user can Logout, navigate using the banner, fill out the request form, and send confirmation emails to professors. To create a request fill out the form and select the time and dates available via the buttons provided. Then press submit below. This queries the database for faculty available at that date and time and displays them on the table to the right.</p>
+    <p>Upon pressing the submit button under the available faculty table the requests are created and added to the request table in the database, emails are then generated using their information and sent out to them with a link to the confirmation page.</p>
+    <p>When faculty receive the email and click the link they are directed to the confirmation page. From here they input their email in the form on the left side of the screen this will query the database and display their pending requests. They can then select the date and time for the request that they are accepting and then submit. This will update the Requests in the request table.</p>
+    <p>To view pending and accepted requests navigate to the request page using the banner. From here the user is able to see all requests. They are also able to delete requests using the delete request button.</p>
+    <p>To add, edit, remove a faculty member navigate to the faculty page. From here to add an entry click “Add Entry”. Then populate the information fields and click on the days of the week to select times. To select multiple times hold the Ctrl key when selecting. Then press submit and the table and database will be updated. To Edit or remove a faculty member press the edit button next to their entry. From here you can edit the information and hit submit or press remove and the table and database will be updated. </p>
+    <p>To navigate to the Request creation page and Logout press on the logo in the navigation banner then press logout.</p>
+
+  </body>
+</html>
