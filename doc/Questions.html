@@ -4,7 +4,7 @@
     <style>
         body {
             background-color: #fff; /* Light background color */
-            color: #333; /* Default text color */
+            color: black; /* Default text color */
             font-family: 'Times New Roman', Times, serif; /* Example font */
         }
 
@@ -46,12 +46,12 @@
                     <ul>
                         <li>There are three collections: faculty, login, and requests
                             <ul>
-                                <li>In faculty, there are 5 fields: id, email, availability (which is an object), faculty's first name, and faculty's last name</li>
+                                <li>In the faculty collection, there are 5 fields: id, email, availability (which is an object), faculty's first name, and faculty's last name</li>
                                 <li>The availability object should have 5 arrays named after the days of the week. In those arrays, you would need to fill it in with 12 boolean values. They represent the empty time slots that a faculty member will be available for.</li>
-                                <li>In login, there are 3 fields: id, email, and the hashed password. However, there is no real way to really create a new account as addressed in the modify page</li>
+                                <li>In the login collection, there are 3 fields: id, email, and the hashed password. However, there is no real way to really create a new account after the first time as addressed in the modify page in the bugs section</li>
                                 <li>In requests, there should be 8 fields: id, faculty's first name, faculty's last name, student's first name, student's last name, email, status, and times (an object)
                                     <ul>
-                                        <li>Times should be an array of strings which holds the times</li>
+                                        <li>Times should have an array of strings which holds the times for the days selected</li>
                                     </ul>
                                 </li>
                             </ul>
