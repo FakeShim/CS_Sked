@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Modify/Extend Software</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    pre, code {
+        background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>How to Modify/Extend Software</h1>
+  <p><strong>Author:</strong> David Dillard</p>
+  <p><a href="./doc.html">Return to toplevel documentation page.</a></p>
+  <h2>Details</h2>
+
+  <h3>Compiling/Languages:</h3>
+  <p>This project uses one primary language, javascript. The frontend (<code>/client/</code>) however,
+  uses the React framework, which is quite different to standard javascript. The client side and server (<code>/server/</code>)
+  side of the project can be compiled using docker:</p>
+  <p>The following command will build the docker images:<br>
+  <code>CS_Sked$ DB_USERNAME=&lt;database username&gt; DB_PASSWORD=&lt;database password&gt; docker-compose build</code></p>
+  <p>The following command will compile the code within the docker images and run:<br>
+  <code>CS_Sked$ DB_USERNAME=&lt;database username&gt; DB_PASSWORD=&lt;database password&gt; docker-compose up</code></p>
+
+  <h3>Caveats</h3>
+  <p>Some important caveats should be noted with this compilation. Our project is currently
+  designed to integrate with <a href="https://www.heroku.com/platform">Heroku</a>, a server hosting platform, and
+  MongoDB atlas, a mongodb cloud platform.</p>
+  <p>Within the code there are some important variables to take note of:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Variable</th>
+        <th>Files</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>backend_host</td>
+        <td>client/src/: App.js <br> client/src/components: Confirmation.js Faculty.js Home.js Login.js Requests.js table.js</td>
+        <td>Points to the location of the server the backend is on, in the case of a local build, this should be localhost:443</td>
+      </tr>
+      <tr>
+        <td>yourConnectionURI</td>
+        <td>server/database.js</td>
+        <td>Points to the location of the mongodb database to use.</td>
+      </tr>
+      <tr>
+        <td>AuthUser &amp; AuthPass</td>
+        <td>server/my.conf</td>
+        <td>These refer to the user email and password of the email requests will be sent from.</td>
+      </tr>
+      <tr>
+        <td>command</td>
+        <td>server/app.js: line 81</td>
+        <td>This command is used to send an email; References to devschedulercs495@outlook.com should be replaced with an email on the outlook smtp server from which email will be sent.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Dependencies</h3>
+  <p>Dependencies are handled entirely by docker. In the case that one does not wish to use docker, however, the dependencies can
+  be found within server/package.json and client/package.json. These dependencies can be installed by running <code>npm install</code>
+  within the respective directories and will generate a <code>node_modules</code> directory for each. To run each locally for whatever purpose,
+  after installing dependencies <code>node app.js</code> can be called within the server directory to start the backend, and <code>npm start</code> can be
+  called in the client directory to start the frontend.</p>
+
+  <h3>Automated builds</h3>
+  <p>Builds are currently automated on the Heroku server, where docker images are built, pushed, and released to the Heroku registry.
+  This is specific to our Heroku site, but for migration this can be done by following the tutorial found <a href="https://devcenter.heroku.com/articles/container-registry-and-runtime">here</a>.</p>
+  <p>In summary, one must first install the heroku CLI found <a href="https://devcenter.heroku.com/articles/heroku-cli#install-the-heroku-cli">here</a>.
+  After this is installed, the developer must call <code>heroku login</code>, which will redirect them to heroku to login. Afterwards, they must call
+  <code>heroku container:login</code> to login to the heroku docker container registry. After this is done, the developer can call
+  <code>heroku container:push --recursive</code> in the top-level directory (CS_Sked). This will build and push the images described by the sublevel Dockerfiles
+  to the local Heroku Docker registry. Note that in the case of multiple applications on the same Heroku account, the <code>--app=&lt;app_name&gt;</code> flag
+  can be used, i.e. <code>heroku container:push --recursive --app=cs495-scheduler</code>.</p>
+  <p>After this is done, <code>heroku container:release web</code> will deploy the container to the remote Docker registry on heroku and run it (app can be specified
+  using the same flag as before here).</p>
+
+  <h3>Backlog</h3>
+  <p>Below you will find the remaining backlog items that should be addressed at earliest convenience:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Issue</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Email cleanup</td>
+        <td>The current email body and subject are improperly formatted. It would be nice to have the email formatted in a way such that it informs the faculty member to which it is sent the details of the related request, i.e. student name, requested time and date, and details about the student.</td>
+      </tr>
+      <tr>
+        <td>Hosting migration</td>
+        <td>Hosting is being done on accounts owned by the current maintainers. For security purposes these should be migrated. This includes MongoDB Atlas, Heroku, and the email address being used to send requests to faculty members.</td>
+      </tr>
+      <tr>
+        <td>Beautify site</td>
+        <td>This describes an overall need to beautify the UI of the web-app as a whole. Much of this effort will involve CSS formatting.</td>
+      </tr>
+      <tr>
+        <td>Student input overhaul</td>
+        <td>The student input fields in client/student.js include fields that are not being used, namely the student's email and hometown. The necessity of these fields should be discussed and considered. Also consider adding an "extra details" field so that faculty members can know more about the nature of the student's meeting request.</td>
+      </tr>
+      <tr>
+        <td>Choose faculty logic</td>
+        <td>Currently the system sends requests to all available faculty. The user should be able to select which faculty receives the request. This should preferrably include a "select all/deselect all" button.</td>
+      </tr>
+      <tr>
+        <td>Create reminder logic</td>
+        <td>One of the requirements of this project was to add a system to remind professors of un-addressed requests. Logic should be added to either allow the admin to manually send reminder emails to professors with pending requests, or better yet a system to automatically remind professors within a certain time frame to be decided.</td>
+      </tr>
+      <tr>
+        <td>Address bugs</td>
+        <td>Go through the current bug list and either address bugs or create new tickets if the work is substantial</td>
+      </tr>
+      <tr>
+        <td>Change navbar home logic</td>
+        <td>Clicking on the icon in the navbar returns the user to home, change this to its own Home button on the navbar</td>
+      </tr>
+      <tr>
+        <td>Add more robust login logic</td>
+        <td>The user has no way of recovering the password or creating new accounts, these should be added.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Migration details</h3>
+  <p>As far as we currently know, the backend needs to be hosted on a different platform than the frontend. More specifically, the frontend could not POST/GET from the backend when both
+  were hosted on the server provided by OIT. In case it helps future developers, React applications run on the browser that is displaying the web app, so <code>localhost:port</code> refers to the
+  localhost of the device the browser is running on, NOT the device the React app is built on.</p>
+  <p>The frontend is currently hosted on the server provided by OIT. This server will likely be taken down after the spring 2024 semester ends. The frontend can be run anywhere, however, as
+  long as the Heroku hosting is still active. This Heroku hosting should be moved to a server not owned by students, but regardless it will still work.</p>
+  <p>The MongoDB Atlas cloud is currently tied to our team's emails and passwords. Because of this, the Heroku app is given access to the database, but the username and password will not be
+  included in this documentation. If the developer wishes to move the backend elsewhere, they should create their own MongoDB database and change the access URI to refer to this new database.
+  This URI can be found on the Overview page on a MongoDB Atlas database. In the case that the developer does not wish to use MongoDB Atlas, there are other options. For one, this could be
+  added to the docker-compose.js to create a local MongoDB container:
+  <code><pre>
+    services:
+        ...
+
+        data:
+        build: ./mongo
+        restart: always
+        ports:
+            - "27017:27017"
+        volumes:
+            - dbdata:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+            MONGO_INITDB_DATABASE: "scheduler"
+
+    volumes:
+        dbdata:
+  </pre></code>
+  If this is used instead, note that the database will not persist if the docker volume is deleted accidentally. Also in this case, the following URI should be used:
+  <code>yourConnectionURI = "mongodb://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@data:27017/?retryWrites=true&w=majority"</code>
+  The schema of this new database should match that of the current one or references should be changed:<br>
+  Database name: "scheduler", although this can be changed by changing the <code>db_name</code> variable in server/database.js<br>
+  Collections: "faculty", "login", "requests"</p>
+  <p>NOTE: These collections will be created and filled by the functions in server/database.js, specifically faculty will be created and filled by the <code>database_add_faculty</code> function,
+  requests will be created and filled by the <code>database_add_request</code> function, and login will be created and filled by the <code>insert_user</code> function.</p>
+
+  <h3>Known bugs</h3>
+  <p>Below is a list of known bugs and possible fixes:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Bug</th>
+        <th>Proposed fix</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>As described in the backlog, the "Email" and "Hometown" fields in the student table are unused.</td>
+        <td>Either remove this fields from the UI, or add entries for both to the database schema</td>
+      </tr>
+      <tr>
+        <td>In the requests table displayed by RequestsTable.js, the delete button only deletes the top entry, not the entry specified.</td>
+        <td>Change the handleDelete function in Requests.js to properly delete the specified entry.</td>
+      </tr>
+      <tr>
+        <td>On both the Requests page and the Confirmation page, the display is not updated with changes unless refreshed</td>
+        <td>Update the frontend requests array when values are updated and delete entries from the array when requests are deleted.</td>
+      </tr>
+      <tr>
+        <td>If a Faculty entry is added and not filled, a null entry is added to the faculty database, crashing the frontend.</td>
+        <td>Delete empty entries from the database instead of attempting to display them.</td>
+      </tr>
+      <tr>
+        <td>Emails are always sent to the 'Junk' folder</td>
+        <td>Fix the formatting of the emails so that they are not flagged as suspicious by Outlook</td>
+      </tr>
+      <tr>
+        <td>Refreshing the page returns the user to the Home page regardless of their position</td>
+        <td>Login logic currently redirects to the Login page to check the login token and then redirects to Home.js when the token is valid. Either call this logic on every page or store the current page so that the Login page redirects to the page the user is on and not always the Home page</td>
+      </tr>
+    </tbody>
+  </table>
+  <h4>Testing</h4>
+  <p>Automated testing does not currently work, however efforts have been made. These efforts can be seen on the "Testing" branch in <code>client/src/components/tests</code> on the github found <a href="https://github.com/FakeShim/CS_Sked/tree/Testing">here</a>.</p>
+  <p>Here are some manual tests that can be run. A future developer will likely wish to extend these tests to encompass all facets of the project.
+    <pre>
+      Login
+      Test for invalid email
+       - Success: Will wait on validity of password
+       - Failure: Prints a message
+      Test for invalid password
+       - Success: Wait on validitiy of email
+       - Failure: Prints a message
+      Entering correct email and password: Goes to the main page
+      Main Page
+      Entering Name (first and last)
+       - Including middle name: only uses first name and middle name
+       - Success: Will separate first and last name for the request entry
+      Submit when there's no professors
+       - Success: There will be no email to send to
+      Faculty
+      Test to see if you can add an entry to the database
+       - Success: The database has included the new entry and the table shows the new entry
+      Test the edit function to the database
+       - Success: The database reflects the new changes and table shows the new changes
+      Test email sent
+       - Sucess: The email is sent to the recepient
+      Requests
+      Test the requests by deleting the request
+       - Success: The request will delete the entry off the table in the webpage, and delete it off the database
+      Confirmation
+      Test to see if you confirm the right times
+       - Success: The requests will reflect the times of the confirmation by the professor and the status will change to accepted
+    </pre>
+  </p>
+  <h4>Stylistic Decisions</h4>
+  <p>Styling was not of great importance in this project, but it would likely benefit a future developer to standardize the formatting of this code presented.
+    Most notably, CamelCase and snake_case are used interchangeably, as different project members had different preferences. Indentation could also be improved in
+    some areas; HTML tends to use 2 spaces while javascript uses 4. Because React uses JSX, a similar format to HTML, there is mixed indentation within the React
+    code that could be standardized.
+  </p>
+</body>
+</html>

@@ -7,14 +7,12 @@ body {
 #purpose {
     width: 50%;
     margin: auto;
-    padding: 100px;
     text-align: center;
 }
 
 #links {
     width: 50%;
     margin: auto;
-    padding: 250px;
     text-align: center;
 }
 
@@ -33,7 +31,6 @@ body {
     text-align: left;
 }
 
-/* Additional styling for h2 and p tags */
 .member-info h2 {
     margin: 0;
 }
