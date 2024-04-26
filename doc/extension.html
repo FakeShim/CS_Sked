@@ -31,6 +31,29 @@
   <p><a href="./doc.html">Return to toplevel documentation page.</a></p>
   <h2>Details</h2>
 
+  <h3>Adding features:</h3>
+  <p>
+    This project has 2 different directories where features can be added, the frontend/ui stored in <code>client/</code>,
+    and the backend stored in <code>server/</code>
+  </p>
+  <p>
+    New pages should be added to <code>client/src/components</code>, and then new link entries should be added to <code>client/src/App.js</code>, the
+    main logic of the React system. If this page needs to be locked behind logging in, <code>&lt;Navigate to="/Login"/&gt;</code> can be added to the route
+    as follows: <code>&lt;Route exact path="/NewPage" element={loggedIn ?&lt;NewPage /&gt; : &lt;Navigate to="/Login"/&gt;} /&gt;</code>
+
+    For new backend functionality, a new endpoint must be created in <code>server/app.js</code>. The backend uses express.js, which formats its endpoints as such:
+    <code><pre>
+      app.get('/path-to-endpoint', (req, res) => {
+        // Logic to enact when endpoint is fetched
+      })
+    </pre></code>
+    <p>If database operations are to be added, they should be added to <code>server/database.js</code>. When interacting with the Faculty database, it is
+    recommended to use the Faculty object to ensure formatting is correct. This object's constructor has comments explaining the format of its parameters.</p>
+
+    <p>Email logic uses the ssmtp linux api. This api requires a file called <code>/etc/ssmtp/ssmtp.conf</code>. This file is copied from <code>server/my.conf</code>
+    by the Dockerfile in <code>server/</code>. ssmtp logic is encapsulated in the sendEmail function in <code>server/app.js</code>.</p>
+  </p>
+
   <h3>Compiling/Languages:</h3>
   <p>This project uses one primary language, javascript. The frontend (<code>/client/</code>) however,
   uses the React framework, which is quite different to standard javascript. The client side and server (<code>/server/</code>)
@@ -218,7 +241,7 @@
       </tr>
     </tbody>
   </table>
-  <h4>Testing</h4>
+  <h3>Testing</h4>
   <p>Automated testing does not currently work, however efforts have been made. These efforts can be seen on the "Testing" branch in <code>client/src/components/tests</code> on the github found <a href="https://github.com/FakeShim/CS_Sked/tree/Testing">here</a>.</p>
   <p>Here are some manual tests that can be run. A future developer will likely wish to extend these tests to encompass all facets of the project.
     <pre>
@@ -251,7 +274,7 @@
        - Success: The requests will reflect the times of the confirmation by the professor and the status will change to accepted
     </pre>
   </p>
-  <h4>Stylistic Decisions</h4>
+  <h3>Stylistic Decisions</h4>
   <p>Styling was not of great importance in this project, but it would likely benefit a future developer to standardize the formatting of this code presented.
     Most notably, CamelCase and snake_case are used interchangeably, as different project members had different preferences. Indentation could also be improved in
     some areas; HTML tends to use 2 spaces while javascript uses 4. Because React uses JSX, a similar format to HTML, there is mixed indentation within the React
