@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How to Install Software</title>
+    <style>
+        body {
+            background-color: #f0f0f0; /* Light background color */
+            color: #333; /* Default text color */
+            font-family: Arial, sans-serif; /* Example font */
+        }
+
+        code {
+            background-color: #333; /* Dark background color for <code> elements */
+            color: #fff; /* White text color for <code> elements */
+            padding: 4px 8px; /* Add padding for better readability */
+            display: inline-block; /* Make <code> elements inline-block */
+        }
+    </style>
+</head>
+<body>
+    <h2>How to Install Software - Peter Shim</h2>
+    <p><br /><h3>In order for someone to deploy this application on their own environment, they would first need to clone our GitHub repository.</h3> </p>
+    <p>They could use this command in their terminal:</p>
+    <code>git clone git@github.com:FakeShim/CS_Sked.git</code>
+    <p>Or they could download the GitHub desktop app and clone the repository through the desktop app.<br /></p>
+    
+    <p><br /><h3>Next they would need to install Docker</h3></p>
+    <p>To install Docker, follow this website: </p>
+    <a href="https://docs.docker.com/get-docker/">https://docs.docker.com/get-docker/</a>
+    <p>Make sure to follow the instructions in the provided documentation that corresponds to your device and reopen the app after setting it up.</p>
+    <p><strong>Once Docker is up and running use the following commands in a bash terminal or WSL:</strong></p>
+    <code>DB_USERNAME=db-username DB_PASSWORD=db-password docker-compose build<br /></code>
+    <p>The user will need to make sure to replace db-username and db-password with the correct fields for their MongoDB Database.<br /></p>
+    
+    <p><br /><h3>How to run locally (using Docker)</h3></p>
+    <p>If you plan to run the project locally you will have to change a few environment variables within the files.</p>
+    <p>Everything needed for building the docker images with docker-compose will be in the docker-compose.yaml file. It shows the ports, environment variables, and directories for the project.</p>
+    <p>You will also need to change the file Dockerfile.web in:</p>
+    <p><code>server/</code></p>
+    <p>And then rename it to just Dockerfile</p>
+    <p>In order for this to be ran locally, you will also need to change the const variable backend_host value to 'localhost:443'</p>
+    <P>The following files will need these changes:</P>
+    <code>client/src/components/App.js</code>
+    <p><code>client/src/components/Confirmation.js</code></p>
+    <p><code>client/src/components/Faculty.js</code></p>
+    <p><code>client/src/components/Home.js</code></p>
+    <p><code>client/src/components/Login.js</code></p>
+    <p><code>client/src/components/Requests.js</code></p>
+    <p><code>client/src/components/table.js</code></p>
+    <p><strong>Once backend_host has been changes in the above files, you can now run the following Docker commands</strong></p>
+    <code>DB_USERNAME=db-username DB_PASSWORD=db-password docker-compose build</code>
+    <p> and </p>
+    <p><code>DB_USERNAME=db-username DB_PASSWORD=db-password docker-compose up</code></p>
+    <p>Replace db-username and db-password just like in the previous section.</p>
+    <p>This will take a while, as it is installing many packages.</p>
+    <p>If it reaches a runtime error, you will just have to run this command again:</p>
+    <p><code>DB_USERNAME=db-username DB_PASSWORD=db-password docker-compose up</code></p>
+    <p>Once the project is running, you can access it by clicking on the link in the terminal:</p>
+    <p><code> Local:        https://localhost:443</code></p>
+    <p>To end the program just use the hotket ctrl-c</p>
+
+
+    <p><br /><h3>Heroku install for running globally(Front-end used the OIT server provided).</h3></p>
+    <p>Here is how to set up Heroku in the terminal:</p>
+    <p><strong>Login:</strong></p>
+    <code>heroku container:login</code>
+    <p><strong>Push Docker image to Heroku:</strong></p>
+    <code>heroku container:push --recursive -a your-app-name</code>
+    <p>your-app-name being the name of your Heroku app</p>
+    <p><strong>Release your Docker Image:</strong></p>
+    <code>heroku container:release web -a your-app-name</code>
+    <p><strong>Viewing your app:</strong></p>
+    <code>heroku open -a your-app-name<br /></code>
+
+    <p><br /><h3>External Resources</h3></p>
+    <p>As discussed above, we used MongoDB Atlas and Heroku.</p>
+    <p>MongoDB Atlas was free to use while Heroku was not.</p>
+    <p>For MongoDB the free tier includes 512MB to 5GB of storage.</p>
+    <p>For Heroku, the cost of running an application is $0.010 per hour, up to $7.00 a month</p>
+    
+</body>
+</html>
