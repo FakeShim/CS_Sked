@@ -1,9 +1,9 @@
 services:
-    
+
     server:
         build: ./server
         ports:
-            - "3080:3080"
+            - "443:443"
         volumes:
             - ./server:/server
             - /server/node_modules

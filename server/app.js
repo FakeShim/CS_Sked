@@ -35,26 +35,35 @@ app.get('/', (_req, res) => {
 app.post('/auth', async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await database.database_login({ email });
+  var user = await database.database_get("login");
 
-  if (!user) {
+  console.log("user: ", user);
+  console.log("user not true?: ", !user);
+
+  if (user === undefined || user.length == 0) {
     bcrypt.hash(password, 10, async (err, hash) => {
       if (err) {
         return res.status(500).json({ message: 'Error hashing password' });
       }
       const newUser = { email, password: hash };
-      await usersCollection.insertOne(newUser);
+      await database.insert_user(newUser);
       const token = jwt.sign({ email }, jwtSecretKey);
       res.status(200).json({ message: 'success', token });
     });
   } else {
-    bcrypt.compare(password, user.password, (err, result) => {
-      if (err || !result) {
-        return res.status(401).json({ message: 'Invalid password' });
-      }
-      const token = jwt.sign({ email }, jwtSecretKey);
-      res.status(200).json({ message: 'success', token });
-    });
+    user = await database.database_login({ email });
+    if (user) {
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (err || !result) {
+          return res.status(401).json({ message: 'Invalid email or password' });
+        }
+        const token = jwt.sign({ email }, jwtSecretKey);
+        res.status(200).json({ message: 'success', token });
+      });
+    }
+    else {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
   }
 });
 
@@ -281,7 +290,7 @@ function compareAvailability(studentAvailability, userData) {
             var availableFacultyMember = {
               'facultyFirst': facultyMember.facultyFirst,
               'facultyLast': facultyMember.facultyLast,
-              "email": facultyMember.email, 
+              "email": facultyMember.email,
               "times": timesObject};
             availableFaculty.push(availableFacultyMember);
         }
@@ -360,14 +369,14 @@ app.post('/faculty-availability', (req, res) => {
                 'email': faculty.email,
                 'status': "Pending",
                 'times': faculty.times
-              } 
+              }
 
               console.log('request', request);
 
               requests.push(request);
             }
           }
-          
+
 
           res.status(200).json(requests);
         });

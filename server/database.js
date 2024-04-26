@@ -170,10 +170,27 @@ async function database_login(email)
     const database = client.db('scheduler');
     const collection = database.collection('login');
 
-    login = await collection.findOne(email); 
+    login = await collection.findOne(email);
     console.log('login:', login);
 
     return login;
+}
+
+// Function for getting a database entry
+//
+// Parameters:
+// type: either faculty or requests
+// query: object in the form of {<entry_key 1>:<entry value 1>, ...}
+//
+// Returns:
+// A single database entry if given a query
+// All entries otherwise
+async function insert_user(newUser)
+{
+    const database = client.db('scheduler');
+    const collection = database.collection('login');
+
+    await collection.insertOne(newUser);
 }
 
 // Function for getting a database entry
@@ -307,6 +324,7 @@ module.exports =
     database_to_id_object,
     database_get,
     database_login,
+    insert_user,
     database_get_multiple,
     database_add_request,
     database_add_faculty,
