@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>Frequently Asked Questions</title>
+    <style>
+        body {
+            background-color: #fff; /* Light background color */
+            color: #333; /* Default text color */
+            font-family: Arial, sans-serif; /* Example font */
+        }
+
+        code {
+            background-color: #333; /* Dark background color for <code> elements */
+            color: #fff; /* White text color for <code> elements */
+            padding: 4px 8px; /* Add padding for better readability */
+            display: inline-block; /* Make <code> elements inline-block */
+        }
+    </style>
+    </head>
+    <body>
+        <h2>If I had to change out the user email of this application, how would I do that?</h2>
+        <p>If I had to change out the user email of this application, how would I do that?
+            As there is currently no real way of creating new accounts, you would need permissions to go into the database wherever the login information is stored and clear out the login table. 
+            Then when you sign into the application, the next email and password should populate it.
+            Note: As stated previously, only one user should populate this table</p>
+        <h2>What should I do if I receive an error when logging in or creating an account?</h2>
+        <p>
+            You would need to make sure you enter the right user email and password. 
+            If you do not remember the user email and password, you would need to get permission to repopulate the user email and password in the database that it is stored in. I
+            f that happens, look back at the previous question to see how that is done.
+        </p>
+        <h2>What should I do if the recepients don't see any emails from the application?</h2>
+        <p>
+            You should check with the recepients to see if the email that shows on the table their correct email. 
+
+            If it is, then tell the recepients that it may show up in their spam folder due to the formatting of the email. 
+
+            If not, you can change the contact of the faculty member in the faculty page. Then resend the email by re-entering the request information and pressing the submit button under the available faculty table.
+        </p>
+        <h2> What should I do to check to see that MongoDB is working on Docker after migration or installation? </h2>
+        <p>
+            After installation, you can check to see if you have a MongoDB Atlas collection by running: <code>DB_USERNAME=db-username DB_PASSWORD=db-password docker-compose build.</code> <p>and then</p>
+            <code>DB_USERNAME=db-username DB_PASSWORD=db-password docker-compose up</code>
+            If this does not work, then you would need to set up a MongoDB Atlas database <a href="https://www.mongodb.com/cloud/atlas/register">here</a>
+
+            Important reminders when creating a database for this application:
+            <ul>
+            <li>Follow the schema that we created</li>
+            <p>There are three collections: faculty, login, and requests</p>
+            <p>In faculty, there are 5 fields: id, email, availability (which is an object), faculty's first name, and faculty's last name </p>
+            <p>The availability object should have 5 arrays named after the days of the week. In those arrays, you would need to fill it in with 12 boolean values. They represent the empty time slots that a faculty member will be available for.</p>
+            <p>In login, there are 3 fields: id, email, and the hashed password. However, there is no real way to really create a new account as addressed in the modify page</p>
+            <p>In requests, there should be 8 fields: id, facultys first name, facultys' last name, student's first name, student's last name, email, status, and times (an object)</P>
+            <p>Times should be an array of strings which holds the times</p>
+            <li>Remember the user email and password used to login into Atlas to see the database changes</li>
+            </ul>
+            If they are not using Atlas, they can follow the instructions of how to use a local MongoDB database detailed in the extensions page. 
+        </p>
+    </body>
+</html>
